@@ -1,27 +1,63 @@
 {
   "compilerOptions": {
+    // Target modern JavaScript features
     "target": "ES2017",
+
+    // Include modern DOM and ES libraries
     "lib": ["dom", "dom.iterable", "esnext"],
+
+    // Allow JavaScript files to be compiled (if needed)
     "allowJs": true,
+
+    // Skip checking library definition files for performance
     "skipLibCheck": true,
+
+    // Enable strict type checking
     "strict": true,
+
+    // Do not output compiled files
     "noEmit": true,
+
+    // Support ES module interop
     "esModuleInterop": true,
+
+    // Use the latest ECMAScript module system
     "module": "esnext",
+
+    // Use bundler-aware module resolution (Next.js compatible)
     "moduleResolution": "bundler",
+
+    // Allow importing JSON files
     "resolveJsonModule": true,
+
+    // Required for Next.js to treat each file as its own module
     "isolatedModules": true,
+
+    // Preserve JSX syntax for Next.js
     "jsx": "preserve",
+
+    // Improve build performance
     "incremental": true,
+
+    // Enable Next.js TypeScript plugin
     "plugins": [
       {
         "name": "next"
       }
     ],
+
+    // Define path aliases (you can use "@/..." to import from the root)
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+
+    // Optional: fallback for older tooling
+    "baseUrl": "."
   },
+
+  // Files and folders to include in the project
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+
+  // Exclude dependencies from being compiled
   "exclude": ["node_modules"]
 }

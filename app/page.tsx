@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 export default function HomePage() {
   return (
     <>
-      <Navbar />
       <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white px-4">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 text-center">
           Hi, I’m <span className="text-blue-500">Gil</span> 👋
