@@ -7,39 +7,44 @@ import { usePathname } from "next/navigation";
 import jwt from "jsonwebtoken";
 import { useTranslation } from "react-i18next";
 import "../src/i18n/config";
+
 interface DecodedToken {
   firstName: string;
   lastName: string;
   role: string;
 }
 
+// ✅ Decode token immediately on first load (to prevent render mismatch)
+const getInitialUser = (): DecodedToken | null => {
+  if (typeof window === "undefined") return null;
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = jwt.decode(token) as DecodedToken;
+      if (decoded?.firstName && decoded?.lastName) {
+        return decoded;
+      }
+    } catch {
+      localStorage.removeItem("token");
+    }
+  }
+  return null;
+};
+
 export default function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<DecodedToken | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    // Language restore
+    setHasMounted(true); // 👈 prevents hydration mismatch
+
+    // Restore preferred language
     const storedLang = localStorage.getItem("i18nextLng");
     if (storedLang && storedLang !== i18n.language) {
-      i18n
-        .changeLanguage(storedLang)
-        .catch((err) => console.error("Language change failed", err));
-    }
-
-    // Decode JWT token
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwt.decode(token) as DecodedToken;
-        if (decoded?.firstName && decoded?.lastName) {
-          setUser(decoded);
-        }
-      } catch (err) {
-        console.error("Invalid token", err);
-        localStorage.removeItem("token");
-      }
+      i18n.changeLanguage(storedLang).catch(console.error);
     }
   }, [i18n]);
 
@@ -50,9 +55,7 @@ export default function Navbar() {
   };
 
   const handleLanguageChange = (lng: string) => {
-    i18n
-      .changeLanguage(lng)
-      .catch((err) => console.error("Failed to change language", err));
+    i18n.changeLanguage(lng).catch(console.error);
     localStorage.setItem("i18nextLng", lng);
   };
 
@@ -85,6 +88,8 @@ export default function Navbar() {
     </div>
   );
 
+  if (!hasMounted) return null;
+
   return (
     <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
@@ -92,12 +97,10 @@ export default function Navbar() {
           Gil Sasi
         </Link>
 
-        {/* Mobile menu button */}
         <button onClick={toggleMenu} className="md:hidden text-2xl">
           ☰
         </button>
 
-        {/* Desktop menu */}
         <div className="hidden md:flex gap-4 items-center">
           <Link href="/">{t("home")}</Link>
           <Link href="/projects">{t("projects")}</Link>
@@ -144,7 +147,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden mt-4 flex flex-col gap-2 bg-gray-700 p-4 rounded">
           <Link href="/" onClick={closeMenu}>

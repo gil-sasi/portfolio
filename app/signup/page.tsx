@@ -33,7 +33,9 @@ export default function SignupPage() {
 
       const token = res.data.token;
       localStorage.setItem("token", token);
-      router.push("/");
+
+      alert(t("accountCreated")); // ✅ Success message
+      router.push("/"); // ✅ Go to home
     } catch (err: any) {
       alert(err.response?.data?.message || t("signupFailed"));
     }
