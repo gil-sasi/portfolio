@@ -1,30 +1,24 @@
-import Navbar from "../components/Navbar";
+import React from "react";
 
-export default function HomePage() {
+const Navbar: React.FC = () => {
   return (
-    <>
-      <Navbar />
-      <main className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Hi, I’m Gil 👋</h1>
-        <p className="text-xl mb-6 text-center max-w-xl">
-          A passionate full-stack developer building web apps with React,
-          Next.js, TypeScript, and MongoDB.
-        </p>
-        <div className="flex gap-4">
-          <a
-            href="/projects"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
-          >
-            View Projects
+    <nav className="bg-gray-800 text-white px-4 py-3 shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="text-xl font-bold">Gil Sasi</div>
+        <div className="space-x-4">
+          <a href="/" className="hover:text-gray-300">
+            Home
           </a>
-          <a
-            href="/contact"
-            className="bg-transparent border border-white px-6 py-2 rounded hover:bg-white hover:text-black"
-          >
-            Contact Me
+          <a href="/projects" className="hover:text-gray-300">
+            Projects
+          </a>
+          <a href="/contact" className="hover:text-gray-300">
+            Contact
           </a>
         </div>
-      </main>
-    </>
+      </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;
