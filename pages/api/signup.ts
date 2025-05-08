@@ -2,9 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
-
+import dotenv from "dotenv";
 const MONGODB_URI = process.env.MONGODB_URI!;
 
+dotenv.config();
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -37,12 +38,10 @@ export default async function handler(
     // Create user
     const user = await User.create({ email, password: hashedPassword });
 
-    res
-      .status(201)
-      .json({
-        message: "User created",
-        user: { email: user.email, role: user.role },
-      });
+    res.status(201).json({
+      message: "User created",
+      user: { email: user.email, role: user.role },
+    });
   } catch (err) {
     console.error("Signup error:", err);
     res.status(500).json({ message: "Internal server error" });
