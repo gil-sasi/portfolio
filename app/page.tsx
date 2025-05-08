@@ -5,9 +5,7 @@ export default function HomePage() {
     <>
       <Navbar />
       <main className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Hi, I’m Natan 👋
-        </h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Hi, I’m Gil 👋</h1>
         <p className="text-xl mb-6 text-center max-w-xl">
           A passionate full-stack developer building web apps with React,
           Next.js, TypeScript, and MongoDB.
