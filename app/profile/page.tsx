@@ -39,6 +39,7 @@ export default function ProfilePage() {
       setShowPasswordFields(false);
     } catch (err) {
       toast.error(t("errorChangingPassword"));
+      console.error("Error changing password:", err);
     } finally {
       setLoading(false);
     }

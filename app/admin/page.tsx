@@ -30,21 +30,21 @@ export default function AboutPage() {
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post(
-        "/api/about",
-        { content },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      // const token = localStorage.getItem("token");
+      // const res = await axios.post(
+      //   "/api/about",
+      //   { content },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
       setMessage(t("aboutUpdated"));
       setEditing(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setMessage(err.response?.data?.message || t("updateFailed"));
+      setMessage(t("updateFailed"));
     }
   };
 
