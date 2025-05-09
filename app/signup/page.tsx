@@ -52,8 +52,18 @@ export default function SignupPage() {
 
       alert(t("accountCreated"));
       window.location.href = "/";
-    } catch (err: any) {
-      alert(err.response?.data?.message || t("signupFailed"));
+    } catch (err: unknown) {
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "response" in err &&
+        typeof (err as any).response === "object"
+      ) {
+        alert((err as any).response?.data?.message || t("signupFailed"));
+      } else {
+        alert(t("signupFailed"));
+      }
+      console.error(err);
     }
   };
 
