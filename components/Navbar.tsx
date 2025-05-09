@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { logout, setUserFromToken } from "../redux/slices/authSlice";
+
 import "../src/i18n/config";
 
 export default function Navbar() {
@@ -50,10 +51,10 @@ export default function Navbar() {
           Gil Sasi
         </Link>
 
-        {/* Right: Full control area */}
+        {/* Right */}
         <div className="flex-1 flex items-center justify-end gap-4 ml-4">
           {/* Language flags */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <button onClick={() => handleLanguageChange("en")} title="English">
               <Image
                 src="/flags/us.png"
@@ -81,10 +82,11 @@ export default function Navbar() {
             </span>
           )}
 
-          {/* Navigation links (except home) */}
+          {/* Navigation */}
           <div className="flex gap-4 items-center">
             <Link href="/projects">{t("projects")}</Link>
             <Link href="/contact">{t("contact")}</Link>
+            <Link href="/about">{t("about")}</Link>
             {user?.role === "admin" && (
               <Link href="/admin" className="text-yellow-400 font-semibold">
                 {t("adminPanel")}
@@ -92,7 +94,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Home - now moved near logout */}
+          {/* Home right aligned */}
           <Link
             href="/"
             className="text-white hover:text-blue-400 transition whitespace-nowrap"
@@ -118,12 +120,20 @@ export default function Navbar() {
             </Link>
           )}
           {user && (
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded text-sm whitespace-nowrap"
-            >
-              {t("logout")}
-            </button>
+            <>
+              <Link
+                href="/profile"
+                className="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded text-sm whitespace-nowrap"
+              >
+                {t("profile")}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded text-sm whitespace-nowrap"
+              >
+                {t("logout")}
+              </button>
+            </>
           )}
         </div>
       </div>

@@ -46,6 +46,7 @@ export default async function handler(
         role: user.role,
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
       },
       JWT_SECRET,
       { expiresIn: "2h" }

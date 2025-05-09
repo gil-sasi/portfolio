@@ -1,4 +1,3 @@
-import { sign } from "crypto";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -27,6 +26,21 @@ const resources = {
       invalidPassword: "Invalid password",
       accountCreated: "Account created successfully",
       invalidName: "Invalid name",
+      about: "About",
+      somethingWentWrong: "Something went wrong",
+      profile: "Profile",
+      notAuthorized: "You must be logged in to view this page",
+      firstName: "First Name",
+      changePassword: "Change Password",
+      passwordChanged: "Password changed successfully",
+      role: "Role",
+      newPassword: "New Password",
+      updatePassword: "Update Password",
+      errorChangingPassword: "Error changing password",
+      cancel: "Cancel",
+      save: "Save",
+      updating: "Updating",
+      loading: "Loading...",
     },
   },
   he: {
@@ -54,6 +68,20 @@ const resources = {
       gil: "גיל",
       sasi: "סאסי",
       somethingWentWrong: "משהו השתבש",
+      about: "אודות",
+      profile: "    פרופיל",
+      notAuthorized: "עליך להתחבר כדי לצפות בדף זה",
+      firstName: " שם פרטי",
+      role: "תפקיד",
+      changePassword: "שנה סיסמה",
+      passwordChanged: "הסיסמה שונתה בהצלחה",
+      newPassword: "סיסמה חדשה",
+      updatePassword: "עדכן סיסמה",
+      errorChangingPassword: "שגיאה בשינוי הסיסמה",
+      cancel: "ביטול",
+      save: "שמור",
+      updating: "מעודכן",
+      loading: "טוען...",
     },
   },
 };

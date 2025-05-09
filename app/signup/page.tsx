@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { useRouter } from "next/navigation";
+
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/authSlice";
@@ -13,6 +13,7 @@ interface DecodedToken {
   firstName: string;
   lastName: string;
   role: string;
+  email: string;
 }
 
 export default function SignupPage() {
@@ -24,7 +25,6 @@ export default function SignupPage() {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

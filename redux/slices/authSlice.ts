@@ -6,6 +6,7 @@ export interface DecodedToken {
   firstName: string;
   lastName: string;
   role: string;
+  email: string;
 }
 
 interface AuthState {

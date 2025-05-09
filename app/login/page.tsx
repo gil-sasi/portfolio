@@ -12,6 +12,7 @@ interface DecodedToken {
   firstName: string;
   lastName: string;
   role: string;
+  email: string;
 }
 
 export default function LoginPage() {
@@ -43,12 +44,11 @@ export default function LoginPage() {
       const token = data.token;
       localStorage.setItem("token", token);
 
-      // ✅ Decode and manually update Redux BEFORE redirect
       const decoded = jwt.decode(token) as DecodedToken;
       console.log("✅ Login success: decoded JWT", decoded);
-      dispatch(login(decoded)); // <== this is the fix
+      dispatch(login(decoded));
 
-      router.push("/"); // ✅ Redirect AFTER state updated
+      router.push("/");
     } catch (err) {
       console.error("Login error:", err);
       setMessage(t("somethingWentWrong") || "Something went wrong");
