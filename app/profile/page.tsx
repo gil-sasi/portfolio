@@ -70,7 +70,7 @@ export default function ProfilePage() {
             <strong>{t("email")}:</strong> {user.email}
           </p>
           <p>
-            <strong>{t("role")}:</strong> {user.role}
+            <strong>{t("role")}:</strong> {t(user.role)}
           </p>
         </div>
 

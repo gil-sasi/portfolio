@@ -11,14 +11,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const lang = req.headers["accept-language"] === "he" ? "he" : "en";
+  const t = (en: string, he: string) => (lang === "he" ? he : en);
+
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res
+      .status(405)
+      .json({ message: t("Method not allowed", "השיטה אינה מותרת") });
   }
 
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+    return res.status(400).json({
+      message: t("Email and password are required", "נדרש אימייל וסיסמה"),
+    });
   }
 
   try {
@@ -28,12 +35,16 @@ export default async function handler(
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        message: t("Invalid email or password", "אימייל או סיסמה שגויים"),
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        message: t("Invalid email or password", "אימייל או סיסמה שגויים"),
+      });
     }
 
     const token = jwt.sign(
@@ -51,6 +62,8 @@ export default async function handler(
     res.status(200).json({ token });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      message: t("Internal server error", "שגיאת שרת פנימית"),
+    });
   }
 }

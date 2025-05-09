@@ -41,6 +41,8 @@ const resources = {
       save: "Save",
       updating: "Updating",
       loading: "Loading...",
+      user: "User",
+      admin: "Admin",
     },
   },
   he: {
@@ -82,6 +84,8 @@ const resources = {
       save: "שמור",
       updating: "מעודכן",
       loading: "טוען...",
+      user: "משתמש",
+      admin: "מנהל",
     },
   },
 };

@@ -18,7 +18,7 @@ interface DecodedToken {
 export default function LoginPage() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,10 @@ export default function LoginPage() {
     try {
       const res = await fetch("/api/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": i18n.language,
+        },
         body: JSON.stringify({ email, password }),
       });
 
