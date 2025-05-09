@@ -88,9 +88,7 @@ export default function Navbar() {
             <Link href="/contact">{t("contact")}</Link>
             <Link href="/about">{t("about")}</Link>
             {user?.role === "admin" && (
-              <Link href="/admin" className="text-yellow-400 font-semibold">
-                {t("adminPanel")}
-              </Link>
+              <Link href="/admin">{t("adminPanel")}</Link>
             )}
           </div>
 

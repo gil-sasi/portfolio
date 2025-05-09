@@ -54,64 +54,56 @@ export default function AboutPage() {
   if (loading) return <p className="text-white p-4 text-center">Loading...</p>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0e0e11] px-4">
-      <div className="w-full max-w-2xl bg-[#1e1e25] text-white p-6 rounded-2xl shadow-xl space-y-4">
-        <h1 className="text-3xl font-bold text-center border-b border-gray-700 pb-2">
-          About Me
-        </h1>
+    <div className="min-h-screen bg-black text-white px-4 py-10">
+      <h1 className="text-3xl font-bold mb-6 text-center">About Me</h1>
 
-        {editing ? (
-          <>
-            <textarea
-              value={aboutText}
-              onChange={(e) => setAboutText(e.target.value)}
-              className="w-full h-48 p-3 rounded-lg bg-[#2a2a35] border border-gray-600 resize-none text-white"
-              placeholder="Write something about yourself..."
-            />
-            <div className="flex justify-end gap-2">
+      {editing ? (
+        <>
+          <textarea
+            value={aboutText}
+            onChange={(e) => setAboutText(e.target.value)}
+            className="w-full max-w-4xl mx-auto block h-48 p-3 rounded bg-gray-800 border border-gray-600 resize-none"
+            placeholder="Write something about yourself..."
+          />
+          <div className="flex justify-center gap-4 mt-4">
+            <button
+              onClick={handleSave}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="whitespace-pre-line text-lg max-w-4xl mx-auto text-center min-h-[100px]">
+            {aboutText.trim() || "No about content found."}
+          </p>
+
+          {user?.role === "admin" && (
+            <div className="flex justify-center mt-6">
               <button
-                onClick={handleSave}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                onClick={() => setEditing(true)}
+                className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white"
               >
-                Save
-              </button>
-              <button
-                onClick={() => setEditing(false)}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
-              >
-                Cancel
+                Edit
               </button>
             </div>
-          </>
-        ) : (
-          <>
-            <p
-              className={`whitespace-pre-line min-h-[120px] bg-[#2a2a35] p-4 rounded-md border ${
-                aboutText.trim() ? "border-gray-700" : "border-red-500"
-              }`}
-            >
-              {aboutText.trim() || "No about content found."}
-            </p>
+          )}
+        </>
+      )}
 
-            {user?.role === "admin" && (
-              <div className="flex justify-end">
-                <button
-                  onClick={() => setEditing(true)}
-                  className="mt-2 bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-md text-black font-semibold"
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {saved && (
-          <p className="text-green-400 text-sm text-center">
-            ✅ About updated!
-          </p>
-        )}
-      </div>
+      {saved && (
+        <p className="text-green-400 text-center mt-4 text-sm">
+          ✅ About updated!
+        </p>
+      )}
     </div>
   );
 }
