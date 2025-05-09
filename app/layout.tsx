@@ -1,27 +1,18 @@
 import type { Metadata } from "next";
-
-// Google Fonts: Geist Sans and Geist Mono (used for clean modern typography)
 import { Geist, Geist_Mono } from "next/font/google";
-
-// Global Tailwind or CSS styles
 import "./globals.css";
 
-// Reusable Navbar shown on all pages
-import Navbar from "../components/Navbar";
-
-// Load and assign Geist Sans as a CSS variable
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-// Load and assign Geist Mono (monospace font) as a CSS variable
+// Load fonts
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
-// Metadata for SEO and social media preview (Open Graph)
+// Import ClientWrapper with Redux + Navbar
+import ClientWrapper from "../components/ClientWrapper";
+
+// SEO Metadata
 export const metadata: Metadata = {
   title: "My Portfolio",
   description: "Create and manage your portfolio with ease.",
@@ -48,7 +39,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Root layout component that wraps all pages
+// Root Layout
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -59,15 +50,10 @@ export default function RootLayout({
       <body
         className={`
           ${geistSans.variable} ${geistMono.variable} 
-          antialiased 
-          bg-gray-900 text-white
+          antialiased bg-gray-900 text-white
         `}
       >
-        {/* Global Navbar shown on every page */}
-        <Navbar />
-
-        {/* Dynamic page content rendered below */}
-        <main>{children}</main>
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );

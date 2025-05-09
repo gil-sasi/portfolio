@@ -36,13 +36,18 @@ export default async function handler(
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: "2h",
-    });
+    const token = jwt.sign(
+      {
+        id: user._id,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      JWT_SECRET,
+      { expiresIn: "2h" }
+    );
 
-    res
-      .status(200)
-      .json({ token, user: { email: user.email, role: user.role } });
+    res.status(200).json({ token });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Internal server error" });

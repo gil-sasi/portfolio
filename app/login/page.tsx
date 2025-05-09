@@ -2,12 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import jwt from "jsonwebtoken";
+import { login } from "../../redux/slices/authSlice";
 import "../../src/i18n/config";
+
+interface DecodedToken {
+  firstName: string;
+  lastName: string;
+  role: string;
+}
 
 export default function LoginPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -29,16 +40,17 @@ export default function LoginPage() {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", data.user.email);
-      localStorage.setItem("role", data.user.role);
+      const token = data.token;
+      localStorage.setItem("token", token);
 
-      setMessage("✅ " + t("login"));
-      setTimeout(() => {
-        router.push("/");
-      }, 1500);
-    } catch (error) {
-      console.error("Login error:", error);
+      // ✅ Decode and manually update Redux BEFORE redirect
+      const decoded = jwt.decode(token) as DecodedToken;
+      console.log("✅ Login success: decoded JWT", decoded);
+      dispatch(login(decoded)); // <== this is the fix
+
+      router.push("/"); // ✅ Redirect AFTER state updated
+    } catch (err) {
+      console.error("Login error:", err);
       setMessage(t("somethingWentWrong") || "Something went wrong");
     }
   };

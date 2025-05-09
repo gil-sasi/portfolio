@@ -22,6 +22,11 @@ const resources = {
       confirmPassword: "Confirm Password",
       passwordMismatch: "Passwords do not match",
       invalidEmail: "Invalid email address",
+      gil: "Gil",
+      sasi: "Sasi",
+      invalidPassword: "Invalid password",
+      accountCreated: "Account created successfully",
+      invalidName: "Invalid name",
     },
   },
   he: {
@@ -45,6 +50,10 @@ const resources = {
       invalidEmail: "כתובת אימייל לא חוקית",
       invalidPassword: "סיסמה לא חוקית",
       invalidName: "שם לא חוקי",
+      accountCreated: "החשבון נוצר בהצלחה",
+      gil: "גיל",
+      sasi: "סאסי",
+      somethingWentWrong: "משהו השתבש",
     },
   },
 };

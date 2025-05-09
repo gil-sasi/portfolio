@@ -2,9 +2,18 @@
 
 import { useState } from "react";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slices/authSlice";
 import "../../src/i18n/config";
+
+interface DecodedToken {
+  firstName: string;
+  lastName: string;
+  role: string;
+}
 
 export default function SignupPage() {
   const [firstName, setFirstName] = useState("");
@@ -12,8 +21,10 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const router = useRouter();
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +45,13 @@ export default function SignupPage() {
       const token = res.data.token;
       localStorage.setItem("token", token);
 
-      alert(t("accountCreated")); // ✅ Success message
-      router.push("/"); // ✅ Go to home
+      const decoded = jwt.decode(token) as DecodedToken;
+      if (decoded?.firstName && decoded?.lastName) {
+        dispatch(login(decoded));
+      }
+
+      alert(t("accountCreated"));
+      window.location.href = "/";
     } catch (err: any) {
       alert(err.response?.data?.message || t("signupFailed"));
     }
