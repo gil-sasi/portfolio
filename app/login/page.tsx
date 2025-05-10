@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const lang = localStorage.getItem("i18nextLng") || "en";
+    i18n.changeLanguage(lang).finally(() => setMounted(true));
+  }, [i18n]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +54,6 @@ export default function LoginPage() {
       localStorage.setItem("token", token);
 
       const decoded = jwt.decode(token) as DecodedToken;
-      console.log("✅ Login success: decoded JWT", decoded);
       dispatch(login(decoded));
 
       router.push("/");
@@ -57,6 +62,9 @@ export default function LoginPage() {
       setMessage(t("somethingWentWrong") || "Something went wrong");
     }
   };
+
+  //  Prevent hydration error by delaying render
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
