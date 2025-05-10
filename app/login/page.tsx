@@ -46,7 +46,13 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setMessage(data.message || t("loginFailed"));
+        if (res.status === 403) {
+          setMessage(t("Your account is banned", "החשבון שלך נחסם"));
+        } else if (res.status === 401) {
+          setMessage(t("Invalid email or password", "אימייל או סיסמה שגויים"));
+        } else {
+          setMessage(data.message || t("loginFailed"));
+        }
         return;
       }
 
@@ -63,7 +69,6 @@ export default function LoginPage() {
     }
   };
 
-  //  Prevent hydration error by delaying render
   if (!mounted) return null;
 
   return (
@@ -96,7 +101,9 @@ export default function LoginPage() {
           {t("login")}
         </button>
 
-        {message && <p className="text-center text-sm mt-2">{message}</p>}
+        {message && (
+          <p className="text-center text-sm mt-2 text-red-400">{message}</p>
+        )}
       </form>
     </div>
   );

@@ -23,8 +23,10 @@ export default function ClientWrapper({ children }: { children: ReactNode }) {
   return (
     <Provider store={store}>
       <AuthGate />
-      <Navbar />
-      <main>{children}</main>
+      <div className="min-h-screen bg-gray-900 text-white">
+        <Navbar />
+        <main className="px-4 py-10">{children}</main>
+      </div>
     </Provider>
   );
 }

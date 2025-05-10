@@ -6,7 +6,10 @@ import jwt from "jsonwebtoken";
 const MONGODB_URI = process.env.MONGODB_URI!;
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(MONGODB_URI);
   }
@@ -14,12 +17,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-  const decoded = jwt.verify(token, JWT_SECRET) as { role: string };
-  if (decoded.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+  let decoded;
+  try {
+    decoded = jwt.verify(token, JWT_SECRET) as { role: string };
+  } catch {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+
+  if (decoded.role !== "admin") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
 
   if (req.method === "GET") {
     const users = await User.find({}, "-password"); // hide password field
-    return res.status(200).json(users);
+    return res.status(200).json({ users }); //  wrapped in "users"
   }
 
   if (req.method === "PUT") {

@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useTranslation } from "react-i18next";
 
 export default function AboutPage() {
   const [aboutText, setAboutText] = useState("");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
-
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const fetchAbout = async () => {
     try {
       const res = await axios.get("/api/about");
+
       setAboutText(res.data.content || "");
     } catch (err) {
       console.error("Failed to fetch about text", err);
@@ -54,8 +56,8 @@ export default function AboutPage() {
   if (loading) return <p className="text-white p-4 text-center">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">About Me</h1>
+    <div>
+      <h1 className="text-3xl font-bold mb-6 text-center">{t("about")}</h1>
 
       {editing ? (
         <>
@@ -70,13 +72,13 @@ export default function AboutPage() {
               onClick={handleSave}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
             >
-              Save
+              {t("save")}
             </button>
             <button
               onClick={() => setEditing(false)}
               className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded"
             >
-              Cancel
+              {t("cancel")}
             </button>
           </div>
         </>
@@ -92,7 +94,7 @@ export default function AboutPage() {
                 onClick={() => setEditing(true)}
                 className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white"
               >
-                Edit
+                {t("edit")}
               </button>
             </div>
           )}

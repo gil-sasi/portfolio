@@ -43,6 +43,10 @@ const resources = {
       loading: "Loading...",
       user: "User",
       admin: "Admin",
+      edit: "Edit",
+      delete: "Delete",
+      loginFailed: "Login failed",
+      yourAccountIsBanned: "Your account is banned",
     },
   },
   he: {
@@ -86,6 +90,9 @@ const resources = {
       loading: "טוען...",
       user: "משתמש",
       admin: "מנהל",
+      edit: "ערוך",
+      delete: "מחק",
+      yourAccountIsBanned: "החשבון שלך נחסם",
     },
   },
 };

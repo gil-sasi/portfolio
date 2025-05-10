@@ -7,6 +7,14 @@ export interface IUser extends Document {
   password: string;
   role: "user" | "admin";
   isBanned: boolean;
+  lastLogin?: {
+    date: Date;
+    ip: string;
+  };
+  loginHistory: {
+    date: Date;
+    ip: string;
+  }[];
 }
 
 const UserSchema = new Schema<IUser>({
@@ -16,6 +24,19 @@ const UserSchema = new Schema<IUser>({
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "admin"], default: "user" },
   isBanned: { type: Boolean, default: false },
+  lastLogin: {
+    date: { type: Date, default: null },
+    ip: { type: String, default: "" },
+  },
+  loginHistory: {
+    type: [
+      {
+        date: { type: Date, required: true },
+        ip: { type: String, required: true },
+      },
+    ],
+    default: [],
+  },
 });
 
 export default models.User || mongoose.model<IUser>("User", UserSchema);

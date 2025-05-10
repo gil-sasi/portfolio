@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import moment from "moment-timezone";
 import User from "../../models/User";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
@@ -15,9 +16,9 @@ export default async function handler(
   const t = (en: string, he: string) => (lang === "he" ? he : en);
 
   if (req.method !== "POST") {
-    return res
-      .status(405)
-      .json({ message: t("Method not allowed", "השיטה אינה מותרת") });
+    return res.status(405).json({
+      message: t("Method not allowed", "השיטה אינה מותרת"),
+    });
   }
 
   const { email, password } = req.body;
@@ -40,12 +41,30 @@ export default async function handler(
       });
     }
 
+    // 🚫 Check if the user is banned
+    if (user.isBanned) {
+      return res.status(403).json({
+        message: t("Your account is banned", "החשבון שלך נחסם"),
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({
         message: t("Invalid email or password", "אימייל או סיסמה שגויים"),
       });
     }
+
+    // 🕓 Record login time and IP
+    const israelNow = moment().tz("Asia/Jerusalem").toDate();
+    const userIp =
+      (req.headers["x-forwarded-for"] as string) ||
+      req.socket.remoteAddress ||
+      "unknown";
+
+    user.lastLogin = { date: israelNow, ip: userIp };
+    user.loginHistory.push({ date: israelNow, ip: userIp });
+    await user.save();
 
     const token = jwt.sign(
       {
@@ -59,10 +78,10 @@ export default async function handler(
       { expiresIn: "2h" }
     );
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({
+    return res.status(500).json({
       message: t("Internal server error", "שגיאת שרת פנימית"),
     });
   }
