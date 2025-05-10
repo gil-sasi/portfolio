@@ -180,7 +180,7 @@ export default function AdminPage() {
                         : "bg-red-600 hover:bg-red-700"
                     } text-white px-2 py-1 text-xs rounded`}
                   >
-                    {u.isBanned ? "Unban" : "Ban"}
+                    {u.isBanned ? t("unban") : t("ban")}
                   </button>
                 </td>
               </tr>
@@ -188,7 +188,7 @@ export default function AdminPage() {
                 <tr>
                   <td colSpan={8} className="bg-gray-900 text-xs p-4">
                     <p className="font-semibold mb-2">
-                      {t("loginHistory", "Login History")}:
+                      {t("Login History", "היסטוריית כניסות")}:
                     </p>
                     {u.loginHistory?.length ? (
                       <ul className="space-y-1">
@@ -204,7 +204,7 @@ export default function AdminPage() {
                       </ul>
                     ) : (
                       <p className="text-gray-400 italic">
-                        {t("noLogins", "No login history.")}
+                        {t("No login history.", "אין היסטוריית כניסות.")}{" "}
                       </p>
                     )}
                   </td>
@@ -224,7 +224,8 @@ export default function AdminPage() {
           {t("prev", "Previous")}
         </button>
         <span>
-          Page {currentPage} of {Math.ceil(filteredUsers.length / usersPerPage)}
+          {t("page")} {currentPage} {t("of")}{" "}
+          {Math.ceil(filteredUsers.length / usersPerPage)}
         </span>
         <button
           disabled={startIndex + usersPerPage >= filteredUsers.length}
