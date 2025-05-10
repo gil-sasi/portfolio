@@ -16,8 +16,8 @@ export default function Navbar() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const [hasMounted, setHasMounted] = useState(false);
-  const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     setHasMounted(true);
@@ -45,43 +45,35 @@ export default function Navbar() {
   if (!hasMounted) return null;
 
   return (
-    <nav className="bg-gray-800 text-white p-4 shadow-md w-full z-50">
+    <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
           Gil Sasi
         </Link>
 
-        {/* Mobile menu toggle */}
-        <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {menuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* Hamburger for mobile */}
+        <button
+          className="md:hidden focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
 
-        {/* Desktop Menu */}
+        {/* Desktop menu */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/projects">{t("projects")}</Link>
           <Link href="/contact">{t("contact")}</Link>
@@ -89,11 +81,8 @@ export default function Navbar() {
           {user?.role === "admin" && (
             <Link href="/admin">{t("adminPanel")}</Link>
           )}
-          <Link href="/" className="hover:text-blue-400">
-            {t("home")}
-          </Link>
+          <Link href="/">{t("home")}</Link>
 
-          {/* Auth */}
           {!user && !onLoginPage && (
             <Link
               href="/login"
@@ -126,9 +115,8 @@ export default function Navbar() {
               </button>
             </>
           )}
-
-          {/* Language flags */}
-          <div className="flex gap-2 items-center ml-2">
+          {/* Flags (desktop) */}
+          <div className="flex gap-2 items-center">
             <button onClick={() => handleLanguageChange("en")} title="English">
               <Image
                 src="/flags/us.png"
@@ -151,7 +139,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-3 px-4 mt-4 text-sm">
           <Link href="/projects">{t("projects")}</Link>
@@ -194,6 +182,28 @@ export default function Navbar() {
               </button>
             </>
           )}
+
+          {/* Flags (mobile) */}
+          <div className="flex gap-2 items-center mt-2">
+            <button onClick={() => handleLanguageChange("en")} title="English">
+              <Image
+                src="/flags/us.png"
+                alt="English"
+                width={28}
+                height={28}
+                className="rounded-sm border border-white"
+              />
+            </button>
+            <button onClick={() => handleLanguageChange("he")} title="עברית">
+              <Image
+                src="/flags/il.png"
+                alt="Hebrew"
+                width={28}
+                height={28}
+                className="rounded-sm border border-white"
+              />
+            </button>
+          </div>
         </div>
       )}
     </nav>
