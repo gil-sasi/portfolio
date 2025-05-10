@@ -1,37 +1,32 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connectToDatabase } from "../../lib/mongodb";
+import mongoose from "mongoose";
+import Message from "../../models/Message";
 
-type ContactData = {
-  name: string;
-  email: string;
-  message: string;
-};
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
-    return;
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { name, email, message } = req.body as ContactData;
+  const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    res.status(400).json({ message: "Missing fields" });
-    return;
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    const db = await connectToDatabase();
-    const collection = db.collection("contacts");
+    if (!mongoose.connections[0].readyState) {
+      await mongoose.connect(MONGODB_URI);
+    }
 
-    await collection.insertOne({ name, email, message, createdAt: new Date() });
-
-    res.status(200).json({ message: "Message received!" });
-  } catch (error) {
-    console.error("❌ Contact API Error:", error);
-    res.status(500).json({ message: "Something went wrong" });
+    await Message.create({ name, email, message });
+    return res.status(200).json({ message: "Message received" });
+  } catch (err) {
+    console.error("Message error:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }

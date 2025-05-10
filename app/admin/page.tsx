@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -24,6 +23,11 @@ interface User {
   }[];
 }
 
+interface ContactInfo {
+  email: string;
+  socials: { platform: string; url: string }[];
+}
+
 export default function AdminPage() {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -34,16 +38,26 @@ export default function AdminPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
 
+  // Contact Info State
+  const [contactEmail, setContactEmail] = useState("");
+  const [socials, setSocials] = useState<{ platform: string; url: string }[]>(
+    []
+  );
+  const [saveStatus, setSaveStatus] = useState("");
+
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("/api/admin/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const sortedUsers = res.data.users.sort((a: User, b: User) => {
+
+        const [userRes, contactRes] = await Promise.all([
+          axios.get("/api/admin/users", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("/api/contact-info"),
+        ]);
+
+        const sorted = userRes.data.users.sort((a: User, b: User) => {
           const aDate = a.lastLogin?.date
             ? new Date(a.lastLogin.date).getTime()
             : 0;
@@ -52,15 +66,18 @@ export default function AdminPage() {
             : 0;
           return bDate - aDate;
         });
-        setUsers(sortedUsers);
+
+        setUsers(sorted);
+        setContactEmail(contactRes.data.email || "");
+        setSocials(contactRes.data.socials || []);
       } catch (err) {
-        console.error("Failed to fetch users", err);
+        console.error("Failed to fetch data", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUsers();
+    fetchData();
   }, []);
 
   const handleBanToggle = async (userId: string, isBanned: boolean) => {
@@ -80,6 +97,39 @@ export default function AdminPage() {
       );
     } catch (err) {
       console.error("Failed to update user ban status", err);
+    }
+  };
+
+  const updateSocial = (
+    i: number,
+    field: "platform" | "url",
+    value: string
+  ) => {
+    setSocials((prev) => {
+      const updated = [...prev];
+      updated[i][field] = value;
+      return updated;
+    });
+  };
+
+  const removeSocial = (i: number) => {
+    setSocials((prev) => prev.filter((_, index) => index !== i));
+  };
+
+  const handleSaveContactInfo = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "/api/admin/contact-info",
+        { email: contactEmail, socials },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setSaveStatus(t("contactUpdated", "✅ Contact info updated!"));
+    } catch (err) {
+      console.error(err);
+      setSaveStatus(t("saveFailed", "Failed to save contact info"));
     }
   };
 
@@ -123,7 +173,7 @@ export default function AdminPage() {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search users..."
+          placeholder={t("search")}
           className="w-full max-w-md px-4 py-2 rounded bg-gray-800 border border-gray-600 text-sm"
         />
       </div>
@@ -234,6 +284,72 @@ export default function AdminPage() {
         >
           {t("next", "Next")}
         </button>
+      </div>
+
+      {/* Contact Info Editor */}
+      <div className="mt-10 border border-gray-700 bg-gray-800 p-6 rounded">
+        <h2 className="text-xl font-bold mb-4">
+          {t("contactInfo", "Public Contact Info")}
+        </h2>
+
+        <div className="mb-4">
+          <label className="block text-sm mb-1">
+            {t("publicEmail", "Public Email")}
+          </label>
+          <input
+            type="email"
+            className="w-full p-2 bg-gray-700 rounded border border-gray-600"
+            value={contactEmail}
+            onChange={(e) => setContactEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm mb-2">
+            {t("socialLinks", "Social Links")}
+          </label>
+          {socials.map((s, i) => (
+            <div key={i} className="flex gap-2 mb-2">
+              <input
+                type="text"
+                className="flex-1 p-2 bg-gray-700 rounded border border-gray-600"
+                placeholder={t("platform", "Platform")}
+                value={s.platform}
+                onChange={(e) => updateSocial(i, "platform", e.target.value)}
+              />
+              <input
+                type="text"
+                className="flex-1 p-2 bg-gray-700 rounded border border-gray-600"
+                placeholder={t("url", "URL")}
+                value={s.url}
+                onChange={(e) => updateSocial(i, "url", e.target.value)}
+              />
+              <button
+                className="text-red-400 hover:text-red-600"
+                onClick={() => removeSocial(i)}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <button
+            className="text-blue-400 hover:underline text-sm mt-2"
+            onClick={() => setSocials([...socials, { platform: "", url: "" }])}
+          >
+            + {t("addSocial", "Add Social")}
+          </button>
+        </div>
+
+        <button
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
+          onClick={handleSaveContactInfo}
+        >
+          {t("save", "Save")}
+        </button>
+
+        {saveStatus && (
+          <p className="mt-2 text-sm text-green-400">{saveStatus}</p>
+        )}
       </div>
     </div>
   );

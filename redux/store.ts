@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 
-// ✅ No need to manually add thunk
+//  No need to manually add thunk
 export const store = configureStore({
   reducer: {
     auth: authReducer,

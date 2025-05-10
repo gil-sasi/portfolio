@@ -62,6 +62,7 @@ const resources = {
       lastLogin: "Last Login",
       ban: "Ban",
       unban: "Unban",
+      search: "Search",
     },
   },
   he: {
@@ -124,6 +125,7 @@ const resources = {
       name: "שם",
       ban: "חסום",
       unban: "שחרר חסימה",
+      search: "חפש",
     },
   },
 };
