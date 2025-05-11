@@ -1,3 +1,4 @@
+import ContactInfo from "@/models/ContactInfo";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -63,6 +64,14 @@ const resources = {
       ban: "Ban",
       unban: "Unban",
       search: "Search",
+      addsocial: "Add Social",
+      social: "Social",
+      sociallinks: "Social Links",
+      socialLink: "Social Link",
+      publicEmail: "Public Email",
+      publicEmailDesc: "Public email that can be used by everyone",
+      ContactInfo: "Contact Info",
+      contactInfoUpdated: "Contact info updated successfully",
     },
   },
   he: {
@@ -126,6 +135,15 @@ const resources = {
       ban: "חסום",
       unban: "שחרר חסימה",
       search: "חפש",
+      addsocial: "הוסף רשת חברתית",
+      social: "רשת חברתית",
+      sociallinks: "קישורים לרשתות חברתיות",
+      socialLink: "קישור לרשת חברתית",
+      publicEmail: "אימייל ציבורי",
+      publicEmailDesc: "אימייל ציבורי שיכול לשמש את כולם",
+      ContactInfo: "פרטי קשר",
+      contactInfoUpdated: "פרטי הקשר עודכנו בהצלחה",
+      contactInfo: "פרטי קשר",
     },
   },
 };

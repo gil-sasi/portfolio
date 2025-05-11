@@ -23,9 +23,9 @@ interface User {
   }[];
 }
 
-interface ContactInfo {
-  email: string;
-  socials: { platform: string; url: string }[];
+interface Social {
+  platform: string;
+  url: string;
 }
 
 export default function AdminPage() {
@@ -33,23 +33,19 @@ export default function AdminPage() {
   const user = useSelector((state: RootState) => state.auth.user);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
 
-  // Contact Info State
   const [contactEmail, setContactEmail] = useState("");
-  const [socials, setSocials] = useState<{ platform: string; url: string }[]>(
-    []
-  );
+  const [socials, setSocials] = useState<Social[]>([]);
   const [saveStatus, setSaveStatus] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-
         const [userRes, contactRes] = await Promise.all([
           axios.get("/api/admin/users", {
             headers: { Authorization: `Bearer ${token}` },
@@ -58,7 +54,6 @@ export default function AdminPage() {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-
         const sorted = userRes.data.users.sort((a: User, b: User) => {
           const aDate = a.lastLogin?.date
             ? new Date(a.lastLogin.date).getTime()
@@ -78,8 +73,11 @@ export default function AdminPage() {
         setLoading(false);
       }
     };
-
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    setIsClient(true);
   }, []);
 
   const handleBanToggle = async (userId: string, isBanned: boolean) => {
@@ -89,9 +87,7 @@ export default function AdminPage() {
         "/api/admin/users",
         { userId, isBanned: !isBanned },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setUsers((prev) =>
@@ -103,19 +99,19 @@ export default function AdminPage() {
   };
 
   const updateSocial = (
-    i: number,
+    index: number,
     field: "platform" | "url",
     value: string
   ) => {
     setSocials((prev) => {
       const updated = [...prev];
-      updated[i][field] = value;
+      updated[index] = { ...updated[index], [field]: value };
       return updated;
     });
   };
 
-  const removeSocial = (i: number) => {
-    setSocials((prev) => prev.filter((_, index) => index !== i));
+  const removeSocial = (index: number) => {
+    setSocials((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSaveContactInfo = async () => {
@@ -147,6 +143,7 @@ export default function AdminPage() {
     startIndex,
     startIndex + usersPerPage
   );
+  if (!isClient) return null;
 
   if (!user || user.role !== "admin") {
     return (
@@ -171,6 +168,8 @@ export default function AdminPage() {
         {t("adminPanel", "Admin Panel - Users")}
       </h1>
 
+      {/* Users and Contact Info components stay together */}
+
       <div className="mb-4 flex justify-center">
         <input
           type="text"
@@ -190,115 +189,47 @@ export default function AdminPage() {
             <th className="p-2">{t("banned", "Banned")}</th>
             <th className="p-2">{t("lastLogin", "Last Login")}</th>
             <th className="p-2">{t("ip", "IP")}</th>
-            <th className="p-2">{t("logins", "Logins")}</th>
             <th className="p-2">{t("action", "Action")}</th>
           </tr>
         </thead>
         <tbody>
           {currentUsers.map((u) => (
-            <React.Fragment key={u._id}>
-              <tr className="border-t border-gray-600">
-                <td className="p-2">
-                  {u.firstName} {u.lastName}
-                </td>
-                <td className="p-2">{u.email}</td>
-                <td className="p-2">{u.role}</td>
-                <td className="p-2">{u.isBanned ? "✅" : "❌"}</td>
-                <td className="p-2">
-                  {u.lastLogin?.date
-                    ? new Date(u.lastLogin.date).toLocaleString("en-GB", {
-                        timeZone: "Asia/Jerusalem",
-                      })
-                    : "-"}
-                </td>
-                <td className="p-2">{u.lastLogin?.ip || "-"}</td>
-                <td className="p-2">
-                  <button
-                    onClick={() =>
-                      setExpandedUserId(expandedUserId === u._id ? null : u._id)
-                    }
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 text-xs rounded"
-                  >
-                    {expandedUserId === u._id
-                      ? t("hide", "Hide")
-                      : t("view", "View")}
-                  </button>
-                </td>
-                <td className="p-2">
-                  <button
-                    onClick={() => handleBanToggle(u._id, u.isBanned)}
-                    className={`${
-                      u.isBanned
-                        ? "bg-green-600 hover:bg-green-700"
-                        : "bg-red-600 hover:bg-red-700"
-                    } text-white px-2 py-1 text-xs rounded`}
-                  >
-                    {u.isBanned ? t("unban") : t("ban")}
-                  </button>
-                </td>
-              </tr>
-              {expandedUserId === u._id && (
-                <tr>
-                  <td colSpan={8} className="bg-gray-900 text-xs p-4">
-                    <p className="font-semibold mb-2">
-                      {t("Login History", "היסטוריית כניסות")}:
-                    </p>
-                    {u.loginHistory?.length ? (
-                      <ul className="space-y-1">
-                        {u.loginHistory.map((entry, i) => (
-                          <li key={i} className="text-gray-300">
-                            🕓{" "}
-                            {new Date(entry.date).toLocaleString("en-GB", {
-                              timeZone: "Asia/Jerusalem",
-                            })}{" "}
-                            — 🧭 {entry.ip}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-gray-400 italic">
-                        {t("No login history.", "אין היסטוריית כניסות.")}{" "}
-                      </p>
-                    )}
-                  </td>
-                </tr>
-              )}
-            </React.Fragment>
+            <tr key={u._id}>
+              <td className="p-2">
+                {u.firstName} {u.lastName}
+              </td>
+              <td className="p-2">{u.email}</td>
+              <td className="p-2">{u.role}</td>
+              <td className="p-2">{u.isBanned ? "✅" : "❌"}</td>
+              <td className="p-2">
+                {u.lastLogin?.date
+                  ? new Date(u.lastLogin.date).toLocaleString("en-GB", {
+                      timeZone: "Asia/Jerusalem",
+                    })
+                  : "-"}
+              </td>
+              <td className="p-2">{u.lastLogin?.ip || "-"}</td>
+              <td className="p-2">
+                <button
+                  onClick={() => handleBanToggle(u._id, u.isBanned)}
+                  className={`${
+                    u.isBanned
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-red-600 hover:bg-red-700"
+                  } text-white px-2 py-1 text-xs rounded`}
+                >
+                  {u.isBanned ? t("unban") : t("ban")}
+                </button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
 
-      <div className="flex justify-between mt-6 text-sm">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 px-4 py-2 rounded"
-        >
-          {t("prev", "Previous")}
-        </button>
-        <span>
-          {t("page")} {currentPage} {t("of")}{" "}
-          {Math.ceil(filteredUsers.length / usersPerPage)}
-        </span>
-        <button
-          disabled={startIndex + usersPerPage >= filteredUsers.length}
-          onClick={() => setCurrentPage((p) => p + 1)}
-          className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 px-4 py-2 rounded"
-        >
-          {t("next", "Next")}
-        </button>
-      </div>
-
-      {/* Contact Info Editor */}
       <div className="mt-10 border border-gray-700 bg-gray-800 p-6 rounded">
-        <h2 className="text-xl font-bold mb-4">
-          {t("contactInfo", "Public Contact Info")}
-        </h2>
-
+        <h2 className="text-xl font-bold mb-4">{t("contactInfo")}</h2>
         <div className="mb-4">
-          <label className="block text-sm mb-1">
-            {t("publicEmail", "Public Email")}
-          </label>
+          <label className="block text-sm mb-1">{t("publicEmail")}</label>
           <input
             type="email"
             className="w-full p-2 bg-gray-700 rounded border border-gray-600"
@@ -306,11 +237,8 @@ export default function AdminPage() {
             onChange={(e) => setContactEmail(e.target.value)}
           />
         </div>
-
         <div className="mb-4">
-          <label className="block text-sm mb-2">
-            {t("socialLinks", "Social Links")}
-          </label>
+          <label className="block text-sm mb-2">{t("socialLinks")}</label>
           {socials.map((s, i) => (
             <div key={i} className="flex gap-2 mb-2">
               <input
@@ -339,17 +267,15 @@ export default function AdminPage() {
             className="text-blue-400 hover:underline text-sm mt-2"
             onClick={() => setSocials([...socials, { platform: "", url: "" }])}
           >
-            + {t("addSocial", "Add Social")}
+            + {t("addsocial")}
           </button>
         </div>
-
         <button
           className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
           onClick={handleSaveContactInfo}
         >
           {t("save", "Save")}
         </button>
-
         {saveStatus && (
           <p className="mt-2 text-sm text-green-400">{saveStatus}</p>
         )}

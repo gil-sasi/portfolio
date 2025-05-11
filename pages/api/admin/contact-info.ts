@@ -6,6 +6,11 @@ import jwt from "jsonwebtoken";
 const MONGODB_URI = process.env.MONGODB_URI!;
 const JWT_SECRET = process.env.JWT_SECRET!;
 
+interface DecodedToken {
+  role: string;
+  [key: string]: any; // optional: if there are more props
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -29,9 +34,9 @@ export default async function handler(
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-  let decoded: any;
+  let decoded: DecodedToken;
   try {
-    decoded = jwt.verify(token, JWT_SECRET);
+    decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
   } catch {
     return res.status(403).json({ message: "Invalid token" });
   }

@@ -1,5 +1,5 @@
 "use client";
-
+import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -10,6 +10,12 @@ interface ContactInfo {
   email: string;
   socials: { platform: string; url: string }[];
 }
+
+const platformIcons: Record<string, React.ReactElement> = {
+  github: <FaGithub className="w-5 h-5" />,
+  linkedin: <FaLinkedin className="w-5 h-5" />,
+  whatsapp: <FaWhatsapp className="w-5 h-5" />,
+};
 
 export default function ContactPage() {
   const { t } = useTranslation();
@@ -108,24 +114,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-400 hover:underline"
               >
-                {s.platform === "LinkedIn" && (
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 24h4V7h-4v17zM8.5 7H4.5v17h4V15c0-1.93 2.57-2.09 2.57 0v9h4V13.5c0-4.11-4.5-3.96-5.07-1.94V7z" />
-                  </svg>
-                )}
-                {s.platform === "GitHub" && (
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 .5C5.373.5 0 5.873 0 12.5c0 5.292 3.438 9.787 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.042-3.338.726-4.042-1.61-4.042-1.61-.547-1.387-1.336-1.756-1.336-1.756-1.092-.746.082-.73.082-.73 1.21.084 1.846 1.243 1.846 1.243 1.072 1.836 2.81 1.306 3.495.997.108-.777.42-1.307.76-1.607-2.665-.303-5.466-1.334-5.466-5.932 0-1.31.47-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.44 11.44 0 013.003-.404c1.02.005 2.048.138 3.003.404 2.29-1.553 3.297-1.23 3.297-1.23.654 1.653.242 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.805 5.625-5.476 5.92.43.37.813 1.096.813 2.21 0 1.595-.015 2.88-.015 3.27 0 .32.217.694.825.576C20.565 22.285 24 17.79 24 12.5 24 5.873 18.627.5 12 .5z" />
-                  </svg>
-                )}
+                {platformIcons[s.platform.toLowerCase()] || null}
                 {s.platform}
               </a>
             ))}
