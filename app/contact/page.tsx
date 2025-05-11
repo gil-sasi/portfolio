@@ -12,7 +12,6 @@ interface ContactInfo {
 }
 
 const platformIcons: Record<string, React.ReactElement> = {
-  // Icons for social platforms
   github: <FaGithub className="w-5 h-5" />,
   linkedin: <FaLinkedin className="w-5 h-5" />,
   whatsapp: <FaWhatsapp className="w-5 h-5" />,
@@ -66,11 +65,8 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
-      <h1 className="text-3xl font-bold text-center">
-        {t("contactMe", "צור קשר")}
-      </h1>
+      <h1 className="text-3xl font-bold text-center">{t("contactMe")}</h1>
 
-      {/* Contact Info Section */}
       {contactInfo && (
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-600 shadow-md text-center">
           <h2 className="text-xl font-semibold mb-4">{t("contactInfo")}</h2>
@@ -103,25 +99,35 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* Social Links */}
+          {/* Socials */}
           <div className="flex justify-center gap-6">
-            {contactInfo.socials.map((s, i) => (
-              <a
-                key={i}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-blue-400 hover:underline"
-              >
-                {platformIcons[s.platform.toLowerCase()] || null}
-                {s.platform}
-              </a>
-            ))}
+            {contactInfo.socials.map((s, i) => {
+              const platformKey = s.platform.toLowerCase();
+              const icon = platformIcons[platformKey] ?? null;
+
+              // Optional: format WhatsApp link
+              const isWhatsApp = platformKey === "whatsapp";
+              const href = isWhatsApp
+                ? `https://wa.me/${s.url.replace(/\D/g, "")}`
+                : s.url;
+
+              return (
+                <a
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-blue-400 hover:underline"
+                >
+                  {icon}
+                  {s.platform}
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Message Form */}
       <form
         onSubmit={handleSubmit}
         className="space-y-4 bg-gray-800 p-6 rounded border border-gray-600"
@@ -137,7 +143,7 @@ export default function ContactPage() {
             />
             <input
               type="email"
-              placeholder={t("yourEmail", "Your Email")}
+              placeholder={t("yourEmail")}
               className="w-full p-3 rounded bg-gray-700"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -145,7 +151,7 @@ export default function ContactPage() {
           </>
         )}
         <textarea
-          placeholder={t("yourMessage", "Your Message")}
+          placeholder={t("yourMessage")}
           className="w-full p-3 rounded bg-gray-700 h-32 resize-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

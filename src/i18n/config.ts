@@ -77,6 +77,8 @@ const resources = {
       message: "Message",
       sendMessage: "Send Message",
       send: "Send",
+      contactMe: "Contact Me",
+      messageSent: "✅ Message sent successfully!",
     },
   },
   he: {
@@ -154,6 +156,8 @@ const resources = {
       message: "הודעה",
       sendMessage: "שלח הודעה",
       send: "שלח",
+      contactMe: "צור קשר",
+      messageSent: "✅ ההודעה נשלחה בהצלחה!",
     },
   },
 };
