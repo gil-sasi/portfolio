@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_SECRET = process.env.JWT_SECRET || "my_very_secret_key_12345";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -14,9 +14,15 @@ export function middleware(req: NextRequest) {
     }
 
     try {
-      verify(token, JWT_SECRET); // ✅ use verify directly
+      const decoded = verify(token, JWT_SECRET) as any;
+
+      if (decoded.role !== "admin") {
+        return NextResponse.redirect(new URL("/login", req.url));
+      }
+
       return NextResponse.next();
     } catch (err) {
+      console.warn("Invalid token in middleware:", err);
       return NextResponse.redirect(new URL("/login", req.url));
     }
   }
