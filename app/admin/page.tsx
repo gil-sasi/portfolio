@@ -54,7 +54,9 @@ export default function AdminPage() {
           axios.get("/api/admin/users", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("/api/contact-info"),
+          axios.get("/api/admin/contact-info", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
 
         const sorted = userRes.data.users.sort((a: User, b: User) => {
@@ -156,9 +158,10 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <p className="text-white text-center mt-10">
-        {t("loading", "Loading users...")}
-      </p>
+      <div className="flex flex-col items-center justify-center mt-20">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-white text-sm">{t("loading")}</p>
+      </div>
     );
   }
 
