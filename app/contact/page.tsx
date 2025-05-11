@@ -12,6 +12,7 @@ interface ContactInfo {
 }
 
 const platformIcons: Record<string, React.ReactElement> = {
+  // Icons for social platforms
   github: <FaGithub className="w-5 h-5" />,
   linkedin: <FaLinkedin className="w-5 h-5" />,
   whatsapp: <FaWhatsapp className="w-5 h-5" />,
@@ -72,9 +73,7 @@ export default function ContactPage() {
       {/* Contact Info Section */}
       {contactInfo && (
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-600 shadow-md text-center">
-          <h2 className="text-xl font-semibold mb-4">
-            {t("contactInfo", "Contact Information")}
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">{t("contactInfo")}</h2>
 
           {/* Email */}
           <div className="flex items-center justify-center gap-2 mb-3">
@@ -131,7 +130,7 @@ export default function ContactPage() {
           <>
             <input
               type="text"
-              placeholder={t("yourName", "Your Name")}
+              placeholder={t("yourName")}
               className="w-full p-3 rounded bg-gray-700"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -155,7 +154,7 @@ export default function ContactPage() {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
         >
-          {t("sendMessage", "Send Message")}
+          {t("sendMessage")}
         </button>
         {status && (
           <p className="text-sm text-center mt-2 text-green-400">{status}</p>
