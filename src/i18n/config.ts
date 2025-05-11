@@ -1,4 +1,3 @@
-import ContactInfo from "@/models/ContactInfo";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -141,7 +140,6 @@ const resources = {
       socialLink: "קישור לרשת חברתית",
       publicEmail: "אימייל ציבורי",
       publicEmailDesc: "אימייל ציבורי שיכול לשמש את כולם",
-      ContactInfo: "פרטי קשר",
       contactInfoUpdated: "פרטי הקשר עודכנו בהצלחה",
       contactInfo: "פרטי קשר",
     },

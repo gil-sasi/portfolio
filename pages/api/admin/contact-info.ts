@@ -8,7 +8,6 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 
 interface DecodedToken {
   role: string;
-  [key: string]: any; // optional: if there are more props
 }
 
 export default async function handler(

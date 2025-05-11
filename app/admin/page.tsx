@@ -35,7 +35,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const usersPerPage = 10;
 
   const [contactEmail, setContactEmail] = useState("");
