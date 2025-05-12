@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CheckCircle, Trash2, MailOpen } from "lucide-react";
+import { Trash2, MailOpen } from "lucide-react";
 
 type Message = {
   _id: string;
