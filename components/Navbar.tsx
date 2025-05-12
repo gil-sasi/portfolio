@@ -81,8 +81,16 @@ export default function Navbar() {
   // Fetch data when admin is logged in
   useEffect(() => {
     if (!user || user.role !== "admin") return;
+
     fetchUnreadCount();
     fetchRecentMessages();
+
+    const interval = setInterval(() => {
+      fetchUnreadCount();
+      fetchRecentMessages();
+    }, 5000); // every 5 seconds
+
+    return () => clearInterval(interval);
   }, [user, fetchUnreadCount, fetchRecentMessages]);
 
   // Listen for broadcasted unread count updates

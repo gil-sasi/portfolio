@@ -33,6 +33,12 @@ export default function AdminMessagesPage() {
 
   useEffect(() => {
     fetchMessages();
+
+    const interval = setInterval(() => {
+      fetchMessages();
+    }, 5000); // every 5 seconds
+
+    return () => clearInterval(interval);
   }, [fetchMessages]);
 
   const markAsRead = async (id: string) => {
