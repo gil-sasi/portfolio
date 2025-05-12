@@ -21,8 +21,8 @@ export default async function handler(
     try {
       const messages = await Message.find().sort({ createdAt: -1 });
       res.status(200).json(messages);
-    } catch (_err) {
-      console.log(_err);
+    } catch (err) {
+      console.error("Token verification failed:", err);
       res.status(500).json({ message: "Error fetching messages" });
     }
   } else {

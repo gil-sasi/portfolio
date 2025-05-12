@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
+import type { NextApiRequest } from "next";
 
 const JWT_SECRET = process.env.JWT_SECRET || "my_very_secret_key_12345";
 
-export function verifyAdminToken(req: any) {
+export function verifyAdminToken(req: NextApiRequest) {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
     return null;

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,25 +25,27 @@ export default function Navbar() {
   const user = useSelector((state: RootState) => state.auth.user);
   const { t, i18n } = useTranslation();
 
+  // State
   const [hasMounted, setHasMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [recentMessages, setRecentMessages] = useState<Message[]>([]);
 
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Detect current page (used for hiding buttons)
   const onLoginPage = pathname === "/login";
   const onSignupPage = pathname === "/signup";
 
+  // Fetch unread count
   const fetchUnreadCount = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
       const res = await fetch("/api/messages/unread-count", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("Failed to fetch count");
       const data = await res.json();
       setUnreadCount(data.count || 0);
     } catch (err) {
@@ -51,16 +53,14 @@ export default function Navbar() {
     }
   }, []);
 
+  // Fetch recent messages
   const fetchRecentMessages = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
       const res = await fetch("/api/messages/recent", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("Failed to fetch recent messages");
       const data = await res.json();
       setRecentMessages(data);
     } catch (err) {
@@ -68,6 +68,7 @@ export default function Navbar() {
     }
   }, []);
 
+  // Handle token/user setup and language
   useEffect(() => {
     setHasMounted(true);
     dispatch(setUserFromToken());
@@ -77,17 +78,45 @@ export default function Navbar() {
     }
   }, [dispatch, i18n]);
 
+  // Fetch data when admin is logged in
   useEffect(() => {
     if (!user || user.role !== "admin") return;
     fetchUnreadCount();
     fetchRecentMessages();
   }, [user, fetchUnreadCount, fetchRecentMessages]);
 
+  // Listen for broadcasted unread count updates
+  useEffect(() => {
+    const handler = (e: CustomEvent<number>) => setUnreadCount(e.detail);
+    const listener = (e: Event) => {
+      if (e instanceof CustomEvent) handler(e);
+    };
+    window.addEventListener("unreadCountUpdate", listener);
+    return () => window.removeEventListener("unreadCountUpdate", listener);
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
+
+  // Logout handler
   const handleLogout = () => {
     dispatch(logout());
     window.location.href = "/";
   };
 
+  // Language toggle
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng).catch(console.error);
     localStorage.setItem("i18nextLng", lng);
@@ -98,10 +127,12 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
           Gil Sasi
         </Link>
 
+        {/* Admin Notification Bell */}
         {user?.role === "admin" && (
           <div className="relative">
             <button
@@ -123,19 +154,25 @@ export default function Navbar() {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white text-black shadow-xl rounded-lg z-50 p-4 border border-gray-300">
-                <p className="font-semibold mb-2 text-sm border-b pb-1">
+              <div
+                ref={dropdownRef}
+                className="absolute right-0 mt-2 w-80 text-white bg-gray-900/90 backdrop-blur-lg ring-1 ring-white/10 rounded-xl shadow-xl z-50 p-4"
+              >
+                <p className="font-semibold mb-2 text-sm border-b border-white/10 pb-1">
                   {t("newmessages")}
                 </p>
                 {recentMessages.length === 0 ? (
-                  <p className="text-sm text-gray-500">{t("nonewmessages")}</p>
+                  <p className="text-sm text-gray-400">{t("nonewmessages")}</p>
                 ) : (
                   recentMessages.map((msg) => (
-                    <div key={msg._id} className="border-b pb-2 mb-2">
+                    <div
+                      key={msg._id}
+                      className="border-b border-white/10 pb-2 mb-2"
+                    >
                       <p className="text-sm font-semibold">
                         {msg.name || "Guest"} &lt;{msg.email}&gt;
                       </p>
-                      <p className="text-xs text-gray-700 italic truncate max-w-[220px]">
+                      <p className="text-xs text-gray-300 italic truncate max-w-[220px]">
                         {msg.message}
                       </p>
                       <p className="text-[10px] text-right text-gray-400">
@@ -146,7 +183,7 @@ export default function Navbar() {
                 )}
                 <Link
                   href="/admin/messages"
-                  className="block text-blue-600 text-sm text-right mt-2 hover:underline"
+                  className="block text-blue-400 text-sm text-right mt-2 hover:underline"
                 >
                   {t("viewallmessages")}
                 </Link>
@@ -155,7 +192,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Hamburger (mobile only) */}
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -165,7 +202,6 @@ export default function Navbar() {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
           >
             <path
               strokeLinecap="round"
@@ -176,7 +212,7 @@ export default function Navbar() {
           </svg>
         </button>
 
-        {/* Desktop menu */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/projects">{t("projects")}</Link>
           <Link href="/contact">{t("contact")}</Link>
@@ -219,7 +255,7 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Flags */}
+          {/* Language Switcher */}
           <div className="flex gap-2 items-center">
             <button onClick={() => handleLanguageChange("en")} title="English">
               <Image
@@ -243,7 +279,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu Items */}
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-3 px-4 mt-4 text-sm">
           <Link href="/projects">{t("projects")}</Link>
@@ -287,7 +323,7 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Flags (mobile) */}
+          {/* Language Flags (Mobile) */}
           <div className="flex gap-2 items-center mt-2">
             <button onClick={() => handleLanguageChange("en")} title="English">
               <Image

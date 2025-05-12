@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Message = {
   _id: string;
@@ -15,10 +14,8 @@ export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
+    const token = localStorage.getItem("token");
     if (!token) return;
 
     try {
@@ -32,9 +29,14 @@ export default function AdminMessagesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
   const markAsRead = async (id: string) => {
+    const token = localStorage.getItem("token");
     if (!token) return;
 
     try {
@@ -46,9 +48,22 @@ export default function AdminMessagesPage() {
         },
         body: JSON.stringify({ id }),
       });
+
       if (res.ok) {
+        //  Update local state
         setMessages((prev) =>
           prev.map((msg) => (msg._id === id ? { ...msg, read: true } : msg))
+        );
+
+        //  Fetch new unread count and dispatch event
+        const countRes = await fetch("/api/messages/unread-count", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const countData = await countRes.json();
+        window.dispatchEvent(
+          new CustomEvent("unreadCountUpdate", {
+            detail: countData.count || 0,
+          })
         );
       } else {
         const text = await res.text();
@@ -60,6 +75,7 @@ export default function AdminMessagesPage() {
   };
 
   const deleteMessage = async (id: string) => {
+    const token = localStorage.getItem("token");
     if (!token) return;
 
     try {
@@ -74,6 +90,17 @@ export default function AdminMessagesPage() {
 
       if (res.ok) {
         setMessages((prev) => prev.filter((msg) => msg._id !== id));
+
+        //  Also fetch and dispatch new unread count
+        const countRes = await fetch("/api/messages/unread-count", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const countData = await countRes.json();
+        window.dispatchEvent(
+          new CustomEvent("unreadCountUpdate", {
+            detail: countData.count || 0,
+          })
+        );
       } else {
         const text = await res.text();
         console.error("Failed to delete message:", text);
@@ -82,10 +109,6 @@ export default function AdminMessagesPage() {
       console.error("Delete message error", err);
     }
   };
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
 
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -112,7 +135,6 @@ export default function AdminMessagesPage() {
                 </span>
               </div>
               <p className="mt-2 text-gray-800">{msg.content}</p>
-
               <div className="mt-3 flex gap-3 text-sm">
                 {!msg.read && (
                   <button

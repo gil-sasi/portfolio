@@ -18,6 +18,7 @@ export default async function handler(
     const count = await Message.countDocuments({ read: false });
     return res.status(200).json({ count });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: "Failed to count unread messages" });
   }
 }
