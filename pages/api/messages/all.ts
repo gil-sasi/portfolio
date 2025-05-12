@@ -29,8 +29,8 @@ export default async function handler(
     }
 
     return res.status(405).json({ message: "Method not allowed" });
-  } catch (err) {
-    console.error("Token verification failed:", err);
+  } catch (_err) {
+    console.error("Token verification failed:", _err);
     return res.status(401).json({ message: "Invalid token" });
   }
 }
