@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../components/Spinner";
 
-// Define the Skill type
 type Skill = {
   _id: string;
   name: string;
@@ -17,23 +16,6 @@ export default function SkillsPage() {
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  // Fetch skills data from the backend
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await fetch("/api/skills");
-        const data = await res.json();
-        setSkills(data);
-      } catch (err) {
-        console.error("Failed to fetch skills", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSkills();
-  }, []);
-
   useEffect(() => {
     const lang = localStorage.getItem("i18nextLng");
     if (lang && lang !== i18n.language) {
@@ -42,16 +24,32 @@ export default function SkillsPage() {
     setMounted(true);
   }, [i18n]);
 
+  useEffect(() => {
+    if (!mounted) return;
+    const fetchSkills = async () => {
+      try {
+        const res = await fetch("/api/skills");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setSkills(data);
+      } catch (err) {
+        console.error("Failed to fetch skills:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, [mounted]);
+
   if (!mounted) return <Spinner />;
 
-  // Group skills by category
   const groupedSkills = skills.reduce<Record<string, Skill[]>>((acc, skill) => {
     if (!acc[skill.category]) acc[skill.category] = [];
     acc[skill.category].push(skill);
     return acc;
   }, {});
 
-  // Emojis for each category
   const categoryEmojis: Record<string, string> = {
     frontend: "🖥️",
     backend: "🧠",
@@ -62,13 +60,11 @@ export default function SkillsPage() {
     other: "🌀",
   };
 
-  // Function to convert category to title case (e.g., "frontend" to "Frontend")
-  const toTitleCase = (str: string) => {
-    return str
+  const toTitleCase = (str: string) =>
+    str
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-  };
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10 text-white">
@@ -84,12 +80,9 @@ export default function SkillsPage() {
       ) : (
         Object.entries(groupedSkills).map(([category, items]) => (
           <div key={category} className="mb-8">
-            {/* Category Header with Emoji and Title Case */}
             <h2 className="text-2xl font-semibold mb-4">
               {categoryEmojis[category] || "🔹"} {toTitleCase(category)}
             </h2>
-
-            {/* Display Skills */}
             <div className="flex flex-wrap gap-3">
               {items.map((skill) => (
                 <span
