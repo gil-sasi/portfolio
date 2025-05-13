@@ -35,8 +35,12 @@ export default function LinkShortenerPage() {
       if (!res.ok) throw new Error(data.error || "Something went wrong");
 
       setShortCode(`${window.location.origin}/api/redirect/${data.shortCode}`);
-    } catch (err: any) {
-      setError(err.message || t("shortenerror"));
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || t("shortenerror"));
+      } else {
+        setError(t("shortenerror"));
+      }
     } finally {
       setLoading(false);
     }
