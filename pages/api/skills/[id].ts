@@ -17,6 +17,7 @@ export default async function handler(
       }
       res.status(200).json({ message: "Skill deleted successfully" });
     } catch (error) {
+      console.error("Skill deletion error:", error);
       res.status(500).json({ error: "Failed to delete skill" });
     }
   } else {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
 
   if (!mounted) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
@@ -48,15 +48,19 @@ export default function ResetPasswordPage() {
       setStatus(message);
       setError("");
 
-      // Optional: Redirect to login page after success
       setTimeout(() => {
         router.push("/login");
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Reset error:", err);
 
-      if (axios.isAxiosError(err) && err.response?.data?.message) {
-        setError(err.response.data.message);
+      if (axios.isAxiosError(err)) {
+        const serverMessage = (err.response?.data as { message?: string })
+          ?.message;
+        setError(
+          serverMessage ||
+            t("passwordResetError", "Something went wrong. Please try again.")
+        );
       } else {
         setError(
           t("passwordResetError", "Something went wrong. Please try again.")
