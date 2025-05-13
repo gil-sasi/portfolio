@@ -116,6 +116,9 @@ const resources = {
       resetemailerror: "Reset Email Error",
       forgotpassword: "Forgot Password",
       enteremail: "Enter Your Email",
+      passwordResetSuccess: "Password Reset Sucess",
+      passwordResetError: "Password Reset Error",
+      emailnotfound: "Email not find in our records",
     },
   },
   he: {
@@ -232,6 +235,9 @@ const resources = {
       resetemailerror: " איפוס שגיאת אימייל",
       forgotpassword: "שכחת סיסמא",
       enteremail: "הזן את המייל שלך",
+      passwordResetSuccess: "בוצעה איפוס סיסמא בהצלחה",
+      passwordResetError: "שגיאה בשינוי סיסמא",
+      emailnotfound: "מייל לא נמצא במאגר שלנו",
     },
   },
 };

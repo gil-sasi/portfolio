@@ -25,20 +25,22 @@ export default function ForgotPasswordPage() {
 
     try {
       const response = await axios.post("/api/auth/forgot-password", { email });
-      setMessage(t("resetemailsent", response.data.message) as string);
+      setMessage(response.data.message);
       setError("");
 
-      // Redirect after a short delay to give user feedback
+      // Add redirect after delay
       setTimeout(() => {
         router.push("/reset-password");
-      }, 1500);
-    } catch (err) {
-      setError(t("resetemailerror"));
+      }, 1500); // 1.5 seconds delay
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again later.");
+      }
       setMessage("");
-      console.error(err);
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950 text-white p-4">
       <div className="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-lg border border-gray-800">

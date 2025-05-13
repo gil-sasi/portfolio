@@ -24,7 +24,7 @@ export default function HomePage() {
         <Trans
           i18nKey="heroTitle"
           values={{ name: "Gil" }}
-          components={[<span className="text-blue-500" />]}
+          components={[<span key="name" className="text-blue-500" />]}
         />
       </h1>
 

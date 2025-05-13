@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 
   const { resetCode, newPassword } = req.body;
@@ -22,31 +22,43 @@ export default async function handler(
   }
 
   try {
-    if (!mongoose.connections[0].readyState) {
+    // Connect to MongoDB if not already connected
+    if (mongoose.connection.readyState < 1) {
       await mongoose.connect(MONGODB_URI);
     }
 
-    // Find the user by reset code
+    // Find user by reset code
     const user = await User.findOne({ resetCode });
     if (!user) {
-      return res.status(400).json({ message: "Invalid reset code" });
+      return res.status(400).json({ message: "Invalid or unknown reset code" });
     }
 
-    // Check if reset code has expired
-    if (user.resetCodeExpires < new Date()) {
+    // Validate code expiration
+    const now = new Date();
+    if (!user.resetCodeExpires || user.resetCodeExpires < now) {
       return res.status(400).json({ message: "Reset code has expired" });
     }
 
-    // Hash the new password and update the user's password
+    // Prevent weak passwords (optional)
+    if (newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    // Hash and save the new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    user.resetCode = undefined; // Clear the reset code after password change
-    user.resetCodeExpires = undefined; // Clear expiration
+    user.resetCode = undefined;
+    user.resetCodeExpires = undefined;
+
     await user.save();
 
-    res.status(200).json({ message: "Password reset successful" });
+    return res.status(200).json({ message: "Password reset successful" });
   } catch (error) {
-    console.error("Error handling password reset:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error in reset-password API:", error);
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 }

@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
-import crypto from "crypto"; // To generate the reset code
+import crypto from "crypto";
 import User from "../../../models/User";
 import nodemailer from "nodemailer";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 const EMAIL_USER = process.env.EMAIL_USER!;
 const EMAIL_PASS = process.env.EMAIL_PASS!;
-const RESET_CODE_EXPIRATION = 3600 * 1000; // 1 hour
+const RESET_CODE_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,32 +19,35 @@ export default async function handler(
 
   const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ message: "A valid email is required" });
   }
 
   try {
-    if (!mongoose.connections[0].readyState) {
+    // Ensure DB is connected
+    if (mongoose.connection.readyState < 1) {
       await mongoose.connect(MONGODB_URI);
     }
 
     const user = await User.findOne({ email });
+
+    // Show error if email not found
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ message: "Email not found in our Database" });
     }
 
-    // Generate a random 6-digit reset code
-    const resetCode = crypto.randomBytes(3).toString("hex"); // 6-digit code (3 bytes)
-
-    // Set expiration time for the reset code (1 hour from now)
+    //  Generate a 6-digit hex reset code
+    const resetCode = crypto.randomBytes(3).toString("hex");
     const resetCodeExpires = new Date(Date.now() + RESET_CODE_EXPIRATION);
 
-    // Store the reset code and expiration time in the user document
+    //  Save to DB
     user.resetCode = resetCode;
     user.resetCodeExpires = resetCodeExpires;
     await user.save();
 
-    // Send reset code to user's email
+    //  Send email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -53,23 +56,16 @@ export default async function handler(
       },
     });
 
-    const mailOptions = {
-      from: EMAIL_USER,
+    await transporter.sendMail({
+      from: `"My Portfolio" <${EMAIL_USER}>`,
       to: email,
-      subject: "Password Reset Request",
-      text: `Your password reset code is: ${resetCode}. It will expire in 1 hour.`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(500).json({ message: "Error sending email", error });
-      }
-      res
-        .status(200)
-        .json({ message: "Password reset email sent successfully" });
+      subject: "Password Reset Code",
+      text: `Your password reset code is: ${resetCode}\n\nIt will expire in 1 hour.`,
     });
-  } catch (err) {
-    console.error("Forgot password error:", err);
-    res.status(500).json({ message: "Internal server error" });
+
+    return res.status(200).json({ message: "Reset code sent to your email" });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }

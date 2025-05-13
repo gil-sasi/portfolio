@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../../src/i18n/config";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordPage() {
   const [resetCode, setResetCode] = useState("");
@@ -13,11 +13,13 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const lang = localStorage.getItem("i18nextLng") || "en";
+    i18n.changeLanguage(lang).finally(() => setMounted(true));
+  }, [i18n]);
 
   if (!mounted) return null;
 
@@ -30,18 +32,38 @@ export default function ResetPasswordPage() {
       return;
     }
 
+    if (newPassword.length < 6) {
+      setError(t("passwordTooShort", "Password must be at least 6 characters"));
+      setStatus("");
+      return;
+    }
+
     try {
       const response = await axios.post("/api/auth/reset-password", {
-        resetCode,
+        resetCode: resetCode.trim().toLowerCase(),
         newPassword,
       });
 
-      setStatus(t("passwordResetSuccess", "Password reset successful"));
+      const message = response.data?.message || t("passwordResetSuccess");
+      setStatus(message);
       setError("");
-    } catch (err) {
-      setError(t("passwordResetError", "Error resetting password"));
+
+      // Optional: Redirect to login page after success
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (err: any) {
+      console.error("Reset error:", err);
+
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError(
+          t("passwordResetError", "Something went wrong. Please try again.")
+        );
+      }
+
       setStatus("");
-      console.error(err);
     }
   };
 
@@ -62,7 +84,7 @@ export default function ResetPasswordPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder={t("enterresetcode")}
+            placeholder={t("enterresetcode", "Enter your reset code")}
             value={resetCode}
             onChange={(e) => setResetCode(e.target.value)}
             required
@@ -70,7 +92,7 @@ export default function ResetPasswordPage() {
           />
           <input
             type="password"
-            placeholder={t("newpassword")}
+            placeholder={t("newpassword", "New Password")}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
@@ -78,7 +100,7 @@ export default function ResetPasswordPage() {
           />
           <input
             type="password"
-            placeholder={t("confirmnewpassword")}
+            placeholder={t("confirmnewpassword", "Confirm New Password")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
