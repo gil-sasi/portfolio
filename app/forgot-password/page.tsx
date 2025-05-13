@@ -32,11 +32,13 @@ export default function ForgotPasswordPage() {
       setTimeout(() => {
         router.push("/reset-password");
       }, 1500); // 1.5 seconds delay
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError("Something went wrong. Please try again later.");
+        setError(
+          t("resetemailerror", "Something went wrong. Please try again.")
+        );
       }
       setMessage("");
     }

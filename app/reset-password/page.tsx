@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 
