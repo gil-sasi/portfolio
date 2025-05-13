@@ -21,7 +21,13 @@ export default function ProjectsPage() {
           </div>
         </Link>
 
-        {/* Add more project links below as you build more */}
+        {/* Image-to-Text OCR Project */}
+        <Link href="/projects/image-to-text">
+          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
+            <h2 className="text-xl font-semibold mb-2">🖼️ {t("ocrtitle")}</h2>
+            <p className="text-sm text-gray-400">{t("ocrdesc")}</p>
+          </div>
+        </Link>
       </div>
     </div>
   );
