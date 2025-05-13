@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
-
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "../../src/i18n/config";
 import { useTranslation } from "react-i18next";
@@ -12,13 +11,22 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("passwordMismatch", "Passwords do not match"));
+      setStatus("");
       return;
     }
 
@@ -27,50 +35,63 @@ export default function ResetPasswordPage() {
         resetCode,
         newPassword,
       });
-      setStatus("Password reset successful");
-    } catch (error) {
-      setError("Error resetting password");
-      console.error(error);
+
+      setStatus(t("passwordResetSuccess", "Password reset successful"));
+      setError("");
+    } catch (err) {
+      setError(t("passwordResetError", "Error resetting password"));
+      setStatus("");
+      console.error(err);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-gray-800 text-white rounded-lg">
-      <h2 className="text-2xl mb-4 text-center">{t("resetpassword")}</h2>
-      {status && <p className="text-green-400">{status}</p>}
-      {error && <p className="text-red-400">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter reset code"
-          value={resetCode}
-          onChange={(e) => setResetCode(e.target.value)}
-          required
-          className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded"
-        />
-        <input
-          type="password"
-          placeholder="New password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-          className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded"
-        />
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded"
-        />
-        <button
-          type="submit"
-          className="w-full p-2 bg-blue-600 hover:bg-blue-700 rounded text-white"
-        >
+    <div className="flex items-center justify-center min-h-screen bg-gray-950 text-white p-4">
+      <div className="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-lg border border-gray-800">
+        <h2 className="text-3xl font-bold text-center mb-6">
           {t("resetpassword")}
-        </button>
-      </form>
+        </h2>
+
+        {status && (
+          <p className="text-center text-green-400 text-sm mb-4">{status}</p>
+        )}
+        {error && (
+          <p className="text-center text-red-400 text-sm mb-4">{error}</p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder={t("enterresetcode")}
+            value={resetCode}
+            onChange={(e) => setResetCode(e.target.value)}
+            required
+            className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <input
+            type="password"
+            placeholder={t("newpassword")}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <input
+            type="password"
+            placeholder={t("confirmnewpassword")}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition-colors duration-200 text-white font-semibold py-3 rounded-xl"
+          >
+            {t("resetpassword")}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
