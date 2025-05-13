@@ -19,11 +19,13 @@ export default function SkillsPage() {
   useEffect(() => {
     const lang = localStorage.getItem("i18nextLng");
     if (lang && lang !== i18n.language) {
-      i18n.changeLanguage(lang);
+      i18n.changeLanguage(lang).finally(() => {
+        setMounted(true); // Wait for language to load
+      });
+    } else {
+      setMounted(true);
     }
-    setMounted(true);
   }, [i18n]);
-
   useEffect(() => {
     if (!mounted) return;
     const fetchSkills = async () => {
