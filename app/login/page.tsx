@@ -25,6 +25,10 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [mounted, setMounted] = useState(false);
 
+  const handleForgotPassword = () => {
+    router.push("/forgot-password");
+  };
+
   useEffect(() => {
     const lang = localStorage.getItem("i18nextLng") || "en";
     i18n.changeLanguage(lang).finally(() => setMounted(true));
@@ -100,6 +104,16 @@ export default function LoginPage() {
         >
           {t("login")}
         </button>
+
+        {/* Forgot Password Link */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={handleForgotPassword}
+            className="text-blue-400 hover:text-blue-600"
+          >
+            {t("forgotPassword")}
+          </button>
+        </div>
 
         {message && (
           <p className="text-center text-sm mt-2 text-red-400">{message}</p>

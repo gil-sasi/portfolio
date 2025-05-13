@@ -137,7 +137,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
-          Gil Sasi
+          {t("myname")}
         </Link>
 
         {/* Admin Notification Bell */}
@@ -222,6 +222,7 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
+          <Link href="/skills">{t("skills")}</Link>
           <Link href="/projects">{t("projects")}</Link>
           <Link href="/contact">{t("contact")}</Link>
           <Link href="/about">{t("about")}</Link>
@@ -290,6 +291,7 @@ export default function Navbar() {
       {/* Mobile Menu Items */}
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-3 px-4 mt-4 text-sm">
+          <Link href="/skills">{t("skills")}</Link>
           <Link href="/projects">{t("projects")}</Link>
           <Link href="/contact">{t("contact")}</Link>
           <Link href="/about">{t("about")}</Link>
@@ -297,7 +299,6 @@ export default function Navbar() {
             <Link href="/admin">{t("adminPanel")}</Link>
           )}
           <Link href="/">{t("home")}</Link>
-
           {!user && !onLoginPage && (
             <Link
               href="/login"
@@ -330,7 +331,6 @@ export default function Navbar() {
               </button>
             </>
           )}
-
           {/* Language Flags (Mobile) */}
           <div className="flex gap-2 items-center mt-2">
             <button onClick={() => handleLanguageChange("en")} title="English">

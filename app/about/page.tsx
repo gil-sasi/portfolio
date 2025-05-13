@@ -1,5 +1,5 @@
 "use client";
-
+import Spinner from "../../components/Spinner";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -53,7 +53,14 @@ export default function AboutPage() {
     }
   };
 
-  if (loading) return <p className="text-white p-4 text-center">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="text-center">
+        <p className="text-white p-4">{t("Loading...", "טוען...")}</p>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -103,7 +110,7 @@ export default function AboutPage() {
 
       {saved && (
         <p className="text-green-400 text-center mt-4 text-sm">
-          ✅ About updated!
+          ✅ (t{"aboutupdated"!})
         </p>
       )}
     </div>

@@ -15,6 +15,8 @@ export interface IUser extends Document {
     date: Date;
     ip: string;
   }[];
+  resetCode?: string;
+  resetCodeExpires?: Date;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -37,6 +39,8 @@ const UserSchema = new Schema<IUser>({
     ],
     default: [],
   },
+  resetCode: { type: String, default: null }, // Store reset code
+  resetCodeExpires: { type: Date, default: null }, // Store reset code expiration time
 });
 
 export default models.User || mongoose.model<IUser>("User", UserSchema);

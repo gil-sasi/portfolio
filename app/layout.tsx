@@ -17,18 +17,17 @@ export const metadata: Metadata = {
   title: "My Portfolio",
   description: "Create and manage your portfolio with ease.",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/icon/icon.png",
+    apple: "/icon/icon.png",
   },
   openGraph: {
     title: "My Portfolio",
-    description: "Create and manage your portfolio with ease.",
+    description: "This is Gil Sasi portfolio enjoy your stay",
     url: "https://my-portfolio.com",
     siteName: "My Portfolio",
     images: [
       {
-        url: "/og-image.png",
+        url: "/icon/icon.png",
         width: 1200,
         height: 630,
         alt: "My Portfolio",
