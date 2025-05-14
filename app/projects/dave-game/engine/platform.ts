@@ -11,7 +11,7 @@ export class PlatformManager {
     this.platforms = newPlatforms;
   }
 
-  handleCollisions(player: Player) {
+  handleCollisions(player: Player) { //handle them
     let onPlatform = false;
     for (const plat of this.platforms) {
       const isColliding =
