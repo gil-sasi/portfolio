@@ -1,17 +1,27 @@
 import { Player } from "./player";
 
 export class PlatformManager {
-  private platforms: { x: number; y: number; width: number; height: number }[] = [];
+  private platforms: { x: number; y: number; width: number; height: number }[] =
+    [];
+  private image: HTMLImageElement;
 
-  constructor(initialPlatforms: { x: number; y: number; width: number; height: number }[]) {
+  constructor(
+    initialPlatforms: { x: number; y: number; width: number; height: number }[]
+  ) {
     this.platforms = initialPlatforms;
+
+    // Load your custom platform image
+    this.image = new Image();
+    this.image.src = "/assets/images/platform.png";
   }
 
-  setPlatforms(newPlatforms: { x: number; y: number; width: number; height: number }[]) {
+  setPlatforms(
+    newPlatforms: { x: number; y: number; width: number; height: number }[]
+  ) {
     this.platforms = newPlatforms;
   }
 
-  handleCollisions(player: Player) { //handle them
+  handleCollisions(player: Player) {
     let onPlatform = false;
     for (const plat of this.platforms) {
       const isColliding =
@@ -21,7 +31,6 @@ export class PlatformManager {
         player.y + player.height > plat.y;
 
       if (isColliding) {
-        // From top
         if (player.y + player.height - player.velocityY <= plat.y) {
           player.y = plat.y - player.height;
           player.velocityY = 0;
@@ -41,11 +50,38 @@ export class PlatformManager {
       player.isJumping = true;
     }
   }
-
   draw(ctx: CanvasRenderingContext2D, cameraX: number) {
-    ctx.fillStyle = "#888";
+    const tileWidth = this.image.width;
+    const tileHeight = this.image.height;
+
     for (const plat of this.platforms) {
-      ctx.fillRect(plat.x - cameraX, plat.y, plat.width, plat.height);
+      const scaleY = plat.height / tileHeight;
+      const scaledTileWidth = tileWidth * scaleY;
+
+      // Calculate how many full tiles fit in the platform
+      const tilesNeeded = Math.ceil(plat.width / scaledTileWidth);
+
+      for (let i = 0; i < tilesNeeded; i++) {
+        let drawWidth = scaledTileWidth;
+
+        // Adjust final tile width to not overflow platform edge
+        const remaining = plat.width - i * scaledTileWidth;
+        if (remaining < scaledTileWidth) {
+          drawWidth = remaining;
+        }
+
+        ctx.drawImage(
+          this.image,
+          0,
+          0,
+          tileWidth * (drawWidth / scaledTileWidth),
+          tileHeight, // Crop source if needed
+          plat.x - cameraX + i * scaledTileWidth,
+          plat.y,
+          drawWidth,
+          plat.height
+        );
+      }
     }
   }
 }

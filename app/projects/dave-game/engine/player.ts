@@ -1,10 +1,10 @@
 export class Player {
   x: number;
   y: number;
-  width: number = 100;
-  height: number = 100;
+  width: number = 120;
+  height: number = 120;
   velocityY: number = 0;
-  gravity: number = 1.2;
+  gravity: number = 0.8;
   isJumping: boolean = false;
   facingLeft: boolean = false;
   currentFrame: number = 0;
@@ -23,12 +23,11 @@ export class Player {
   }
 
   reset() {
-    this.x = 100;
-    this.y = 100;
+    this.x = 0; // somewhere near the start of the platform
+    this.y = 600; // y = platform.y - player.height
     this.velocityY = 0;
     this.isJumping = false;
   }
-
   move(keys: Record<string, boolean>) {
     if (keys.ArrowLeft) this.x -= 5;
     if (keys.ArrowRight) this.x += 5;
@@ -55,7 +54,12 @@ export class Player {
     this.isJumping = true;
   }
 
-  checkCollision(rect: { x: number; y: number; width: number; height: number }): boolean {
+  checkCollision(rect: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }): boolean {
     return (
       this.x < rect.x + rect.width &&
       this.x + this.width > rect.x &&
@@ -69,7 +73,13 @@ export class Player {
     if (this.facingLeft) {
       ctx.save();
       ctx.scale(-1, 1);
-      ctx.drawImage(sprite, -(this.x - cameraX) - this.width, this.y, this.width, this.height);
+      ctx.drawImage(
+        sprite,
+        -(this.x - cameraX) - this.width,
+        this.y,
+        this.width,
+        this.height
+      );
       ctx.restore();
     } else {
       ctx.drawImage(sprite, this.x - cameraX, this.y, this.width, this.height);

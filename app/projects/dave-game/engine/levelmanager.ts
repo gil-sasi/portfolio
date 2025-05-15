@@ -13,4 +13,9 @@ export class LevelManager {
       this.currentLevelIndex = 0; // restart game
     }
   }
+
+  cloneLevelDiamonds() {
+    const level = this.getCurrentLevel();
+    return level.diamonds.map((d) => ({ ...d }));
+  }
 }
