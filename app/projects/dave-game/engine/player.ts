@@ -23,11 +23,12 @@ export class Player {
   }
 
   reset() {
-    this.x = 0; // somewhere near the start of the platform
-    this.y = 600; // y = platform.y - player.height
+    this.x = 0;
+    this.y = 600;
     this.velocityY = 0;
     this.isJumping = false;
   }
+
   move(keys: Record<string, boolean>) {
     if (keys.ArrowLeft) this.x -= 5;
     if (keys.ArrowRight) this.x += 5;
@@ -54,12 +55,7 @@ export class Player {
     this.isJumping = true;
   }
 
-  checkCollision(rect: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  }): boolean {
+  checkCollision(rect: { x: number; y: number; width: number; height: number }): boolean {
     return (
       this.x < rect.x + rect.width &&
       this.x + this.width > rect.x &&
@@ -68,7 +64,18 @@ export class Player {
     );
   }
 
-  draw(ctx: CanvasRenderingContext2D, cameraX: number) {
+  flyMove(keys: Record<string, boolean>) {
+    const speed = 20;
+    if (keys["ArrowLeft"]) this.x -= speed;
+    if (keys["ArrowRight"]) this.x += speed;
+    if (keys["ArrowUp"]) this.y -= speed;
+    if (keys["ArrowDown"]) this.y += speed;
+
+    this.velocityY = 0;
+    this.isJumping = false;
+  }
+
+  draw(ctx: CanvasRenderingContext2D, cameraX: number, cameraY: number) {
     const sprite = this.spriteFrames[this.currentFrame];
     if (this.facingLeft) {
       ctx.save();
@@ -76,13 +83,19 @@ export class Player {
       ctx.drawImage(
         sprite,
         -(this.x - cameraX) - this.width,
-        this.y,
+        this.y - cameraY,
         this.width,
         this.height
       );
       ctx.restore();
     } else {
-      ctx.drawImage(sprite, this.x - cameraX, this.y, this.width, this.height);
+      ctx.drawImage(
+        sprite,
+        this.x - cameraX,
+        this.y - cameraY,
+        this.width,
+        this.height
+      );
     }
   }
 }
