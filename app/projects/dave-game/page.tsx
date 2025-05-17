@@ -20,7 +20,7 @@ export default function DaveGamePage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Game init + attach mobile controls after DOM
+  // Game init
   useEffect(() => {
     setMounted(true);
     if (canvasRef.current) {
@@ -33,42 +33,56 @@ export default function DaveGamePage() {
     }
   }, []);
 
-  // Fullscreen change listener
+  // Fullscreen change listener + resize canvas
   useEffect(() => {
     const onChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const fs = !!document.fullscreenElement;
+      setIsFullscreen(fs);
+
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      if (fs) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      } else {
+        canvas.width = 1500;
+        canvas.height = 900;
+      }
     };
+
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
-  // Auto fullscreen on mobile after first user tap
+  // Auto fullscreen on mobile after tap
   useEffect(() => {
     if (!isMobile) return;
 
-    const handler = () => {
-      const wrapper = document.getElementById("canvas-wrapper");
-      if (
-        wrapper &&
-        !document.fullscreenElement &&
-        wrapper.requestFullscreen
-      ) {
+    const wrapper = document.getElementById("canvas-wrapper");
+    const tryFullscreen = () => {
+      if (wrapper && !document.fullscreenElement && wrapper.requestFullscreen) {
         wrapper.requestFullscreen().catch(() => {});
+      } else {
+        // iOS fallback: resize canvas manually
+        const canvas = canvasRef.current;
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
       }
-      document.removeEventListener("touchend", handler);
-      document.removeEventListener("click", handler);
     };
 
-    document.addEventListener("touchend", handler, { once: true });
-    document.addEventListener("click", handler, { once: true });
+    document.addEventListener("touchend", tryFullscreen, { once: true });
+    document.addEventListener("click", tryFullscreen, { once: true });
 
     return () => {
-      document.removeEventListener("touchend", handler);
-      document.removeEventListener("click", handler);
+      document.removeEventListener("touchend", tryFullscreen);
+      document.removeEventListener("click", tryFullscreen);
     };
   }, [isMobile]);
 
-  // Fullscreen toggle
+  // Manual fullscreen toggle
   const toggleFullscreen = () => {
     const wrapper = document.getElementById("canvas-wrapper");
     if (!document.fullscreenElement && wrapper?.requestFullscreen) {
@@ -82,19 +96,36 @@ export default function DaveGamePage() {
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4 relative">
       {mounted && <h1 className="text-2xl mb-4">{t("gamename")}</h1>}
 
-      {/* Canvas & Fullscreen Wrapper */}
-      <div id="canvas-wrapper" className="relative inline-block">
+      {/*  Fullscreen-compatible wrapper */}
+     <div
+  id="canvas-wrapper"
+  className="relative inline-block"
+  style={{
+    width: isFullscreen || isMobile ? "100vw" : "auto",
+    height: isFullscreen || isMobile ? "100vh" : "auto",
+    overflow: "hidden",
+    touchAction: "none",
+  }}
+>
+
+      
         <canvas
           ref={canvasRef}
           width={1500}
           height={900}
-          style={{
-            border: "2px solid white",
-            imageRendering: "pixelated",
-            display: "block",
-          }}
+         style={{
+  border: "2px solid white",
+  imageRendering: "pixelated",
+  display: "block",
+  width: isFullscreen || isMobile ? "100vw" : "1500px",
+  height: isFullscreen || isMobile ? "100vh" : "900px",
+  maxWidth: "100%",
+  maxHeight: "100%",
+}}
+
         />
 
+        {/*  Fullscreen toggle button */}
         <button
           onClick={toggleFullscreen}
           className="absolute bottom-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition z-10"
@@ -108,7 +139,7 @@ export default function DaveGamePage() {
         </button>
       </div>
 
-      {/* Touch Controls for Mobile */}
+      {/*  Touch controls */}
       {isMobile && (
         <div className="fixed bottom-4 left-0 right-0 flex justify-center flex-wrap gap-5 z-50">
           <div className="flex flex-col items-center gap-1">
