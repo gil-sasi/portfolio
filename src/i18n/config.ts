@@ -144,6 +144,8 @@ const resources = {
       korean: "Korean",
       chinese: "Chinese",
       spanish: "Spanish",
+      gamedescription: "2D Game created by me",
+      gamename: "Dangerous Gil",
     },
   },
   he: {
@@ -287,6 +289,8 @@ const resources = {
       korean: "קוריאנית",
       chinese: "סינית",
       spanish: "ספרדית",
+      gamedescription: "משחק דו מימד מבית יוצר שלי",
+      gamename: "גיל המסוכן",
     },
   },
 };

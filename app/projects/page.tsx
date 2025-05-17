@@ -28,6 +28,14 @@ export default function ProjectsPage() {
             <p className="text-sm text-gray-400">{t("ocrdesc")}</p>
           </div>
         </Link>
+
+        {/* Dangerous Gil Game Project */}
+        <Link href="/projects/dave">
+          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
+            <h2 className="text-xl font-semibold mb-2">🎮{t("gamename")}</h2>
+            <p className="text-sm text-gray-400">{t("gamedescription")}</p>
+          </div>
+        </Link>
       </div>
     </div>
   );

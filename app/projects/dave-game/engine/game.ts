@@ -12,6 +12,7 @@ import { setupControls } from "./controls";
 import { createMonsters } from "./initMonsters";
 import { drawGunPickups } from "../render/pickups";
 import { handleMonsters } from "./handleMonsters";
+import { enableMobileControls } from "./mobileControls";
 import {
     drawTrophy,
     drawDoor,
@@ -99,7 +100,7 @@ export class Game {
                 r: Math.random() * 1.5 + 0.5,
             });
         }
-
+enableMobileControls(this.keys);
         this.moonImage.src = "/assets/images/moon.png";
     }
 
