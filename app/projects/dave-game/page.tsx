@@ -20,7 +20,6 @@ export default function DaveGamePage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Game init
   useEffect(() => {
     setMounted(true);
     if (canvasRef.current) {
@@ -33,7 +32,6 @@ export default function DaveGamePage() {
     }
   }, []);
 
-  // Fullscreen change listener + resize canvas
   useEffect(() => {
     const onChange = () => {
       const fs = !!document.fullscreenElement;
@@ -55,7 +53,6 @@ export default function DaveGamePage() {
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
-  // Auto fullscreen on mobile after tap
   useEffect(() => {
     if (!isMobile) return;
 
@@ -64,7 +61,6 @@ export default function DaveGamePage() {
       if (wrapper && !document.fullscreenElement && wrapper.requestFullscreen) {
         wrapper.requestFullscreen().catch(() => {});
       } else {
-        // iOS fallback: resize canvas manually
         const canvas = canvasRef.current;
         if (canvas) {
           canvas.width = window.innerWidth;
@@ -82,7 +78,6 @@ export default function DaveGamePage() {
     };
   }, [isMobile]);
 
-  // Manual fullscreen toggle
   const toggleFullscreen = () => {
     const wrapper = document.getElementById("canvas-wrapper");
     if (!document.fullscreenElement && wrapper?.requestFullscreen) {
@@ -96,50 +91,41 @@ export default function DaveGamePage() {
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4 relative">
       {mounted && <h1 className="text-2xl mb-4">{t("gamename")}</h1>}
 
-      {/*  Fullscreen-compatible wrapper */}
-     <div
-  id="canvas-wrapper"
-  className="relative inline-block"
-  style={{
-    width: isFullscreen || isMobile ? "100vw" : "auto",
-    height: isFullscreen || isMobile ? "100vh" : "auto",
-    overflow: "hidden",
-    touchAction: "none",
-  }}
->
-
-      
+      <div
+        id="canvas-wrapper"
+        className="relative inline-block"
+        style={{
+          width: isFullscreen || isMobile ? "100vw" : "auto",
+          height: isFullscreen || isMobile ? "100dvh" : "auto", // ✅ dynamic viewport height
+          overflow: "hidden",
+          touchAction: "none",
+        }}
+      >
         <canvas
           ref={canvasRef}
           width={1500}
           height={900}
-         style={{
-  border: "2px solid white",
-  imageRendering: "pixelated",
-  display: "block",
-  width: isFullscreen || isMobile ? "100vw" : "1500px",
-  height: isFullscreen || isMobile ? "100vh" : "900px",
-  maxWidth: "100%",
-  maxHeight: "100%",
-}}
-
+          style={{
+            border: "2px solid white",
+            imageRendering: "pixelated",
+            display: "block",
+            width: isFullscreen || isMobile ? "100vw" : "1500px",
+            height: isFullscreen || isMobile ? "100dvh" : "900px", // ✅ dynamic height
+            maxWidth: "100%",
+            maxHeight: "100%",
+          }}
         />
 
-        {/*  Fullscreen toggle button */}
+        {/* Fullscreen Button - moved higher */}
         <button
           onClick={toggleFullscreen}
-          className="absolute bottom-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition z-10"
+          className="absolute bottom-20 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition z-10"
           aria-label="Toggle Fullscreen"
         >
-          {isFullscreen ? (
-            <MdFullscreenExit size={24} />
-          ) : (
-            <MdFullscreen size={24} />
-          )}
+          {isFullscreen ? <MdFullscreenExit size={24} /> : <MdFullscreen size={24} />}
         </button>
       </div>
 
-      {/*  Touch controls */}
       {isMobile && (
         <div className="fixed bottom-4 left-0 right-0 flex justify-center flex-wrap gap-5 z-50">
           <div className="flex flex-col items-center gap-1">
