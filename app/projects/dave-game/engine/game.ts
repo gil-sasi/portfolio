@@ -7,7 +7,19 @@ import { Dragon } from "../monster/Dragon";
 import { Bullet } from "../projectiles/Bullet";
 import { Explosion } from "../effects/Explosion";
 import { HazardManager } from "./hazardManager";
+import { createPlayerAtSpawn } from "./resetLevel";
+import { handleShooting } from "./handleShooting";
 import { setupControls } from "./controls";
+import { createMonsters } from "./initMonsters";
+import { drawGunPickups } from "../render/pickups";
+import {
+  drawTrophy,
+  drawDoor,
+  drawDiamonds,
+  drawHUD,
+  drawDebugGrid,
+} from "../render/gameRender";
+import { drawSky } from "../render/sky";
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -48,7 +60,6 @@ export class Game {
   }[] = [];
   private waterFrames: HTMLImageElement[] = [];
   private hazardManager: HazardManager = new HazardManager();
-
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     const ctx = canvas.getContext("2d");
@@ -61,7 +72,7 @@ export class Game {
       this.trophyFrames.push(img);
     }
 
-    this.doorImage.src = "/assets/images/door.png";
+    this.doorImage.src = "/assets/images/door/door.png";
 
     this.pistolIcon.src = "/assets/images/guns/pistol.png";
     this.m16Icon.src = "/assets/images/guns/m16.png";
@@ -76,7 +87,7 @@ export class Game {
     this.platforms = new PlatformManager(
       this.levelManager.getCurrentLevel().platforms
     );
-    this.initMonsters();
+    this.monsters = createMonsters(this.levelManager.getCurrentLevel());
 
     const spawnX = 0;
     const playerHeight = 120;
@@ -85,15 +96,11 @@ export class Game {
       (p) => spawnX >= p.x && spawnX <= p.x + p.width
     );
     const spawnY = spawnPlatform ? spawnPlatform.y - playerHeight : 100;
-    this.player = new Player(spawnX, spawnY);
+    this.player = createPlayerAtSpawn(this.levelManager);
 
     this.destroyControls = setupControls(
       this.keys,
-      () => {
-        if (!this.player.isJumping) {
-          this.player.jump();
-        }
-      },
+      () => this.player.jump(),
       () => {
         this.showDebug = !this.showDebug;
         this.flyMode = !this.flyMode;
@@ -122,44 +129,15 @@ export class Game {
     this.destroyControls();
   }
 
-  drawSky() {
-    // Dark sky
-    this.ctx.fillStyle = "#050510";
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    const starOffsetX = this.cameraX * 0.2;
-    const moonOffsetX = this.cameraX * 0.05;
-
-    // ✨ Stars
-    for (const star of this.stars) {
-      const screenX = star.x - starOffsetX;
-      if (screenX >= 0 && screenX <= this.canvas.width) {
-        this.ctx.beginPath();
-        this.ctx.arc(screenX, star.y, star.r, 0, Math.PI * 2);
-        this.ctx.fillStyle = "white";
-        this.ctx.shadowColor = "white";
-        this.ctx.shadowBlur = 8 + Math.random() * 6;
-        this.ctx.fill();
-        this.ctx.closePath();
-      }
-    }
-
-    this.ctx.shadowBlur = 0;
-
-    // 🌙 High-res moon image with glow
-    const moonX = this.canvas.width - 180 - moonOffsetX;
-    const moonY = 100 - this.cameraY * 0.05;
-    const moonSize = 80;
-
-    this.ctx.save();
-    this.ctx.shadowColor = "#fdf6e3";
-    this.ctx.shadowBlur = 60;
-    this.ctx.drawImage(this.moonImage, moonX, moonY, moonSize, moonSize);
-    this.ctx.restore();
-  }
-
   loop = () => {
-    this.drawSky(); // draw background sky first
+    drawSky(
+      this.ctx,
+      this.canvas,
+      this.cameraX,
+      this.cameraY,
+      this.stars,
+      this.moonImage
+    );
     this.animationFrameId = requestAnimationFrame(this.loop);
     const level = this.levelManager.getCurrentLevel();
     this.platforms.setPlatforms(level.platforms);
@@ -185,29 +163,19 @@ export class Game {
 
       this.platforms.handleCollisions(this.player);
     }
-
     //guns logic displaying in the game
     const { pistolPickup, m16Pickup } = level;
 
-    if (pistolPickup && !this.player.hasGun) {
-      this.ctx.drawImage(
-        this.pistolIcon,
-        pistolPickup.x - this.cameraX,
-        pistolPickup.y - this.cameraY,
-        pistolPickup.width,
-        pistolPickup.height
-      );
-    }
-
-    if (m16Pickup && !this.player.hasGun) {
-      this.ctx.drawImage(
-        this.m16Icon,
-        m16Pickup.x - this.cameraX,
-        m16Pickup.y - this.cameraY,
-        m16Pickup.width,
-        m16Pickup.height
-      );
-    }
+    drawGunPickups(
+      this.ctx,
+      this.player,
+      pistolPickup,
+      m16Pickup,
+      this.pistolIcon,
+      this.m16Icon,
+      this.cameraX,
+      this.cameraY
+    );
 
     this.player.bullets.forEach((b) => b.move());
     this.player.bullets.forEach((b) => b.draw(this.ctx, this.cameraX));
@@ -247,8 +215,8 @@ export class Game {
         (p) => spawnX >= p.x && spawnX <= p.x + p.width
       );
       const spawnY = spawnPlatform ? spawnPlatform.y - playerHeight : 100;
-      this.player = new Player(spawnX, spawnY);
-      this.initMonsters();
+      this.player = createPlayerAtSpawn(this.levelManager);
+      this.monsters = createMonsters(this.levelManager.getCurrentLevel());
       nextLevel.diamonds = this.levelManager.cloneLevelDiamonds
         ? this.levelManager.cloneLevelDiamonds()
         : [...nextLevel.diamonds];
@@ -294,13 +262,37 @@ export class Game {
         this.player.height
       )
     ) {
-      this.resetLevel();
+      this.score = 0;
+      this.hasTrophy = false;
+      this.trophyMessageShown = true;
+      this.player = createPlayerAtSpawn(this.levelManager);
+      this.platforms.setPlatforms(
+        this.levelManager.getCurrentLevel().platforms
+      );
     }
-    this.drawDiamonds(level.diamonds || []);
-    this.drawTrophy(level.trophy);
-    this.drawDoor(level.door);
-    this.player.draw(this.ctx, this.cameraX, this.cameraY);
+    const updated = drawTrophy(
+      this.ctx,
+      level.trophy,
+      this.cameraX,
+      this.cameraY,
+      this.trophyFrames,
+      this.trophyFrame,
+      this.hasTrophy,
+      this.trophyMessageShown,
+      this.trophyFrameCounter
+    );
+    this.trophyFrame = updated.trophyFrame;
+    this.trophyFrameCounter = updated.trophyFrameCounter;
 
+    drawDoor(this.ctx, level.door, this.cameraX, this.cameraY, this.doorImage);
+    drawDiamonds(
+      this.ctx,
+      level.diamonds || [],
+      this.diamondImages,
+      this.cameraX,
+      this.cameraY
+    );
+    this.player.draw(this.ctx, this.cameraX, this.cameraY);
     this.monsters.forEach((m) => {
       m.move(this.player.x);
       m.draw(this.ctx, this.cameraX);
@@ -318,37 +310,19 @@ export class Game {
         console.log("🔥 Fireballs:", m.fireballs);
         // check collision if not in debug/fly mode
         if (!this.flyMode && m.checkFireballHit(this.player)) {
-          this.resetLevel();
+          this.score = 0;
+          this.hasTrophy = false;
+          this.trophyMessageShown = true;
+          this.player = createPlayerAtSpawn(this.levelManager);
+          this.platforms.setPlatforms(
+            this.levelManager.getCurrentLevel().platforms
+          );
         }
       }
     });
     // Player bullets
-    this.player.bullets.forEach((b) => b.move());
+    handleShooting(this.player, this.keys, level.width);
     this.player.bullets.forEach((b) => b.draw(this.ctx, this.cameraX));
-    this.player.bullets = this.player.bullets.filter(
-      (b) => b.x >= 0 && b.x <= level.width
-    );
-
-    if (this.keys["Control"] && this.player.hasGun) {
-      const canShoot = this.player.bulletCooldown === 0;
-
-      if (canShoot) {
-        const dir = this.player.facingLeft ? -1 : 1;
-        const bullet = new Bullet(
-          this.player.x + this.player.width / 2,
-          this.player.y + this.player.height / 2,
-          dir
-        );
-        this.player.bullets.push(bullet);
-
-        // Set cooldown based on weapon
-        if (this.player.currentWeapon === "m16") {
-          this.player.bulletCooldown = 25;
-        } else if (this.player.currentWeapon === "pistol") {
-          this.player.bulletCooldown = 100;
-        }
-      }
-    }
 
     // Update & draw explosions in loop
     this.explosions.forEach((e) => e.update());
@@ -356,153 +330,32 @@ export class Game {
     this.explosions = this.explosions.filter((e) => !e.done);
 
     if (this.player.bulletCooldown > 0) this.player.bulletCooldown--;
-    this.drawHUD();
-  }; //end of loop
 
-  drawTrophy(trophy: { x: number; y: number; width: number; height: number }) {
-    if (!this.hasTrophy) {
-      this.trophyFrameCounter++;
-      if (this.trophyFrameCounter % 10 === 0) {
-        this.trophyFrame = (this.trophyFrame + 1) % this.trophyFrames.length;
-      }
-      const frame = this.trophyFrames[this.trophyFrame];
-      this.ctx.drawImage(
-        frame,
-        trophy.x - this.cameraX,
-        trophy.y - this.cameraY,
-        trophy.width,
-        trophy.height
-      );
-    }
-  }
-
-  drawDoor(door: { x: number; y: number; width: number; height: number }) {
-    this.ctx.drawImage(
-      this.doorImage,
-      door.x - this.cameraX,
-      door.y - this.cameraY,
-      door.width,
-      door.height
+    drawHUD(
+      this.ctx,
+      this.player,
+      this.hasTrophy,
+      this.trophyMessageShown,
+      this.trophyFrames,
+      this.score,
+      this.cameraX,
+      this.cameraY,
+      this.showDebug,
+      this.levelManager.getCurrentLevel().width,
+      this.canvas.width,
+      this.canvas.height
     );
-  }
 
-  drawDiamonds(
-    diamonds: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-      type: string;
-    }[]
-  ) {
-    diamonds.forEach((diamond) => {
-      const img = this.diamondImages[diamond.type];
-      if (img) {
-        this.ctx.drawImage(
-          img,
-          diamond.x - this.cameraX,
-          diamond.y - this.cameraY,
-          diamond.width,
-          diamond.height
-        );
-      }
-    });
-  }
-
-  resetLevel() {
-    this.score = 0;
-    this.hasTrophy = false;
-    this.trophyMessageShown = true;
-
-    const level = this.levelManager.getCurrentLevel();
-
-    const spawnX = 0;
-    const playerHeight = 120;
-    const platforms = level.platforms;
-    const spawnPlatform = platforms.find(
-      (p) => spawnX >= p.x && spawnX <= p.x + p.width
-    );
-    const spawnY = spawnPlatform ? spawnPlatform.y - playerHeight : 100;
-    this.player = new Player(spawnX, spawnY);
-
-    level.diamonds = this.levelManager.cloneLevelDiamonds
-      ? this.levelManager.cloneLevelDiamonds()
-      : [...level.diamonds];
-  }
-
-  private initMonsters() {
-    const level = this.levelManager.getCurrentLevel();
-
-    // Load dragon frames
-    const dragonFrames: HTMLImageElement[] = [];
-    for (let i = 1; i <= 10; i++) {
-      const img = new Image();
-      img.src = `/assets/images/monsters/dragon/${i}.png`;
-      dragonFrames.push(img);
-    }
-
-    (level.monsters || []).forEach((m) => {
-      if (m.type === "dragon") {
-        const dragon = new Dragon(
-          m.x,
-          m.y,
-          dragonFrames,
-          m.width,
-          m.height,
-          m.radiusX ?? 50,
-          m.radiusY ?? 50,
-          m.angleSpeed ?? 0.05,
-          m.fireball ?? { width: 32, height: 32 }
-        );
-        this.monsters.push(dragon);
-        console.log("Dragon added:", dragon);
-      }
-    });
-  }
-
-  drawHUD() {
-    this.ctx.fillStyle = "white";
-    this.ctx.font = "24px Arial";
-
-    if (!this.hasTrophy && this.trophyMessageShown) {
-      this.ctx.fillText("Go get the trophy!", 20, 40);
-    } else if (this.hasTrophy) {
-      this.ctx.fillText("Now go to the door!", 20, 40);
-      this.ctx.drawImage(this.trophyFrames[0], 230, 18, 20, 20);
-    }
-
-    this.ctx.fillText(`Score: ${this.score}`, 600, 40);
-    if (this.player.hasGun) {
-      const icon =
-        this.player.currentWeapon === "m16" ? this.m16Icon : this.pistolIcon;
-      this.ctx.drawImage(icon, this.canvas.width - 60, 10, 50, 50);
-      this.ctx.fillStyle = "white";
-      this.ctx.font = "14px Arial";
-      this.ctx.fillText("Weapon", this.canvas.width - 70, 75);
-    }
     if (this.showDebug) {
-      this.ctx.fillText(
-        `Player: ${Math.round(this.player.width)}w x ${Math.round(
-          this.player.height
-        )}h`,
-        20,
-        70
-      );
-      this.ctx.fillText(
-        `Pos: (${Math.round(this.player.x)}, ${Math.round(this.player.y)})`,
-        20,
-        100
-      );
-      this.ctx.fillText(
-        `VelocityY: ${Math.round(this.player.velocityY)}`,
-        20,
-        130
+      drawDebugGrid(
+        this.ctx,
+        this.cameraX,
+        this.cameraY,
+        this.canvas.width,
+        this.canvas.height,
+        this.levelManager.getCurrentLevel().width
       );
 
-      const levelWidth = this.levelManager.getCurrentLevel().width;
-      this.ctx.fillText(`Level Width: ${levelWidth}px`, 20, 160);
-
-      // Platform bounding boxes
       this.ctx.strokeStyle = "white";
       this.platforms.getPlatforms().forEach((p) => {
         this.ctx.strokeRect(
@@ -512,50 +365,6 @@ export class Game {
           p.height
         );
       });
-
-      // 📐 Grid and labels
-      this.ctx.font = "12px Arial";
-
-      // X grid
-      for (let x = 0; x < levelWidth; x += 50) {
-        const screenX = x - this.cameraX;
-        if (screenX >= 0 && screenX <= this.canvas.width) {
-          this.ctx.beginPath();
-          this.ctx.strokeStyle = x % 100 === 0 ? "#888" : "#333";
-          this.ctx.moveTo(screenX, 0);
-          this.ctx.lineTo(screenX, this.canvas.height);
-          this.ctx.stroke();
-
-          if (x % 100 === 0) {
-            this.ctx.fillStyle = "#aaa";
-            this.ctx.fillText(`X: ${x}`, screenX + 2, 12);
-          }
-        }
-      }
-
-      //  Y grid
-      const gridSpacing = 50;
-      const worldYStart = Math.floor(this.cameraY / gridSpacing) * gridSpacing;
-      const worldYEnd = this.cameraY + this.canvas.height;
-
-      for (
-        let worldY = worldYStart;
-        worldY <= worldYEnd;
-        worldY += gridSpacing
-      ) {
-        const screenY = worldY - this.cameraY;
-
-        this.ctx.beginPath();
-        this.ctx.strokeStyle = worldY % 100 === 0 ? "#888" : "#333";
-        this.ctx.moveTo(0, screenY);
-        this.ctx.lineTo(this.canvas.width, screenY);
-        this.ctx.stroke();
-
-        if (worldY % 100 === 0) {
-          this.ctx.fillStyle = "#aaa";
-          this.ctx.fillText(`Y: ${worldY}`, 5, screenY + 12);
-        }
-      }
     }
-  }
+  }; //end of loop
 }

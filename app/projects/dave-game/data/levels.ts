@@ -96,11 +96,12 @@ export const levels = [
     platforms: [
       { x: 0, y: 825, width: 5000, height: 80 },
       { x: 0, y: 595, width: 100, height: 80 },
+      { x: 2500, y: 50, width: 100, height: 100 },
     ],
-    trophy: { x: 3690, y: 555, width: 100, height: 100 },
-    door: { x: 305, y: 20, width: 100, height: 100 },
+    trophy: { x: 2500, y: 30, width: 100, height: 100 },
+    door: { x: 4000, y: 500, width: 100, height: 100 },
 
-    pistolPickup: { x: -2000, y: 200, width: 100, height: 100 },
+    pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
     m16Pickup: { x: 0, y: 500, width: 100, height: 100 },
     monsters: [
       {
@@ -112,7 +113,7 @@ export const levels = [
         radiusX: 90,
         radiusY: 150,
         angleSpeed: 0.05,
-        fireball: { width: 40, height: 40 }, // 💥 size of fireball
+        fireball: { width: 40, height: 40 },
       },
     ],
 

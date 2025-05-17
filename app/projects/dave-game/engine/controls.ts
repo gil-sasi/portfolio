@@ -19,10 +19,17 @@ export function setupControls(
       e.preventDefault();
     }
 
-    keys[e.key] = true;
+    // Prevent jump spam by triggering jump only once per press
+    if (e.key === " " && !keys[" "]) {
+      onJump(); // let Player class decide if it should jump
+    }
 
-    if (e.key === " ") onJump();
-    if (e.key === "q" || e.key === "Q") toggleDebug();
+    // Toggle debug once per press
+    if ((e.key === "q" || e.key === "Q") && !keys[e.key]) {
+      toggleDebug();
+    }
+
+    keys[e.key] = true;
   };
 
   const handleKeyUp = (e: KeyboardEvent) => {

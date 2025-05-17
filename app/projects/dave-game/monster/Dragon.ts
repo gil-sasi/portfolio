@@ -51,24 +51,21 @@ export class Dragon extends MonsterBase {
     cameraX: number,
     screenWidth: number
   ) {
-    console.log("🟡 shootIfPlayerVisible called");
     const dragonRight = this.x + this.width;
     const isOnScreen =
       dragonRight >= cameraX && this.x <= cameraX + screenWidth;
     console.log(
-      "🟢 isOnScreen:",
       isOnScreen,
       "dragonX:",
       this.x,
       "cameraX:",
-      cameraX
+      cameraX,
+      "playerY:",
+      playerY
     );
 
     if (isOnScreen && this.fireCooldown === 0) {
-      console.log("fireCooldown:", this.fireCooldown);
-      console.log("🔥 Dragon fires!");
       const dir = playerX > this.x ? 1 : -1;
-      console.log("Dragon shooting a fireball!");
       this.fireballs.push(
         new Fireball(
           this.x,
