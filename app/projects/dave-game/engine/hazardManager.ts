@@ -1,3 +1,5 @@
+import { Player } from "./player";
+
 export type HazardType = "lava" | "water";
 
 export interface Hazard {
@@ -56,5 +58,17 @@ export class HazardManager {
         y < h.y + h.height &&
         y + height > h.y
     );
+  }
+
+  handlePlayerCollision(player: Player, onHit: () => void) {
+    const collided = this.checkCollision(
+      player.x,
+      player.y,
+      player.width,
+      player.height
+    );
+    if (collided) {
+      onHit();
+    }
   }
 }

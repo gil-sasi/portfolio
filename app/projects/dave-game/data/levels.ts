@@ -1,3 +1,5 @@
+import type { Platform } from "../engine/platform";
+
 export const levels = [
   //tip: the width of one brick is 490 if height is 100 || width of one brick is 390 if height is 80
   //tips for tiles under door and trophy, for trophy make the tile 100 more than trophy, for door make it 60 more than door -> if width 100 height 100
@@ -94,16 +96,35 @@ export const levels = [
     width: 5000,
     height: 2000,
     platforms: [
-      { x: 0, y: 825, width: 5000, height: 80 },
-      { x: 0, y: 595, width: 100, height: 80 },
-      { x: 2500, y: 50, width: 100, height: 100 },
-    ],
-    trophy: { x: 2500, y: 30, width: 100, height: 100 },
-    door: { x: 4000, y: 500, width: 100, height: 100 },
+      { x: 0, y: 800, width: 775, height: 80 }, //first 2 normals
+      { x: 380, y: 625, width: 190, height: 180, type: "metalbox" }, //first metal box
+      { x: 2400, y: 170, width: 230, height: 100, type: "small" }, //under the trophy
+      { x: 550, y: 400, width: 210, height: 400, type: "pillar" }, //first pillar
+      { x: 900, y: 200, width: 1150, height: 100, type: "bridge" },
+      { x: 2180, y: 400, width: 210, height: 400, type: "pillar" }, //2nd pillar
+      { x: 1900, y: 800, width: 775, height: 80 }, //platform near 2nd bridge
+      { x: 2000, y: 625, width: 190, height: 180, type: "metalbox" }, //second metal box
+      { x: 2800, y: 300, width: 242, height: 80, type: "small2" },
+      { x: 3200, y: 500, width: 242, height: 80, type: "small2" },
+      { x: 3600, y: 650, width: 484, height: 80, type: "small2" },
+    ] as Platform[],
+    trophy: { x: 2500, y: 70, width: 100, height: 100 },
+    door: { x: 3800, y: 510, width: 100, height: 150 },
 
     pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
     m16Pickup: { x: 0, y: 500, width: 100, height: 100 },
     monsters: [
+      {
+        type: "dragon",
+        x: 2300,
+        y: 300,
+        width: 150,
+        height: 150,
+        radiusX: 90,
+        radiusY: 150,
+        angleSpeed: 0.05,
+        fireball: { width: 40, height: 40 },
+      },
       {
         type: "dragon",
         x: 4300,
@@ -127,8 +148,8 @@ export const levels = [
     ],
 
     hazards: [
-      { x: 100, y: 600, width: 100, height: 40, type: "lava" },
-      // { x: 300, y: 600, width: 100, height: 40, type: "water" },
+      { x: 150000, y: 700, width: 100, height: 80, type: "lava" },
+      { x: 800, y: 750, width: 1100, height: 150, type: "water" },
     ],
   },
 ];
