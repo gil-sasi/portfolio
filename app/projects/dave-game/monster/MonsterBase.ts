@@ -1,0 +1,47 @@
+export abstract class MonsterBase {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  frames: HTMLImageElement[];
+  currentFrame = 0;
+  frameCounter = 0;
+  facingLeft: boolean = false;
+  constructor(
+    x: number,
+    y: number,
+    frames: HTMLImageElement[],
+    width: number,
+    height: number
+  ) {
+    this.x = x;
+    this.y = y;
+    this.frames = frames;
+    this.width = width;
+    this.height = height;
+  }
+
+  updateAnimation() {
+    this.frameCounter++;
+    if (this.frameCounter % 6 === 0) {
+      this.currentFrame = (this.currentFrame + 1) % this.frames.length;
+    }
+  }
+
+  draw(ctx: CanvasRenderingContext2D, cameraX: number) {
+    const frame = this.frames[this.currentFrame];
+    const drawX = this.x - cameraX;
+
+    ctx.save();
+    if (this.facingLeft) {
+      ctx.translate(drawX + this.width / 2, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(frame, -this.width / 2, this.y, this.width, this.height);
+    } else {
+      ctx.drawImage(frame, drawX, this.y, this.width, this.height);
+    }
+    ctx.restore();
+  }
+
+  abstract move(playerX: number): void;
+}
