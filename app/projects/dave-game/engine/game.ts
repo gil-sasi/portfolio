@@ -100,7 +100,7 @@ export class Game {
                 r: Math.random() * 1.5 + 0.5,
             });
         }
-enableMobileControls(this.keys);
+        enableMobileControls(this.keys);
         this.moonImage.src = "/assets/images/moon.png";
     }
 
@@ -200,15 +200,30 @@ enableMobileControls(this.keys);
             });
         }
 
-        this.cameraX = Math.max(
-            0,
-            Math.min(
-                this.player.x - this.canvas.width / 2 + this.player.width / 2,
-                level.width - this.canvas.width
-            )
-        );
+      const levelHeight = level.height;
+
+const screenBottomY = this.player.y + this.player.height;
+const thresholdToStartScrolling = levelHeight - this.canvas.height;
+this.cameraX = Math.max(
+  0,
+  Math.min(
+    this.player.x - this.canvas.width / 2 + this.player.width / 2,
+    level.width - this.canvas.width
+  )
+);
+if (screenBottomY < thresholdToStartScrolling) {
+  // Let camera scroll upward
+  this.cameraY = Math.min(
+    levelHeight - this.canvas.height,
+    this.player.y - this.canvas.height / 2 + this.player.height / 2
+  );
+} else {
+  // Lock camera at bottom so floor is visible
+  this.cameraY = levelHeight - this.canvas.height;
+}
         const targetY =
             this.player.y - this.canvas.height + this.player.height + 100;
+
         this.cameraY = Math.min(
             level.height - this.canvas.height,
             Math.max(0, targetY)
@@ -216,16 +231,16 @@ enableMobileControls(this.keys);
 
         this.platforms.draw(this.ctx, this.cameraX, this.cameraY);
         if (!this.flyMode) {
-        this.hazardManager.handlePlayerCollision(this.player, () => {
-            this.score = 0;
-            this.hasTrophy = false;
-            this.trophyMessageShown = true;
-            this.player = createPlayerAtSpawn(this.levelManager);
-            this.platforms.setPlatforms(
-                this.levelManager.getCurrentLevel().platforms
-            );
-        });
-    }
+            this.hazardManager.handlePlayerCollision(this.player, () => {
+                this.score = 0;
+                this.hasTrophy = false;
+                this.trophyMessageShown = true;
+                this.player = createPlayerAtSpawn(this.levelManager);
+                this.platforms.setPlatforms(
+                    this.levelManager.getCurrentLevel().platforms
+                );
+            });
+        }
         const updated = drawTrophy(
             this.ctx,
             level.trophy,
