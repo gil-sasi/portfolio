@@ -88,6 +88,7 @@ export function drawHUD(
   ctx.fillStyle = "white";
   ctx.font = "24px Arial";
 
+  // 🏆 Trophy messages (top left of screen)
   if (!hasTrophy && trophyMessageShown) {
     ctx.fillText("Go get the trophy!", 20, 40);
   } else if (hasTrophy) {
@@ -95,31 +96,38 @@ export function drawHUD(
     ctx.drawImage(trophyFrames[0], 230, 18, 20, 20);
   }
 
-  ctx.fillText(`Score: ${score}`, 600, 40);
+  // 💎 Score (top center)
+  ctx.fillText(`Score: ${score}`, canvasWidth / 2 - 40, 40);
+
+  // 🔫 Weapon display (top right)
   if (player.hasGun) {
     const icon =
       player.currentWeapon === "m16" ? player.m16Icon : player.pistolIcon;
     if (icon) {
       ctx.drawImage(icon, canvasWidth - 60, 10, 50, 50);
     }
-    ctx.fillStyle = "white";
     ctx.font = "14px Arial";
     ctx.fillText("Weapon", canvasWidth - 70, 75);
   }
 
+  // 🐞 Debug info (bottom left of screen)
   if (showDebug) {
+    const debugX = 20;
+    const debugYStart = canvasHeight - 100;
+    ctx.font = "16px Courier New";
+
     ctx.fillText(
       `Player: ${Math.round(player.width)}w x ${Math.round(player.height)}h`,
-      20,
-      70
+      debugX,
+      debugYStart
     );
     ctx.fillText(
       `Pos: (${Math.round(player.x)}, ${Math.round(player.y)})`,
-      20,
-      100
+      debugX,
+      debugYStart + 25
     );
-    ctx.fillText(`VelocityY: ${Math.round(player.velocityY)}`, 20, 130);
-    ctx.fillText(`Level Width: ${levelWidth}px`, 20, 160);
+    ctx.fillText(`VelocityY: ${Math.round(player.velocityY)}`, debugX, debugYStart + 50);
+    ctx.fillText(`Level Width: ${levelWidth}px`, debugX, debugYStart + 75);
   }
 }
 

@@ -1,3 +1,4 @@
+import { MonsterBase } from "../monster/MonsterBase"; 
 export class Bullet {
   x: number;
   y: number;
@@ -56,7 +57,8 @@ export class Bullet {
     }
   }
 
-  collidesWith(monster: any): boolean {
+ collidesWith(monster: MonsterBase): boolean {
+
     return (
       this.x < monster.x + monster.width &&
       this.x + this.width > monster.x &&

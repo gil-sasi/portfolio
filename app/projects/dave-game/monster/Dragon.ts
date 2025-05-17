@@ -1,5 +1,6 @@
 import { Fireball } from "./Fireball";
 import { MonsterBase } from "./MonsterBase";
+import { Player } from "../engine/player"; 
 
 export class Dragon extends MonsterBase {
   centerX: number;
@@ -88,7 +89,7 @@ export class Dragon extends MonsterBase {
     this.fireballs.forEach((fb) => fb.draw(ctx, cameraX));
   }
 
-  checkFireballHit(player: any): boolean {
+checkFireballHit(player: Player): boolean {
     return this.fireballs.some((fb) => fb.collidesWith(player));
   }
 }

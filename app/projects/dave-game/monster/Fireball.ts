@@ -1,3 +1,4 @@
+import { Player } from "../engine/player";
 export class Fireball {
   x: number;
   y: number;
@@ -66,7 +67,7 @@ export class Fireball {
     return this.x < -200 || this.x > 10000;
   }
 
-  collidesWith(player: any): boolean {
+ collidesWith(player: Player): boolean {
     return (
       player.x < this.x + this.width &&
       player.x + player.width > this.x &&

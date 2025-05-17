@@ -1,7 +1,23 @@
 import { Dragon } from "../monster/Dragon";
 import { MonsterBase } from "../monster/MonsterBase";
 
-export function createMonsters(level: any): MonsterBase[] {
+type MonsterConfig = {
+  type: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  radiusX?: number;
+  radiusY?: number;
+  angleSpeed?: number;
+  fireball?: {
+    width: number;
+    height: number;
+  };
+};
+
+
+export function createMonsters(level: { monsters?: MonsterConfig[] }): MonsterBase[] {
   const monsters: MonsterBase[] = [];
   const dragonFrames: HTMLImageElement[] = [];
 
@@ -11,7 +27,7 @@ export function createMonsters(level: any): MonsterBase[] {
     dragonFrames.push(img);
   }
 
-  (level.monsters || []).forEach((m: any) => {
+  (level.monsters || []).forEach((m) => {
     if (m.type === "dragon") {
       monsters.push(
         new Dragon(
