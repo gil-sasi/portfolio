@@ -6,18 +6,31 @@ export function enableMobileControls(keys: Record<string, boolean>) {
     shoot: "Control",
   };
 
-  Object.keys(map).forEach((id) => {
+  Object.entries(map).forEach(([id, key]) => {
     const btn = document.getElementById(id);
     if (!btn) return;
 
-    const key = map[id as keyof typeof map];
-
-    btn.addEventListener("touchstart", () => {
+    // Handle touch events
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
       keys[key] = true;
-    });
+    };
 
-    btn.addEventListener("touchend", () => {
+    const onTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
       keys[key] = false;
-    });
+    };
+
+    // Handle mouse events (for testing on PC)
+    const onMouseDown = () => (keys[key] = true);
+    const onMouseUp = () => (keys[key] = false);
+    const onMouseLeave = () => (keys[key] = false);
+
+    btn.addEventListener("touchstart", onTouchStart, { passive: false });
+    btn.addEventListener("touchend", onTouchEnd, { passive: false });
+
+    btn.addEventListener("mousedown", onMouseDown);
+    btn.addEventListener("mouseup", onMouseUp);
+    btn.addEventListener("mouseleave", onMouseLeave);
   });
 }
