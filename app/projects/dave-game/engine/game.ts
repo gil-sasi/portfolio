@@ -4,12 +4,16 @@ import { LevelManager } from "./levelmanager";
 import { diamondPoints } from "../data/diamonds";
 import { MonsterBase } from "../monster/MonsterBase";
 import { Dragon } from "../monster/Dragon";
-
+import { Bullet } from "../projectiles/Bullet";
+import { Explosion } from "../effects/Explosion";
+import { HazardManager } from "./hazardManager";
+import { setupControls } from "./controls";
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private animationFrameId: number = 0;
   private player: Player;
+  private destroyControls: () => void = () => {};
   private monsters: MonsterBase[] = [];
   private stars: { x: number; y: number; r: number }[] = [];
   private moonImage: HTMLImageElement = new Image();
@@ -26,18 +30,24 @@ export class Game {
   private hasTrophy = false;
   private trophyMessageShown = true;
   private score = 0;
-
+  private explosions: Explosion[] = [];
   private trophyFrames: HTMLImageElement[] = [];
   private trophyFrame = 0;
   private trophyFrameCounter = 0;
   private doorImage: HTMLImageElement = new Image();
+  private pistolIcon: HTMLImageElement = new Image();
+  private m16Icon: HTMLImageElement = new Image();
   private diamondImages: Record<string, HTMLImageElement> = {};
   private flyMode = false;
-  private lavaRects: { x: number; y: number; width: number; height: number }[] =
-    [];
-  private lavaFrames: HTMLImageElement[] = [];
-  private lavaFrameIndex: number = 0;
-  private lavaFrameCounter: number = 0;
+  private hazardRects: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    type: "lava" | "water";
+  }[] = [];
+  private waterFrames: HTMLImageElement[] = [];
+  private hazardManager: HazardManager = new HazardManager();
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -53,12 +63,8 @@ export class Game {
 
     this.doorImage.src = "/assets/images/door.png";
 
-    for (let i = 1; i <= 4; i++) {
-      const img = new Image();
-      img.src = `/assets/images/lava/${i}.png`;
-      this.lavaFrames.push(img);
-    }
-
+    this.pistolIcon.src = "/assets/images/guns/pistol.png";
+    this.m16Icon.src = "/assets/images/guns/m16.png";
     const colors = ["green", "purple", "blue", "red", "golden"];
     colors.forEach((color) => {
       const img = new Image();
@@ -81,7 +87,18 @@ export class Game {
     const spawnY = spawnPlatform ? spawnPlatform.y - playerHeight : 100;
     this.player = new Player(spawnX, spawnY);
 
-    this.setupControls();
+    this.destroyControls = setupControls(
+      this.keys,
+      () => {
+        if (!this.player.isJumping) {
+          this.player.jump();
+        }
+      },
+      () => {
+        this.showDebug = !this.showDebug;
+        this.flyMode = !this.flyMode;
+      }
+    );
 
     // 🌌 Generate starfield
     for (let i = 0; i < 200; i++) {
@@ -95,36 +112,6 @@ export class Game {
     // 🌙 Load detailed moon image
     this.moonImage.src = "/assets/images/moon.png";
   }
-
-  setupControls() {
-    window.addEventListener("keydown", this.handleKeyDown);
-    window.addEventListener("keyup", this.handleKeyUp);
-  }
-
-  destroyControls() {
-    window.removeEventListener("keydown", this.handleKeyDown);
-    window.removeEventListener("keyup", this.handleKeyUp);
-  }
-
-  handleKeyDown = (e: KeyboardEvent) => {
-    if (
-      ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)
-    )
-      e.preventDefault();
-    this.keys[e.key] = true;
-    if (e.key === " " && !this.player.isJumping) {
-      this.player.jump();
-    }
-
-    if (e.key === "q" || e.key === "Q") {
-      this.showDebug = !this.showDebug;
-      this.flyMode = !this.flyMode;
-    }
-  };
-
-  handleKeyUp = (e: KeyboardEvent) => {
-    this.keys[e.key] = false;
-  };
 
   start() {
     this.loop();
@@ -176,7 +163,13 @@ export class Game {
     this.animationFrameId = requestAnimationFrame(this.loop);
     const level = this.levelManager.getCurrentLevel();
     this.platforms.setPlatforms(level.platforms);
-    this.lavaRects = level.lava || [];
+    this.hazardRects = (level.hazards || []) as {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      type: "lava" | "water";
+    }[];
 
     // 🪂 Fly mode override
     if (this.flyMode) {
@@ -191,7 +184,49 @@ export class Game {
       }
 
       this.platforms.handleCollisions(this.player);
-      this.checkLavaDeath();
+    }
+
+    //guns logic displaying in the game
+    const { pistolPickup, m16Pickup } = level;
+
+    if (pistolPickup && !this.player.hasGun) {
+      this.ctx.drawImage(
+        this.pistolIcon,
+        pistolPickup.x - this.cameraX,
+        pistolPickup.y - this.cameraY,
+        pistolPickup.width,
+        pistolPickup.height
+      );
+    }
+
+    if (m16Pickup && !this.player.hasGun) {
+      this.ctx.drawImage(
+        this.m16Icon,
+        m16Pickup.x - this.cameraX,
+        m16Pickup.y - this.cameraY,
+        m16Pickup.width,
+        m16Pickup.height
+      );
+    }
+
+    this.player.bullets.forEach((b) => b.move());
+    this.player.bullets.forEach((b) => b.draw(this.ctx, this.cameraX));
+    this.monsters = this.monsters.filter((m) => {
+      const hit = this.player.bullets.some((b) => b.collidesWith(m));
+      if (hit) {
+        const explosion = new Explosion(m.x, m.y);
+        this.explosions.push(explosion);
+      }
+      return !hit;
+    });
+
+    if (this.player.checkCollision(level.pistolPickup)) {
+      this.player.hasGun = true;
+      this.player.currentWeapon = "pistol";
+    }
+    if (this.player.checkCollision(level.m16Pickup)) {
+      this.player.hasGun = true;
+      this.player.currentWeapon = "m16";
     }
 
     // 🏆 Trophy and door logic
@@ -205,7 +240,6 @@ export class Game {
 
       const nextLevel = this.levelManager.getCurrentLevel();
       this.platforms.setPlatforms(nextLevel.platforms);
-      this.lavaRects = nextLevel.lava || [];
 
       const spawnX = 0;
       const playerHeight = 120;
@@ -252,7 +286,16 @@ export class Game {
 
     // 🎨 Drawing
     this.platforms.draw(this.ctx, this.cameraX, this.cameraY);
-    this.drawLava();
+    if (
+      this.hazardManager.checkCollision(
+        this.player.x,
+        this.player.y,
+        this.player.width,
+        this.player.height
+      )
+    ) {
+      this.resetLevel();
+    }
     this.drawDiamonds(level.diamonds || []);
     this.drawTrophy(level.trophy);
     this.drawDoor(level.door);
@@ -279,9 +322,42 @@ export class Game {
         }
       }
     });
+    // Player bullets
+    this.player.bullets.forEach((b) => b.move());
+    this.player.bullets.forEach((b) => b.draw(this.ctx, this.cameraX));
+    this.player.bullets = this.player.bullets.filter(
+      (b) => b.x >= 0 && b.x <= level.width
+    );
 
+    if (this.keys["Control"] && this.player.hasGun) {
+      const canShoot = this.player.bulletCooldown === 0;
+
+      if (canShoot) {
+        const dir = this.player.facingLeft ? -1 : 1;
+        const bullet = new Bullet(
+          this.player.x + this.player.width / 2,
+          this.player.y + this.player.height / 2,
+          dir
+        );
+        this.player.bullets.push(bullet);
+
+        // Set cooldown based on weapon
+        if (this.player.currentWeapon === "m16") {
+          this.player.bulletCooldown = 25;
+        } else if (this.player.currentWeapon === "pistol") {
+          this.player.bulletCooldown = 100;
+        }
+      }
+    }
+
+    // Update & draw explosions in loop
+    this.explosions.forEach((e) => e.update());
+    this.explosions.forEach((e) => e.draw(this.ctx, this.cameraX));
+    this.explosions = this.explosions.filter((e) => !e.done);
+
+    if (this.player.bulletCooldown > 0) this.player.bulletCooldown--;
     this.drawHUD();
-  };
+  }; //end of loop
 
   drawTrophy(trophy: { x: number; y: number; width: number; height: number }) {
     if (!this.hasTrophy) {
@@ -331,40 +407,6 @@ export class Game {
         );
       }
     });
-  }
-
-  drawLava() {
-    this.lavaFrameCounter++;
-    if (this.lavaFrameCounter % 10 === 0) {
-      this.lavaFrameIndex = (this.lavaFrameIndex + 1) % this.lavaFrames.length;
-    }
-
-    const currentFrame = this.lavaFrames[this.lavaFrameIndex];
-
-    this.lavaRects.forEach((lava) => {
-      this.ctx.drawImage(
-        currentFrame,
-        lava.x - this.cameraX,
-        lava.y - this.cameraY,
-        lava.width,
-        lava.height
-      );
-    });
-  }
-
-  checkLavaDeath() {
-    for (const lava of this.lavaRects) {
-      const touching =
-        this.player.x < lava.x + lava.width &&
-        this.player.x + this.player.width > lava.x &&
-        this.player.y < lava.y + lava.height &&
-        this.player.y + this.player.height > lava.y;
-
-      if (touching) {
-        this.resetLevel();
-        break;
-      }
-    }
   }
 
   resetLevel() {
@@ -430,7 +472,14 @@ export class Game {
     }
 
     this.ctx.fillText(`Score: ${this.score}`, 600, 40);
-
+    if (this.player.hasGun) {
+      const icon =
+        this.player.currentWeapon === "m16" ? this.m16Icon : this.pistolIcon;
+      this.ctx.drawImage(icon, this.canvas.width - 60, 10, 50, 50);
+      this.ctx.fillStyle = "white";
+      this.ctx.font = "14px Arial";
+      this.ctx.fillText("Weapon", this.canvas.width - 70, 75);
+    }
     if (this.showDebug) {
       this.ctx.fillText(
         `Player: ${Math.round(this.player.width)}w x ${Math.round(
@@ -452,16 +501,6 @@ export class Game {
 
       const levelWidth = this.levelManager.getCurrentLevel().width;
       this.ctx.fillText(`Level Width: ${levelWidth}px`, 20, 160);
-
-      if (this.player.x < 0 || this.player.x + this.player.width > levelWidth) {
-        this.ctx.fillStyle = "orange";
-        this.ctx.fillText("⚠️ Player is out of horizontal bounds!", 20, 190);
-      }
-
-      if (this.player.y > this.canvas.height + this.cameraY) {
-        this.ctx.fillStyle = "red";
-        this.ctx.fillText("💀 Player has fallen below the screen!", 20, 220);
-      }
 
       // Platform bounding boxes
       this.ctx.strokeStyle = "white";

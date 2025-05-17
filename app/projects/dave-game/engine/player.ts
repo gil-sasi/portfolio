@@ -1,3 +1,5 @@
+import { Bullet } from "../projectiles/Bullet";
+
 export class Player {
   x: number;
   y: number;
@@ -10,6 +12,10 @@ export class Player {
   currentFrame: number = 0;
   frameCounter: number = 0;
   spriteFrames: HTMLImageElement[] = [];
+  hasGun: boolean = false;
+  currentWeapon: "none" | "pistol" | "m16" = "none";
+  bullets: Bullet[] = [];
+  bulletCooldown: number = 0;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -55,7 +61,12 @@ export class Player {
     this.isJumping = true;
   }
 
-  checkCollision(rect: { x: number; y: number; width: number; height: number }): boolean {
+  checkCollision(rect: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }): boolean {
     return (
       this.x < rect.x + rect.width &&
       this.x + this.width > rect.x &&
