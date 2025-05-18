@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* Theme variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,27 +13,32 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Base styles */
 html,
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
-  touch-action: none;
+  overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  touch-action: none;
 }
 
+/* Canvas styling */
 canvas {
   display: block;
   max-width: 100%;
   max-height: 100%;
+  image-rendering: pixelated;
+  touch-action: none;
 }
 
+/* Touch button UI */
 .touch-btn {
   width: 64px;
   height: 64px;
@@ -43,4 +49,6 @@ canvas {
   border-radius: 14px;
   backdrop-filter: blur(6px);
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }

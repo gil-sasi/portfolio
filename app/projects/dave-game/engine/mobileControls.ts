@@ -7,24 +7,32 @@ export function enableMobileControls(keys: Record<string, boolean>) {
   };
 
   Object.keys(map).forEach((id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
+    const btn = document.getElementById(id);
+    if (!btn) return;
+
     const key = map[id as keyof typeof map];
 
-    const press = (e: Event) => {
-      e.preventDefault();
-      keys[key] = true;
-    };
-    const release = (e: Event) => {
-      e.preventDefault();
-      keys[key] = false;
-    };
+    btn.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        keys[key] = true;
+      },
+      { passive: false }
+    );
 
-    el.addEventListener("touchstart", press, { passive: false });
-    el.addEventListener("touchend", release, { passive: false });
+    btn.addEventListener(
+      "touchend",
+      (e) => {
+        e.preventDefault();
+        keys[key] = false;
+      },
+      { passive: false }
+    );
 
-    el.addEventListener("mousedown", press);
-    el.addEventListener("mouseup", release);
-    el.addEventListener("mouseleave", release);
+    // Optional desktop mouse events for testing
+    btn.addEventListener("mousedown", () => (keys[key] = true));
+    btn.addEventListener("mouseup", () => (keys[key] = false));
+    btn.addEventListener("mouseleave", () => (keys[key] = false));
   });
 }
