@@ -20,7 +20,7 @@ export const levels = [
       { x: 420, y: 350, width: 100, height: 80 }, //under the trophy
       { x: 1200, y: 310, width: 100, height: 80 }, //under the door
     ],
- pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
+ pistolPickup: { x:400, y: 700, width: 100, height: 100 },
     m16Pickup: { x: -2000, y: 500, width: 100, height: 100 },
     trophy: { x: 420, y: 265, width: 100, height: 100 },
     door: { x: 1305, y: 515, width: 100, height: 100 },
@@ -35,6 +35,19 @@ export const levels = [
 
     hazards: [
       { x: 1920, y: 800, width: 1000, height: 80, type: "lava" }, // lava at end of the room
+    ],
+        monsters: [
+      {
+        type: "dragon",
+        x: 2100,
+        y: 500,
+        width: 150,
+        height: 150,
+        radiusX: 90,
+        radiusY: 150,
+        angleSpeed: 0.05,
+        fireball: { width: 40, height: 40 }, // 💥 size of fireball
+      },
     ],
 
   },

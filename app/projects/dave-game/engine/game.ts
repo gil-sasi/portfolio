@@ -8,21 +8,26 @@ import { HazardManager } from "./hazardManager";
 import { createPlayerAtSpawn } from "./resetLevel";
 import { Hazard } from "./hazardManager";
 import { handleShooting } from "./handleShooting";
-import { setupControls } from "./controls";
-import { createMonsters } from "./initMonsters";
-import { drawGunPickups } from "../render/pickups";
-import { handleMonsters } from "./handleMonsters";
-import { enableMobileControls } from "./mobileControls";
+import { FloatingText } from "../effects/FloatingText";
 import {
+    drawPlayerHealthBar,
+    drawFloatingTexts,
+    drawDebugPlayerLine,
     drawTrophy,
     drawDoor,
     drawDiamonds,
     drawHUD,
     drawDebugGrid,
 } from "../render/gameRender";
+import { setupControls } from "./controls";
+import { createMonsters } from "./initMonsters";
+import { drawGunPickups } from "../render/pickups";
+import { handleMonsters } from "./handleMonsters";
+import { enableMobileControls } from "./mobileControls";
 import { drawSky } from "../render/sky";
 
 export class Game {
+    private effects: FloatingText[] = [];
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private animationFrameId: number = 0;
@@ -130,6 +135,10 @@ export class Game {
         this.hazardManager.update();
         this.hazardManager.draw(this.ctx, this.cameraX, this.cameraY);
 
+        this.effects.forEach((e) => e.update());
+        drawFloatingTexts(this.ctx, this.effects, this.cameraX, this.cameraY);
+        this.effects = this.effects.filter((e) => !e.done);
+
         if (this.flyMode) {
             this.player.flyMove(this.keys);
         } else {
@@ -153,14 +162,22 @@ export class Game {
             this.cameraY
         );
 
-
         this.player.bullets.forEach((b) => b.update());
         this.player.bullets.forEach((b) => b.draw(this.ctx, this.cameraX));
-        this.player.bullets = this.player.bullets.filter(bullet => bullet.isActive);
+        this.player.bullets = this.player.bullets.filter((bullet) => bullet.isActive);
+
         this.monsters = this.monsters.filter((m) => {
-            const hit = this.player.bullets.some((b) => b.collidesWith(m));
-            if (hit) this.explosions.push(new Explosion(m.x, m.y));
-            return !hit;
+            const bullet = this.player.bullets.find((b) => b.isActive && b.collidesWith(m));
+            if (bullet && !m.health.isDead) {
+                bullet.isActive = false;
+                m.health.takeDamage(25);
+                this.effects.push(new FloatingText(m.x, m.y - 20, "-25", "red"));
+                if (m.health.isDead) {
+                    this.explosions.push(new Explosion(m.x, m.y));
+                    return false; // remove dead monster
+                }
+            }
+            return true;
         });
 
         if (this.player.checkCollision(level.pistolPickup)) {
@@ -200,27 +217,22 @@ export class Game {
             });
         }
 
-      const levelHeight = level.height;
-
-const screenBottomY = this.player.y + this.player.height;
-const thresholdToStartScrolling = levelHeight - this.canvas.height;
-this.cameraX = Math.max(
-  0,
-  Math.min(
-    this.player.x - this.canvas.width / 2 + this.player.width / 2,
-    level.width - this.canvas.width
-  )
-);
-if (screenBottomY < thresholdToStartScrolling) {
-  // Let camera scroll upward
-  this.cameraY = Math.min(
-    levelHeight - this.canvas.height,
-    this.player.y - this.canvas.height / 2 + this.player.height / 2
-  );
-} else {
-  // Lock camera at bottom so floor is visible
-  this.cameraY = levelHeight - this.canvas.height;
-}
+        const levelHeight = level.height;
+        const screenBottomY = this.player.y + this.player.height;
+        const thresholdToStartScrolling = levelHeight - this.canvas.height;
+        this.cameraX = Math.max(
+            0,
+            Math.min(
+                this.player.x - this.canvas.width / 2 + this.player.width / 2,
+                level.width - this.canvas.width
+            )
+        );
+        if (screenBottomY < thresholdToStartScrolling) {
+            this.cameraY = Math.min(
+                levelHeight - this.canvas.height,
+                this.player.y - this.canvas.height / 2 + this.player.height / 2
+            );
+        }
         const targetY =
             this.player.y - this.canvas.height + this.player.height + 100;
 
@@ -232,15 +244,21 @@ if (screenBottomY < thresholdToStartScrolling) {
         this.platforms.draw(this.ctx, this.cameraX, this.cameraY);
         if (!this.flyMode) {
             this.hazardManager.handlePlayerCollision(this.player, () => {
-                this.score = 0;
-                this.hasTrophy = false;
-                this.trophyMessageShown = true;
-                this.player = createPlayerAtSpawn(this.levelManager);
-                this.platforms.setPlatforms(
-                    this.levelManager.getCurrentLevel().platforms
-                );
+                // lava or water = instant kill
+                this.player.health.hp = 0;
+                this.player.health.isDead = true;
             });
         }
+
+        // Handle respawn if player died (lava or otherwise)
+        if (this.player.health.isDead) {
+            this.score = 0;
+            this.hasTrophy = false;
+            this.trophyMessageShown = true;
+            this.player = createPlayerAtSpawn(this.levelManager);
+            this.platforms.setPlatforms(this.levelManager.getCurrentLevel().platforms);
+        }
+
         const updated = drawTrophy(
             this.ctx,
             level.trophy,
@@ -264,6 +282,8 @@ if (screenBottomY < thresholdToStartScrolling) {
             this.cameraY
         );
         this.player.draw(this.ctx, this.cameraX, this.cameraY);
+        drawPlayerHealthBar(this.ctx, this.player, this.cameraX, this.cameraY);
+        drawDebugPlayerLine(this.ctx, this.player, this.cameraX, this.cameraY);
 
         this.monsters = handleMonsters(
             this.ctx,
@@ -277,11 +297,10 @@ if (screenBottomY < thresholdToStartScrolling) {
                 this.hasTrophy = false;
                 this.trophyMessageShown = true;
                 this.player = createPlayerAtSpawn(this.levelManager);
-                this.platforms.setPlatforms(
-                    this.levelManager.getCurrentLevel().platforms
-                );
+                this.platforms.setPlatforms(this.levelManager.getCurrentLevel().platforms);
             },
-            (explosion) => this.explosions.push(explosion)
+            (explosion) => this.explosions.push(explosion),
+            this.effects
         );
 
         handleShooting(this.player, this.keys, level.width);
@@ -317,6 +336,7 @@ if (screenBottomY < thresholdToStartScrolling) {
                 this.canvas.height,
                 level.width
             );
+
             this.ctx.strokeStyle = "white";
             this.platforms.getPlatforms().forEach((p) => {
                 this.ctx.strokeRect(
@@ -327,5 +347,12 @@ if (screenBottomY < thresholdToStartScrolling) {
                 );
             });
         }
-    };
+
+if (this.player.y > level.height + 100) {
+  this.player.health.hp = 0;
+  this.player.health.isDead = true;
+}
+
+
+    };//end of loop
 }

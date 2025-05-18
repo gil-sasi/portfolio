@@ -1,4 +1,5 @@
 import { Bullet } from "../projectiles/Bullet";
+import { Health } from "../data/Health";
 
 export class Player {
   x = 0;
@@ -6,6 +7,7 @@ export class Player {
   width = 120;
   height = 120;
   velocityY = 0;
+  health: Health;
   gravity = 0.8;
   isJumping = false;
   facingLeft = false;
@@ -19,7 +21,7 @@ export class Player {
   bulletCooldown = 0;
   isShooting = false;
   isMoving = false;
-
+    
   spriteFrames: HTMLImageElement[] = [];
   pistolWalkFrames: HTMLImageElement[] = [];
   m16WalkFrames: HTMLImageElement[] = [];
@@ -32,7 +34,7 @@ export class Player {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-
+    this.health = new Health(100);
     for (let i = 1; i <= 6; i++) {
       const img = new Image();
       img.src = `/assets/dave-clean/${i}.png`;
@@ -69,6 +71,7 @@ export class Player {
     this.y = 600;
     this.velocityY = 0;
     this.isJumping = false;
+    this.health.reset(); // sets hp back to max
   }
 
   move(keys: Record<string, boolean>) {

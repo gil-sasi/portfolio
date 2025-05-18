@@ -1,5 +1,5 @@
 import { Player } from "../engine/player";
-
+import { FloatingText } from "../effects/FloatingText";
 export function drawTrophy(
   ctx: CanvasRenderingContext2D,
   trophy: { x: number; y: number; width: number; height: number },
@@ -88,7 +88,6 @@ export function drawHUD(
   ctx.fillStyle = "white";
   ctx.font = "24px Arial";
 
-  // 🏆 Trophy messages (top left of screen)
   if (!hasTrophy && trophyMessageShown) {
     ctx.fillText("Go get the trophy!", 20, 40);
   } else if (hasTrophy) {
@@ -96,10 +95,8 @@ export function drawHUD(
     ctx.drawImage(trophyFrames[0], 230, 18, 20, 20);
   }
 
-  // 💎 Score (top center)
   ctx.fillText(`Score: ${score}`, canvasWidth / 2 - 40, 40);
 
-  // 🔫 Weapon display (top right)
   if (player.hasGun) {
     const icon =
       player.currentWeapon === "m16" ? player.m16Icon : player.pistolIcon;
@@ -110,14 +107,14 @@ export function drawHUD(
     ctx.fillText("Weapon", canvasWidth - 70, 75);
   }
 
-  // 🐞 Debug info (bottom left of screen)
   if (showDebug) {
     const debugX = 20;
     const debugYStart = canvasHeight - 100;
     ctx.font = "16px Courier New";
-
     ctx.fillText(
-      `Player: ${Math.round(player.width)}w x ${Math.round(player.height)}h`,
+      `Player: ${Math.round(player.width)}w x ${Math.round(
+        player.height
+      )}h`,
       debugX,
       debugYStart
     );
@@ -126,9 +123,57 @@ export function drawHUD(
       debugX,
       debugYStart + 25
     );
-    ctx.fillText(`VelocityY: ${Math.round(player.velocityY)}`, debugX, debugYStart + 50);
+    ctx.fillText(
+      `VelocityY: ${Math.round(player.velocityY)}`,
+      debugX,
+      debugYStart + 50
+    );
     ctx.fillText(`Level Width: ${levelWidth}px`, debugX, debugYStart + 75);
   }
+}
+export function drawFloatingTexts(
+  ctx: CanvasRenderingContext2D,
+  texts: FloatingText[],
+  cameraX: number,
+  cameraY: number
+) {
+  texts.forEach((t) => t.draw(ctx, cameraX, cameraY));
+}
+
+export function drawDebugPlayerLine(
+  ctx: CanvasRenderingContext2D,
+  player: Player,
+  cameraX: number,
+  canvasHeight: number
+) {
+  const centerX = player.x + player.width / 2 - cameraX;
+
+  ctx.beginPath();
+  ctx.strokeStyle = "white";
+  ctx.setLineDash([4, 2]);
+  ctx.moveTo(centerX, 0);
+  ctx.lineTo(centerX, canvasHeight);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+export function drawPlayerHealthBar(
+  ctx: CanvasRenderingContext2D,
+  player: Player,
+  cameraX: number,
+  cameraY: number
+) {
+  const hpRatio = player.health.hp / player.health.maxHp;
+  const hpWidth = 80;
+  const hpHeight = 8;
+  const hpX = player.x - cameraX;
+  const hpY = player.y - cameraY - 15;
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(hpX, hpY, hpWidth, hpHeight);
+  ctx.fillStyle = "lime";
+  ctx.fillRect(hpX, hpY, hpWidth * hpRatio, hpHeight);
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(hpX, hpY, hpWidth, hpHeight);
 }
 
 export function drawDebugGrid(
@@ -140,8 +185,6 @@ export function drawDebugGrid(
   levelWidth: number
 ) {
   ctx.font = "12px Arial";
-
-  // X axis grid
   for (let x = 0; x < levelWidth; x += 50) {
     const screenX = x - cameraX;
     if (screenX >= 0 && screenX <= canvasWidth) {
@@ -158,7 +201,6 @@ export function drawDebugGrid(
     }
   }
 
-  // Y axis grid
   const gridSpacing = 50;
   const worldYStart = Math.floor(cameraY / gridSpacing) * gridSpacing;
   const worldYEnd = cameraY + canvasHeight;
@@ -177,4 +219,14 @@ export function drawDebugGrid(
       ctx.fillText(`Y: ${worldY}`, 5, screenY + 12);
     }
   }
+
+ 
+
+
+
+
+
+
+
+  
 }

@@ -26,6 +26,8 @@ export function handleShooting(
     }
   }
 
-  player.bullets.forEach((b) => b.move());
-  player.bullets = player.bullets.filter((b) => b.x >= 0 && b.x <= levelWidth);
+ player.bullets.forEach((b) => b.update());
+player.bullets = player.bullets.filter(
+  (b) => b.isActive && b.x >= 0 && b.x <= levelWidth
+);
 }

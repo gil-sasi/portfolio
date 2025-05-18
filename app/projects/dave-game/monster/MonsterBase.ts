@@ -1,3 +1,5 @@
+import { Health } from "../data/Health";
+
 export abstract class MonsterBase {
   x: number;
   y: number;
@@ -7,6 +9,7 @@ export abstract class MonsterBase {
   currentFrame = 0;
   frameCounter = 0;
   facingLeft: boolean = false;
+  health: Health;
   constructor(
     x: number,
     y: number,
@@ -14,12 +17,28 @@ export abstract class MonsterBase {
     width: number,
     height: number
   ) {
+    this.health = new Health(100);
     this.x = x;
     this.y = y;
     this.frames = frames;
     this.width = width;
     this.height = height;
   }
+
+
+takeDamage(amount: number) {
+  this.health.takeDamage(amount);
+  if (this.health.isDead) {
+    this.die();
+  }
+}
+
+die() {
+  // Optional: add explosion, sound, score here
+}
+
+
+
 
   updateAnimation() {
     this.frameCounter++;

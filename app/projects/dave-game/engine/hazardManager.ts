@@ -60,15 +60,18 @@ export class HazardManager {
     );
   }
 
-  handlePlayerCollision(player: Player, onHit: () => void) {
-    const collided = this.checkCollision(
-      player.x,
-      player.y,
-      player.width,
-      player.height
-    );
-    if (collided) {
+handlePlayerCollision(player: Player, onHit: () => void) {
+  const collided = this.checkCollision(
+    player.x,
+    player.y,
+    player.width,
+    player.height
+  );
+  if (collided) {
+    player.health.takeDamage(50);
+    if (player.health.isDead) {
       onHit();
     }
   }
+}
 }

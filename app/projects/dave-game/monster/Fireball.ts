@@ -1,7 +1,9 @@
 import { Player } from "../engine/player";
+
 export class Fireball {
   x: number;
   y: number;
+  initialX: number;
   width: number;
   height: number;
   speed: number;
@@ -9,6 +11,8 @@ export class Fireball {
   static frames: HTMLImageElement[] = [];
   currentFrame = 0;
   frameCounter = 0;
+  maxDistance: number = 1000;
+  isActive: boolean = true;
 
   constructor(
     x: number,
@@ -19,6 +23,7 @@ export class Fireball {
   ) {
     this.x = x;
     this.y = y;
+    this.initialX = x;
     this.direction = direction;
     this.speed = 4;
     this.width = width;
@@ -34,20 +39,29 @@ export class Fireball {
   }
 
   move() {
+    if (!this.isActive) return;
+
     this.x += this.speed * this.direction;
     this.frameCounter++;
     if (this.frameCounter % 6 === 0) {
       this.currentFrame = (this.currentFrame + 1) % Fireball.frames.length;
     }
+
+    // Check if exceeded range
+    if (this.isOffScreen()) {
+      this.isActive = false;
+    }
   }
 
   draw(ctx: CanvasRenderingContext2D, cameraX: number) {
+    if (!this.isActive) return;
+
     const frame = Fireball.frames[this.currentFrame];
     const drawX = this.x - cameraX;
     const drawY = this.y;
 
     ctx.save();
-    if (this.direction === +1) {
+    if (this.direction === 1) {
       ctx.translate(drawX + this.width / 2, drawY + this.height / 2);
       ctx.scale(-1, 1);
       ctx.drawImage(
@@ -64,10 +78,11 @@ export class Fireball {
   }
 
   isOffScreen(): boolean {
-    return this.x < -200 || this.x > 10000;
+    const distanceTraveled = Math.abs(this.x - this.initialX);
+    return distanceTraveled > this.maxDistance || this.x < -200 || this.x > 10000;
   }
 
- collidesWith(player: Player): boolean {
+  collidesWith(player: Player): boolean {
     return (
       player.x < this.x + this.width &&
       player.x + player.width > this.x &&
