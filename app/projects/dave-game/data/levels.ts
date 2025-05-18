@@ -1,7 +1,7 @@
 import type { Platform } from "../engine/platform";
 
 export const levels = [
- 
+
   //level 1
   {
     width: 3000,
@@ -14,13 +14,13 @@ export const levels = [
       { x: 750, y: 500, width: 100, height: 80 },
       { x: 950, y: 300, width: 100, height: 80 },
       { x: 1300, y: 600, width: 100, height: 80 },
-      
+
 
       // { x: 250, y: 300, width: 80, height: 40 },
       { x: 420, y: 350, width: 100, height: 80 }, //under the trophy
       { x: 1200, y: 310, width: 100, height: 80 }, //under the door
     ],
- pistolPickup: { x:400, y: 700, width: 100, height: 100 },
+    pistolPickup: { x: 400, y: 700, width: 100, height: 100 },
     m16Pickup: { x: -2000, y: 500, width: 100, height: 100 },
     trophy: { x: 420, y: 265, width: 100, height: 100 },
     door: { x: 1305, y: 515, width: 100, height: 100 },
@@ -36,7 +36,7 @@ export const levels = [
     hazards: [
       { x: 1920, y: 800, width: 1000, height: 80, type: "lava" }, // lava at end of the room
     ],
-        monsters: [
+    monsters: [
       {
         type: "dragon",
         x: 2100,
@@ -48,6 +48,8 @@ export const levels = [
         angleSpeed: 0.05,
         fireball: { width: 40, height: 40 }, // 💥 size of fireball
       },
+      { type: "ghost", x: 1700, y: 670, width: 120, height: 120 },
+
     ],
 
   },
@@ -79,7 +81,7 @@ export const levels = [
       { x: 3930, y: 600, width: 100, height: 80 },
       { x: 3930, y: 700, width: 100, height: 80 },
     ],
-     pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
+    pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
     m16Pickup: { x: -2000, y: 500, width: 100, height: 100 },
     trophy: { x: 3690, y: 555, width: 100, height: 100 },
     door: { x: 305, y: 20, width: 100, height: 100 },
@@ -120,7 +122,7 @@ export const levels = [
       { x: 2180, y: 400, width: 210, height: 400, type: "pillar" }, //2nd pillar
       { x: 1900, y: 800, width: 775, height: 80 }, //platform near 2nd bridge
       { x: 2000, y: 625, width: 190, height: 180, type: "metalbox" }, //second metal box
-         { x: 2400, y: 625, width: 190, height: 180, type: "metalbox" }, //third metal box
+      { x: 2400, y: 625, width: 190, height: 180, type: "metalbox" }, //third metal box
       { x: 2800, y: 300, width: 242, height: 80, type: "small2" },
       { x: 3200, y: 500, width: 242, height: 80, type: "small2" },
       { x: 3600, y: 650, width: 484, height: 80, type: "small2" },
@@ -158,7 +160,7 @@ export const levels = [
     diamonds: [
       { x: 130, y: 480, width: 150, height: 150, type: "green" },
       { x: 230, y: 280, width: 150, height: 150, type: "green" },
-     { x: 930, y: 82, width: 150, height: 150, type: "green" },
+      { x: 930, y: 82, width: 150, height: 150, type: "green" },
       { x: 1180, y: 82, width: 150, height: 150, type: "green" },
       { x: 600, y: 35, width: 150, height: 150, type: "purple" },
       { x: 625, y: 270, width: 150, height: 150, type: "blue" },

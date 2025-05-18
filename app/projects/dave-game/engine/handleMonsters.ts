@@ -3,6 +3,7 @@ import { Player } from "./player";
 import { Dragon } from "../monster/Dragon";
 import { Explosion } from "../effects/Explosion";
 import { FloatingText } from "../effects/FloatingText";
+import { Ghost } from "../monster/Ghost";
 
 export function handleMonsters(
   ctx: CanvasRenderingContext2D,
@@ -16,9 +17,16 @@ export function handleMonsters(
   effects: FloatingText[]
 ): MonsterBase[] {
   return monsters.filter((m) => {
-    m.move(player.x);
+    // Movement
+    if (m instanceof Ghost) {
+      m.moveWithPlayer(player, effects);
+    } else {
+      m.move(player.x);
+    }
+
     m.draw(ctx, cameraX);
 
+    // Dragon fireball logic
     if (m instanceof Dragon) {
       m.shootIfPlayerVisible(player.x, player.y, cameraX, canvasWidth);
       m.updateFireballs();
@@ -37,19 +45,18 @@ export function handleMonsters(
             }
 
             if (player.health.isDead) {
-              onPlayerHit(); // Respawn only if dead
+              onPlayerHit();
             }
 
-            return false; // Remove fireball after hit
+            return false;
           }
 
-          return !fireball.isOffScreen(); // Keep only onscreen + inactive false
+          return !fireball.isOffScreen();
         });
       }
-
     }
 
-    // Handle bullet hit
+    // Bullet hit
     const hitBullet = player.bullets.find((b) => b.isActive && b.collidesWith(m));
     if (hitBullet && !m.health.isDead) {
       m.health.takeDamage(10);
@@ -58,23 +65,22 @@ export function handleMonsters(
 
       if (m.health.isDead) {
         onExplosion(new Explosion(m.x, m.y));
-        return false; // remove monster
+        return false;
       }
     }
 
-    // --- Health bar ---
+    // Health bar
     const healthRatio = m.health.hp / m.health.maxHp;
-    const barWidth = m.width;
-    const barHeight = 6;
     const barX = m.x - cameraX;
     const barY = m.y - 10;
+    const barWidth = m.width;
+    const barHeight = 6;
 
     ctx.fillStyle = "red";
     ctx.fillRect(barX, barY, barWidth, barHeight);
-
     ctx.fillStyle = "lime";
     ctx.fillRect(barX, barY, barWidth * healthRatio, barHeight);
 
-    return true; // keep monster
+    return true;
   });
 }

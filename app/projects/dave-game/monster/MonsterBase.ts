@@ -1,5 +1,6 @@
 import { Health } from "../data/Health";
-
+import { Player } from "../engine/player";
+import { FloatingText } from "../effects/FloatingText";
 export abstract class MonsterBase {
   x: number;
   y: number;
@@ -38,14 +39,16 @@ die() {
 }
 
 
-
-
-  updateAnimation() {
-    this.frameCounter++;
-    if (this.frameCounter % 6 === 0) {
-      this.currentFrame = (this.currentFrame + 1) % this.frames.length;
-    }
+updateAnimation() {
+  this.frameCounter++;
+  if (this.frameCounter % 6 === 0 && this.frames.length > 0) {
+    this.currentFrame = (this.currentFrame + 1) % this.frames.length;
   }
+}
+
+moveWithPlayer(player: Player, effects: FloatingText[]) {
+  // Default: do nothing. Ghost overrides this.
+}
 
   draw(ctx: CanvasRenderingContext2D, cameraX: number) {
     const frame = this.frames[this.currentFrame];
