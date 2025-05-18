@@ -1,5 +1,7 @@
 import { Player } from "../engine/player";
 import { FloatingText } from "../effects/FloatingText";
+
+import { PotionBase } from "../data/PotionBase";
 export function drawTrophy(
   ctx: CanvasRenderingContext2D,
   trophy: { x: number; y: number; width: number; height: number },
@@ -70,7 +72,16 @@ export function drawDiamonds(
     }
   });
 }
-
+export function drawPotions(
+  ctx: CanvasRenderingContext2D,
+  potions: PotionBase[],
+  cameraX: number,
+  cameraY: number
+) {
+  potions.forEach((potion) => {
+    potion.draw(ctx, cameraX, cameraY);
+  });
+}
 export function drawHUD(
   ctx: CanvasRenderingContext2D,
   player: Player,
@@ -112,9 +123,7 @@ export function drawHUD(
     const debugYStart = canvasHeight - 100;
     ctx.font = "16px Courier New";
     ctx.fillText(
-      `Player: ${Math.round(player.width)}w x ${Math.round(
-        player.height
-      )}h`,
+      `Player: ${Math.round(player.width)}w x ${Math.round(player.height)}h`,
       debugX,
       debugYStart
     );
@@ -219,14 +228,4 @@ export function drawDebugGrid(
       ctx.fillText(`Y: ${worldY}`, 5, screenY + 12);
     }
   }
-
- 
-
-
-
-
-
-
-
-  
 }

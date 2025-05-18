@@ -21,7 +21,8 @@ export class Player {
   bulletCooldown = 0;
   isShooting = false;
   isMoving = false;
-    
+  canDoubleJump: boolean = false;
+  hasDoubleJumped: boolean = false;
   spriteFrames: HTMLImageElement[] = [];
   pistolWalkFrames: HTMLImageElement[] = [];
   m16WalkFrames: HTMLImageElement[] = [];
@@ -113,6 +114,9 @@ export class Player {
     if (!this.isJumping) {
       this.velocityY = -20;
       this.isJumping = true;
+    } else if (this.canDoubleJump && !this.hasDoubleJumped) {
+      this.velocityY = -20;
+      this.hasDoubleJumped = true;
     }
   }
 

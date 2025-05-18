@@ -1,7 +1,6 @@
 import type { Platform } from "../engine/platform";
 
 export const levels = [
-
   //level 1
   {
     width: 3000,
@@ -14,7 +13,6 @@ export const levels = [
       { x: 750, y: 500, width: 100, height: 80 },
       { x: 950, y: 300, width: 100, height: 80 },
       { x: 1300, y: 600, width: 100, height: 80 },
-
 
       // { x: 250, y: 300, width: 80, height: 40 },
       { x: 420, y: 350, width: 100, height: 80 }, //under the trophy
@@ -49,9 +47,11 @@ export const levels = [
         fireball: { width: 40, height: 40 }, // 💥 size of fireball
       },
       { type: "ghost", x: 1700, y: 670, width: 120, height: 120 },
-
     ],
-
+    potions: [
+      { x: 500, y: 730, type: "red" },
+      { x: 700, y: 730, type: "yellow" },
+    ],
   },
 
   {
@@ -168,11 +168,9 @@ export const levels = [
       { x: 1100, y: 500, width: 150, height: 150, type: "golden" }, //unreachable
       { x: 1300, y: 500, width: 150, height: 150, type: "golden" }, //unreachable
       { x: 1500, y: 500, width: 150, height: 150, type: "golden" }, //unreachable
-
     ],
 
     hazards: [
-
       { x: 775, y: 805, width: 1115, height: 65, type: "water" },
       { x: 2680, y: 805, width: 3000, height: 65, type: "lava" },
     ],

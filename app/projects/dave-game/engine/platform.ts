@@ -56,6 +56,7 @@ export class PlatformManager {
           player.y = plat.y - player.height;
           player.velocityY = 0;
           player.isJumping = false;
+          player.hasDoubleJumped = false;
           onPlatform = true;
         } else if (player.y - player.velocityY >= plat.y + plat.height) {
           player.y = plat.y + plat.height;

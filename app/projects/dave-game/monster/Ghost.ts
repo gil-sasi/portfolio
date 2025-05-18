@@ -4,9 +4,9 @@ import { FloatingText } from "../effects/FloatingText";
 import { Health } from "../data/Health";
 
 export class Ghost extends MonsterBase {
-  public  idleFrames: HTMLImageElement[];
-  public  runFrames: HTMLImageElement[];
-  public  attackFrames: HTMLImageElement[];
+  public idleFrames: HTMLImageElement[];
+  public runFrames: HTMLImageElement[];
+  public attackFrames: HTMLImageElement[];
   private state: "idle" | "run" | "attack" = "idle";
   private attackCooldown: number = 0;
 
@@ -18,7 +18,6 @@ export class Ghost extends MonsterBase {
     attackFrames: HTMLImageElement[],
     width: number,
     height: number
-
   ) {
     super(x, y, idleFrames, width, height);
     this.idleFrames = idleFrames;
@@ -46,10 +45,10 @@ export class Ghost extends MonsterBase {
       this.updateAnimationWithFrames(this.idleFrames);
       return;
     }
-
+    //128x129
     if (distanceX > 100) {
       this.state = "run";
-      const runSpeed = 6;
+      const runSpeed = 4;
       this.x += this.facingLeft ? -runSpeed : runSpeed;
       this.updateAnimationWithFrames(this.runFrames);
     } else {
@@ -59,7 +58,10 @@ export class Ghost extends MonsterBase {
       const verticalDifference = player.y - this.y;
       const attackVerticalRange = 100; // player must be within 100px vertically
 
-      if (Math.abs(verticalDifference) < attackVerticalRange && this.attackCooldown === 0) {
+      if (
+        Math.abs(verticalDifference) < attackVerticalRange &&
+        this.attackCooldown === 0
+      ) {
         player.health.takeDamage(10);
         effects.push(new FloatingText(player.x, player.y - 20, "-10", "red"));
         this.attackCooldown = 60;
@@ -71,7 +73,7 @@ export class Ghost extends MonsterBase {
     }
   }
 
-  public  updateAnimationWithFrames(frames: HTMLImageElement[]) {
+  public updateAnimationWithFrames(frames: HTMLImageElement[]) {
     if (this.frames !== frames) {
       this.frames = frames;
       this.currentFrame = 0; // reset frame to avoid out-of-bounds
