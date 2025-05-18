@@ -17,12 +17,15 @@ export function handleMonsters(
   effects: FloatingText[]
 ): MonsterBase[] {
   return monsters.filter((m) => {
-    // Movement
-    if (m instanceof Ghost) {
-      m.moveWithPlayer(player, effects);
-    } else {
-      m.move(player.x);
-    }
+   if (m instanceof Ghost) {
+  if (!flyMode) {
+    m.moveWithPlayer(player, effects);
+  } else {
+    m.updateAnimationWithFrames(m.idleFrames); // Optional: idle while flying
+  }
+} else {
+  m.move(player.x);
+}
 
     m.draw(ctx, cameraX);
 
