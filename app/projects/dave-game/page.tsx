@@ -20,27 +20,22 @@ export default function DaveGamePage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Game init
   useEffect(() => {
     setMounted(true);
     if (canvasRef.current) {
       const game = new Game(canvasRef.current);
       game.start();
-      requestAnimationFrame(() => {
-        enableMobileControls(game["keys"]);
-      });
+      setTimeout(() => enableMobileControls(game["keys"]), 100); // safer delay
       return () => game.stop();
     }
   }, []);
 
-  // Listen for fullscreen change
   useEffect(() => {
     const onChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
-  // Auto fullscreen on mobile tap
   useEffect(() => {
     if (!isMobile) return;
 
@@ -70,16 +65,17 @@ export default function DaveGamePage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4 relative">
-      {mounted && <h1 className="text-2xl mb-4">{t("gamename")}</h1>}
+    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white relative overflow-hidden">
+      {mounted && <h1 className="text-2xl mt-4 mb-2 text-center">{t("gamename")}</h1>}
 
       <div
         id="canvas-wrapper"
-        className="relative inline-block"
+        className="relative"
         style={{
           width: isFullscreen || isMobile ? "100vw" : "auto",
           height: isFullscreen || isMobile ? "100vh" : "auto",
           overflow: "hidden",
+          touchAction: "none",
         }}
       >
         <canvas
@@ -87,8 +83,8 @@ export default function DaveGamePage() {
           width={1500}
           height={900}
           style={{
-            width: "100%",
-            height: "auto",
+            width: isFullscreen || isMobile ? "100vw" : "100%",
+            height: isFullscreen || isMobile ? "100vh" : "auto",
             display: "block",
             imageRendering: "pixelated",
             border: "2px solid white",
@@ -97,7 +93,7 @@ export default function DaveGamePage() {
 
         <button
           onClick={toggleFullscreen}
-          className="absolute bottom-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition z-10"
+          className="absolute top-2 right-2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition z-10"
           aria-label="Toggle Fullscreen"
         >
           {isFullscreen ? <MdFullscreenExit size={24} /> : <MdFullscreen size={24} />}
@@ -105,11 +101,11 @@ export default function DaveGamePage() {
       </div>
 
       {isMobile && (
-        <div className="fixed bottom-4 left-0 right-0 flex justify-center flex-wrap gap-5 z-50">
+        <div className="absolute bottom-2 left-0 right-0 flex justify-center flex-wrap gap-5 px-2 z-50">
           <div className="flex flex-col items-center gap-1">
-          <button id="jump" className="touch-btn">
-  <FaShoePrints size={28} />
-</button>
+            <button id="jump" className="touch-btn">
+              <FaShoePrints size={28} />
+            </button>
             <span className="text-xs text-white">Jump</span>
           </div>
           <div className="flex flex-col items-center gap-1">
