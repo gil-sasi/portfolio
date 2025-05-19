@@ -146,6 +146,8 @@ const resources = {
       spanish: "Spanish",
       gamedescription: "2D Game created by me",
       gamename: "Dangerous Gil",
+      newgame: "New Game",
+      createlevel: "Create Level",
     },
   },
   he: {
@@ -290,7 +292,9 @@ const resources = {
       chinese: "סינית",
       spanish: "ספרדית",
       gamedescription: "משחק דו מימד מבית יוצר שלי",
-      gamename: "גיל המסוכן",
+      gamename: "גיל מסוכן",
+      newgame: "משחק חדש",
+      createlevel: "צור שלב",
     },
   },
 };
