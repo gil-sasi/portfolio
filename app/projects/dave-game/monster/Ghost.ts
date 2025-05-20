@@ -28,7 +28,10 @@ export class Ghost extends MonsterBase {
 
   // Satisfy MonsterBase abstract requirement
   override move(playerX: number): void {
-    // Not used — handled via moveWithPlayer
+    if (Math.abs(playerX - playerX) < 500) {
+      console.log("test");
+  
+}
   }
 
   moveWithPlayer(player: Player, effects: FloatingText[]) {

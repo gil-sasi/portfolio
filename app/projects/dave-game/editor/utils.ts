@@ -1,4 +1,4 @@
-import { GRID_SIZE, PLATFORM_VARIANTS } from "./types";
+import { GRID_SIZE } from "./types";
 
 export function drawGrid(
   ctx: CanvasRenderingContext2D,

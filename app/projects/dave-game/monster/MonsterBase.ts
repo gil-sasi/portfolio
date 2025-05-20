@@ -46,8 +46,8 @@ updateAnimation() {
   }
 }
 
-moveWithPlayer(player: Player, effects: FloatingText[]) {
-  // Default: do nothing. Ghost overrides this.
+moveWithPlayer(_player: Player, _effects: FloatingText[]) {
+  // Default: do nothing. Subclass overrides this.
 }
 
   draw(ctx: CanvasRenderingContext2D, cameraX: number) {

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GRID_SIZE, LevelObject } from "./types";
-import { drawGrid, getImagePath } from "./utils";
+import { drawGrid } from "./utils";
 import PaletteSidebar from "./components/PaletteSidebar";
 import ObjectRenderer from "./components/ObjectRenderer";
 export default function LevelEditorCanvas() {

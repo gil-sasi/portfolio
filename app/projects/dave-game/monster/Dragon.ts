@@ -34,7 +34,7 @@ export class Dragon extends MonsterBase {
     this.fireCooldown = 0;
   }
 
-  move(playerX: number) {
+  move(playerX: number): void {
     this.angle += this.angleSpeed;
     this.x = this.centerX + Math.cos(this.angle) * this.radiusX;
     this.y = this.centerY + Math.sin(this.angle) * this.radiusY;
