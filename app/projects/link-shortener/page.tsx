@@ -34,7 +34,7 @@ export default function LinkShortenerPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-      setShortCode(`${window.location.origin}/api/redirect/${data.shortCode}`);
+setShortCode(`${window.location.origin}/r/${data.shortCode}`);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || t("shortenerror"));
