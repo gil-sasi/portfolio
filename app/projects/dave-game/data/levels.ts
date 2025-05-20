@@ -177,7 +177,7 @@ export const levels = [
   },
 
   //Level 4
-  {},
+  // {},
 ];
 
 //green = 100

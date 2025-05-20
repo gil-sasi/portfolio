@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { GRID_SIZE, LevelObject } from "./types";
 import { drawGrid, getImagePath } from "./utils";
-import Palette from "./palette";
-
+import PaletteSidebar from "./components/PaletteSidebar";
+import ObjectRenderer from "./components/ObjectRenderer";
 export default function LevelEditorCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [objects, setObjects] = useState<LevelObject[]>([]);
@@ -144,77 +144,20 @@ export default function LevelEditorCanvas() {
 
   return (
     <div className="flex h-screen">
-      {/* Palette */}
+      {/* Sidebar */}
       <div className="w-60 bg-gray-900 text-white p-4 flex flex-col gap-3 text-sm">
-        <Palette
+        <PaletteSidebar
           selectedType={selectedType}
           setSelectedType={setSelectedType}
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
+          inputSize={inputSize}
+          setInputSize={setInputSize}
+          setLevelSize={setLevelSize}
+          objectSize={objectSize}
+          setObjectSize={setObjectSize}
+          onExport={exportLevel}
         />
-
-        <div>
-          <label>Level Width</label>
-          <input
-            type="number"
-            value={inputSize.width}
-            onChange={(e) =>
-              setInputSize((prev) => ({ ...prev, width: e.target.value }))
-            }
-            className="w-full bg-gray-800 px-2 py-1 rounded"
-          />
-          <label>Level Height</label>
-          <input
-            type="number"
-            value={inputSize.height}
-            onChange={(e) =>
-              setInputSize((prev) => ({ ...prev, height: e.target.value }))
-            }
-            className="w-full bg-gray-800 px-2 py-1 rounded mb-2"
-          />
-          <button
-            className="w-full bg-blue-600 hover:bg-blue-700 rounded px-2 py-1"
-            onClick={() => {
-              const width = parseInt(inputSize.width);
-              const height = parseInt(inputSize.height);
-              if (isNaN(width) || isNaN(height)) {
-                alert("Please provide valid dimensions");
-                return;
-              }
-              setLevelSize({ width, height });
-            }}
-          >
-            Apply Size
-          </button>
-
-          <button
-            onClick={exportLevel}
-            className="w-full bg-green-600 hover:bg-green-700 rounded px-2 py-1 mt-2"
-          >
-            Export Level
-          </button>
-        </div>
-
-        <div>
-          <label>Object Width</label>
-          <input
-            type="number"
-            value={objectSize.width}
-            onChange={(e) =>
-              setObjectSize((prev) => ({ ...prev, width: e.target.value }))
-            }
-            className="w-full bg-gray-800 px-2 py-1 rounded"
-          />
-          <label>Object Height</label>
-          <input
-            type="number"
-            value={objectSize.height}
-            onChange={(e) =>
-              setObjectSize((prev) => ({ ...prev, height: e.target.value }))
-            }
-            className="w-full bg-gray-800 px-2 py-1 rounded"
-          />
-        </div>
       </div>
 
       {/* Canvas */}
@@ -230,59 +173,15 @@ export default function LevelEditorCanvas() {
           ref={canvasRef}
           style={{ imageRendering: "pixelated", cursor: "crosshair" }}
         />
-        {objects.map((obj, i) => {
-          const path = getImagePath(obj.type, obj.variant);
-          const isTiled = obj.type === "water" || obj.type === "lava";
 
-          if (isTiled) {
-            const tileWidth = 100;
-            const tileCount = Math.ceil(obj.width / tileWidth);
-            return Array.from({ length: tileCount }).map((_, j) => (
-              <img
-                key={`${i}-${j}`}
-                src={path}
-                alt={obj.type}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedObjectIndex(i);
-                }}
-                style={{
-                  position: "absolute",
-                  left: obj.x + j * tileWidth,
-                  top: obj.y,
-                  width: tileWidth,
-                  height: obj.height,
-                  pointerEvents: "auto",
-                  border:
-                    selectedObjectIndex === i ? "2px solid yellow" : "none",
-                }}
-              />
-            ));
-          } else {
-            return (
-              <img
-                key={i}
-                src={path}
-                alt={obj.type}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedObjectIndex(i);
-                }}
-                style={{
-                  position: "absolute",
-                  left: obj.x,
-                  top: obj.y,
-                  width: obj.width,
-                  height: obj.height,
-                  pointerEvents: "auto",
-                  border:
-                    selectedObjectIndex === i ? "2px solid yellow" : "none",
-                }}
-              />
-            );
-          }
-        })}
+        {/* Render all placed objects */}
+        <ObjectRenderer
+          objects={objects}
+          selectedObjectIndex={selectedObjectIndex}
+          setSelectedObjectIndex={setSelectedObjectIndex}
+        />
 
+        {/* Delete button overlay for selected object */}
         {selectedObjectIndex !== null && (
           <div className="fixed top-4 right-4 bg-gray-800 text-white p-3 rounded shadow-lg z-50">
             <p className="mb-2 text-sm">
