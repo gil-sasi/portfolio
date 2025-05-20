@@ -148,6 +148,8 @@ const resources = {
       gamename: "Dangerous Gil",
       newgame: "New Game",
       createlevel: "Create Level",
+      enterpassword: "Enter Password",
+      unlockeditor: "Unlock Editor",
     },
   },
   he: {
@@ -295,6 +297,8 @@ const resources = {
       gamename: "גיל מסוכן",
       newgame: "משחק חדש",
       createlevel: "צור שלב",
+      enterpassword: "הכנס סיסמא",
+      unlockeditor: "שחרר עורך",
     },
   },
 };

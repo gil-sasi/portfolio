@@ -6,7 +6,7 @@ export const levels = [
     width: 3000,
     height: 1500,
     platforms: [
-      { x: 0, y: 800, width: 1925, height: 100 },
+      { x: 0, y: 800, width: 1925, height: 100 }, //floor
       { x: 250, y: 400, width: 100, height: 80 },
       { x: 150, y: 600, width: 100, height: 80 },
       { x: 620, y: 150, width: 100, height: 80 }, // above trophy
@@ -175,6 +175,9 @@ export const levels = [
       { x: 2680, y: 805, width: 3000, height: 65, type: "lava" },
     ],
   },
+
+  //Level 4
+  {},
 ];
 
 //green = 100
