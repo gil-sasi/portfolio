@@ -150,6 +150,8 @@ const resources = {
       createlevel: "Create Level",
       enterpassword: "Enter Password",
       unlockeditor: "Unlock Editor",
+      barbershop: "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time",
+      mobilbarbereapp: "Barbershop App",
     },
   },
   he: {
@@ -299,6 +301,8 @@ const resources = {
       createlevel: "צור שלב",
       enterpassword: "הכנס סיסמא",
       unlockeditor: "שחרר עורך",
+      barbershop: "אפליקציה לנייד המאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד הספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות משולבת, ולקבל התראות על תורים בזמן אמת",
+      mobilbarbereapp: "אפליקציית קביעת תור לספר",
     },
   },
 };

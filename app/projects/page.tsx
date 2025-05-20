@@ -32,8 +32,18 @@ export default function ProjectsPage() {
         {/* Dangerous Gil Game Project */}
         <Link href="/projects/dave-game">
           <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
-            <h2 className="text-xl font-semibold mb-2">🎮{t("gamename")}</h2>
+            <h2 className="text-xl font-semibold mb-2">🎮 {t("gamename")}</h2>
             <p className="text-sm text-gray-400">{t("gamedescription")}</p>
+          </div>
+        </Link>
+
+        {/* Barbershop App Project */}
+        <Link href="/projects/barbershop">
+          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
+            <h2 className="text-xl font-semibold mb-2">💈 {t("mobilbarbereapp")}</h2>
+            <p className="text-sm text-gray-400">
+           {t("barbershop")}
+            </p>
           </div>
         </Link>
       </div>
