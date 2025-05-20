@@ -1,6 +1,6 @@
 import { Health } from "../data/Health";
 import { Player } from "../engine/player";
-import { FloatingText } from "../effects/FloatingText";
+
 export abstract class MonsterBase {
   x: number;
   y: number;
@@ -46,9 +46,7 @@ updateAnimation() {
   }
 }
 
-moveWithPlayer(_player: Player, _effects: FloatingText[]) {
-  // Default: do nothing. Subclass overrides this.
-}
+//abstract moveWithPlayer(player: Player, effects: FloatingText[]): void;
 
   draw(ctx: CanvasRenderingContext2D, cameraX: number) {
     const frame = this.frames[this.currentFrame];

@@ -2,7 +2,9 @@ import { Fireball } from "./Fireball";
 import { MonsterBase } from "./MonsterBase";
 import { Player } from "../engine/player"; 
 
+
 export class Dragon extends MonsterBase {
+
   centerX: number;
   centerY: number;
   angle = 0;

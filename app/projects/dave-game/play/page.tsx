@@ -11,12 +11,12 @@ import { FaShoePrints } from "react-icons/fa";
 import { GiPistolGun } from "react-icons/gi";
 import { Game } from "../engine/game";
 import { enableMobileControls } from "../engine/mobileControls";
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 import { useIsMobile } from "../hooks/useIsMobile";
 
 export default function DangerousGilPlayPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { t } = useTranslation();
+  //const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
