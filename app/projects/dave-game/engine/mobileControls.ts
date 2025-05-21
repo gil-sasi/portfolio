@@ -1,8 +1,11 @@
-export function enableMobileControls(keys: Record<string, boolean>) {
+export function enableMobileControls(
+  keys: Record<string, boolean>,
+  onJump?: () => void
+) {
   const map: Record<string, string | string[]> = {
     left: "ArrowLeft",
     right: "ArrowRight",
-    jump: ["ArrowUp", "Space"], 
+    jump: ["ArrowUp", "Space"],
     shoot: "Control",
   };
 
@@ -22,18 +25,36 @@ export function enableMobileControls(keys: Record<string, boolean>) {
       });
     };
 
-    btn.addEventListener("touchstart", (e) => {
-      e.preventDefault();
+    btn.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        setKeys(true);
+
+        if (id === "jump" && typeof onJump === "function") {
+          onJump(); 
+        }
+      },
+      { passive: false }
+    );
+
+    btn.addEventListener(
+      "touchend",
+      (e) => {
+        e.preventDefault();
+        setKeys(false);
+      },
+      { passive: false }
+    );
+
+    // Also for mouse testing
+    btn.addEventListener("mousedown", () => {
       setKeys(true);
-    }, { passive: false });
+      if (id === "jump" && typeof onJump === "function") {
+        onJump();
+      }
+    });
 
-    btn.addEventListener("touchend", (e) => {
-      e.preventDefault();
-      setKeys(false);
-    }, { passive: false });
-
-    // Optional desktop mouse events for testing
-    btn.addEventListener("mousedown", () => setKeys(true));
     btn.addEventListener("mouseup", () => setKeys(false));
     btn.addEventListener("mouseleave", () => setKeys(false));
   });

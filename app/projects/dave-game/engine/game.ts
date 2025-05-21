@@ -112,7 +112,7 @@ export class Game {
         r: Math.random() * 1.5 + 0.5,
       });
     }
-    enableMobileControls(this.keys);
+enableMobileControls(this.keys, () => this.player.jump());
     this.moonImage.src = "/assets/images/moon.png";
   }
 

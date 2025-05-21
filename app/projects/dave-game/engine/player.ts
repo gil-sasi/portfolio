@@ -107,9 +107,9 @@ this.x = Math.max(0, Math.min(this.x, this.levelWidth - this.width));
       this.currentFrame = 0;
     }
 
-  if ((keys["ArrowUp"] || keys["Space"]) && !this.isJumping) {
-    this.jump();
-  }
+  // if ((keys["ArrowUp"] || keys[" "]) && !this.isJumping) {
+  //   this.jump();
+  // }
 
   }
 
