@@ -5,6 +5,8 @@ import { GRID_SIZE, LevelObject } from "./types";
 import { drawGrid } from "./utils";
 import PaletteSidebar from "./components/PaletteSidebar";
 import ObjectRenderer from "./components/ObjectRenderer";
+import { useCanvasSetup } from "./hooks/useCanvasSetup";
+
 export default function LevelEditorCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [objects, setObjects] = useState<LevelObject[]>([]);
@@ -17,6 +19,7 @@ export default function LevelEditorCanvas() {
   const [selectedObjectIndex, setSelectedObjectIndex] = useState<number | null>(
     null
   );
+  useCanvasSetup(canvasRef, levelSize);
 
   const handlePlace = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
