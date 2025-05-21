@@ -1,7 +1,7 @@
 "use client";
 import { LevelObject } from "../types";
 import { getImagePath } from "../utils";
-
+import Image from "next/image";
 type Props = {
   objects: LevelObject[];
   selectedObjectIndex: number | null;
@@ -23,7 +23,7 @@ export default function ObjectRenderer({
           const tileWidth = 100;
           const tileCount = Math.ceil(obj.width / tileWidth);
           return Array.from({ length: tileCount }).map((_, j) => (
-            <img
+           <Image
               key={`${i}-${j}`}
               src={path}
               alt={obj.type}
@@ -45,7 +45,7 @@ export default function ObjectRenderer({
         }
 
         return (
-          <img
+         <Image
             key={i}
             src={path}
             alt={obj.type}

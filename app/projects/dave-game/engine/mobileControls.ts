@@ -2,7 +2,7 @@ export function enableMobileControls(keys: Record<string, boolean>) {
   const map = {
     left: "ArrowLeft",
     right: "ArrowRight",
-    jump: "Space",
+    jump: " ",
     shoot: "Control",
   };
 
