@@ -11,6 +11,7 @@ export function setupControls(
         "ArrowLeft",
         "ArrowRight",
         " ",
+        "Space",
         "Control",
         "q",
         "Q",
@@ -19,12 +20,12 @@ export function setupControls(
       e.preventDefault();
     }
 
-    // Prevent jump spam by triggering jump only once per press
-    if (e.key === " " && !keys[" "]) {
+    //  Support multiple keys for jump
+    if ((e.key === " " || e.key === "ArrowUp" || e.key === "Space") && !keys[e.key]) {
       onJump(); // let Player class decide if it should jump
     }
 
-    // Toggle debug once per press
+    //  Toggle debug mode
     if ((e.key === "q" || e.key === "Q") && !keys[e.key]) {
       toggleDebug();
     }
