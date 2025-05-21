@@ -3,7 +3,7 @@ import { Player } from "../engine/player";
 import { FloatingText } from "../effects/FloatingText";
 import { Health } from "../data/Health";
 import { levelManager } from "../engine/levelmanager";
-
+import type { Platform } from "../engine/platform";
 export class Ghost extends MonsterBase {
   public idleFrames: HTMLImageElement[];
   public runFrames: HTMLImageElement[];
@@ -31,10 +31,10 @@ export class Ghost extends MonsterBase {
     this.health = new Health(100);
   }
 
-  override move(playerX: number): void { }
+  override move(playerX: number): void {console.log(playerX); }
 
   moveWithPlayer(player: Player, effects: FloatingText[]) {
-    const platforms = levelManager.cloneLevelPlatforms();
+const platforms: Platform[] = levelManager.cloneLevelPlatforms();
     const distanceX = Math.abs(this.x - player.x);
     const verticalDiff = Math.abs(this.y - player.y);
     const visionRange = 700;
@@ -96,23 +96,23 @@ export class Ghost extends MonsterBase {
     // 🧱 HAZARD AWARENESS
     const hazardTypes = ["lava", "water"];
 
-    const isHazardUnderFoot = platforms.some(
-      (plat) =>
-        hazardTypes.includes((plat as any).type) &&
-        this.x + this.width / 2 >= plat.x &&
-        this.x + this.width / 2 <= plat.x + plat.width &&
-        this.y + this.height >= plat.y &&
-        this.y + this.height <= plat.y + 10
-    );
+  const isHazardUnderFoot = platforms.some(
+  (plat) =>
+    hazardTypes.includes(plat.type ?? "") &&
+    this.x + this.width / 2 >= plat.x &&
+    this.x + this.width / 2 <= plat.x + plat.width &&
+    this.y + this.height >= plat.y &&
+    this.y + this.height <= plat.y + 10
+);
 
-    const isHazardAhead = platforms.some(
-      (plat) =>
-        hazardTypes.includes((plat as any).type) &&
-        stepX >= plat.x &&
-        stepX <= plat.x + plat.width &&
-        feetY >= plat.y &&
-        feetY <= plat.y + 10
-    );
+const isHazardAhead = platforms.some(
+  (plat) =>
+    hazardTypes.includes(plat.type ?? "") &&
+    stepX >= plat.x &&
+    stepX <= plat.x + plat.width &&
+    feetY >= plat.y &&
+    feetY <= plat.y + 10
+);
 
     const isTooFarX = distanceX > 300;
     const isTooFarY = verticalDiff > 300;

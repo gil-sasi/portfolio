@@ -26,9 +26,9 @@ export default function DangerousGilPlayPage() {
     if (canvasRef.current) {
       const game = new Game(canvasRef.current);
       game.start();
-      requestAnimationFrame(() => {
-        enableMobileControls(game["keys"]);
-      });
+   setTimeout(() => {
+  enableMobileControls(game["keys"]);
+}, 200); 
       return () => game.stop();
     }
   }, []);
