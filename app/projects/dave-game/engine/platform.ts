@@ -5,7 +5,7 @@ export interface Platform {
   y: number;
   width: number;
   height: number;
-  type?: "normal" | "pillar" | "small" | "metalbox" | "small2" | "bridge";
+   type?: string;
 }
 
 export class PlatformManager {
@@ -23,6 +23,13 @@ export class PlatformManager {
       "small2",
       "metalbox",
       "bridge",
+      "woodenbox",
+      "metalpillar",
+      "goldenpillar",
+      "goldenbox",
+      "goldenplatform",
+      "emptybox",
+      "treasurebox",
     ];
     types.forEach((type) => {
       const img = new Image();

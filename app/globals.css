@@ -50,3 +50,36 @@ canvas {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* Swiper Slide Reset */
+.swiper,
+.swiper-wrapper,
+.swiper-slide,
+.swiper-slide > div,
+.swiper-slide img {
+  background-color: transparent !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Swiper Navigation Buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border-radius: 9999px;
+  padding: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.swiper-button-next:focus,
+.swiper-button-prev:focus {
+  outline: none;
+  box-shadow: none;
+}

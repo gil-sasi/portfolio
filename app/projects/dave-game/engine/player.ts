@@ -26,7 +26,7 @@ export class Player {
   spriteFrames: HTMLImageElement[] = [];
   pistolWalkFrames: HTMLImageElement[] = [];
   m16WalkFrames: HTMLImageElement[] = [];
-
+  levelWidth: number = 10;
   pistolStandingStill: HTMLImageElement = new Image();
   m16StandingStill: HTMLImageElement = new Image();
   pistolJump: HTMLImageElement = new Image();
@@ -78,14 +78,17 @@ export class Player {
   move(keys: Record<string, boolean>) {
     this.isMoving = keys.ArrowLeft || keys.ArrowRight;
 
-    if (keys.ArrowLeft) {
-      this.x -= 5;
-      this.facingLeft = true;
-    }
-    if (keys.ArrowRight) {
-      this.x += 5;
-      this.facingLeft = false;
-    }
+ if (keys.ArrowLeft) {
+  this.x -= 5;
+  this.facingLeft = true;
+}
+if (keys.ArrowRight) {
+  this.x += 5;
+  this.facingLeft = false;
+}
+
+// Clamp x between 0 and level boundaries
+this.x = Math.max(0, Math.min(this.x, this.levelWidth - this.width));
 
     if (this.isMoving) {
       this.frameCounter++;
@@ -94,8 +97,8 @@ export class Player {
         this.currentWeapon === "m16"
           ? this.m16WalkFrames.length
           : this.currentWeapon === "pistol"
-          ? this.pistolWalkFrames.length
-          : this.spriteFrames.length;
+            ? this.pistolWalkFrames.length
+            : this.spriteFrames.length;
 
       if (this.frameCounter % 6 === 0) {
         this.currentFrame = (this.currentFrame + 1) % frameCount;

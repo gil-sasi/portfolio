@@ -18,4 +18,12 @@ export class LevelManager {
     const level = this.getCurrentLevel();
     return level.diamonds.map((d) => ({ ...d }));
   }
+
+  cloneLevelPlatforms() {
+    const level = this.getCurrentLevel();
+    return level.platforms ? level.platforms.map((p) => ({ ...p })) : [];
+  }
 }
+
+
+export const levelManager = new LevelManager();

@@ -152,6 +152,17 @@ const resources = {
       unlockeditor: "Unlock Editor",
       barbershop: "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time",
       mobilbarbereapp: "Barbershop App",
+      barbershopApp: "Barbershop App",
+      barbershopDescription: "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time.",
+      barbershopFeature1: "Client & barber authentication",
+      barbershopFeature2: "Weekly schedule management",
+      barbershopFeature3: "Appointment booking system",
+      barbershopFeature4: "Real-time notifications via Expo",
+      barbershopFeature5: "Online product shop",
+      screenshots: "Screenshots"
+
+
+
     },
   },
   he: {
@@ -303,6 +314,19 @@ const resources = {
       unlockeditor: "שחרר עורך",
       barbershop: "אפליקציה לנייד המאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד הספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות משולבת, ולקבל התראות על תורים בזמן אמת",
       mobilbarbereapp: "אפליקציית קביעת תור לספר",
+      barbershopDescription: "אפליקציה לנייד שמאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד שהספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות מובנית, ולקבל התראות על הזמנות בזמן אמת.",
+      barbershopFeature1: "אימות לקוח וספר",
+      barbershopFeature2: "ניהול לוח זמנים שבועי",
+      barbershopFeature3: "מערכת לקביעת תורים",
+      barbershopFeature4: "התראות בזמן אמת דרך Expo",
+      barbershopFeature5: "חנות מוצרים אונליין",
+      screenshots: "תמונות מסך",
+      barbershopApp: "אפליקציה ספרים",
+
+
+
+
+
     },
   },
 };

@@ -22,7 +22,7 @@ export class FloatingText {
   }
 
   draw(ctx: CanvasRenderingContext2D, cameraX: number, cameraY: number) {
-    ctx.font = "25 Arial";
+    ctx.font = "bold 40px Arial"; 
     ctx.fillStyle = this.color;
     ctx.globalAlpha = this.opacity;
     ctx.fillText(this.text, this.x - cameraX, this.y - cameraY);

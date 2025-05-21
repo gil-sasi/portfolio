@@ -73,6 +73,7 @@ export default function ContactPage() {
   };
 
   return (
+    <div className="h-screen overflow-y-auto">
     <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
       <h1 className="text-3xl font-bold text-center">{t("contactMe")}</h1>
 
@@ -83,6 +84,12 @@ export default function ContactPage() {
         contactInfo && (
           <div className="bg-gray-800 p-6 rounded-lg border border-gray-600 shadow-md text-center">
             <h2 className="text-xl font-semibold mb-4">{t("contactInfo")}</h2>
+
+
+
+
+
+
 
             {/* Email */}
             <div className="flex items-center justify-center gap-2 mb-3">
@@ -123,6 +130,12 @@ export default function ContactPage() {
                     : s.url;
 
                 return (
+                 
+                 
+                 
+                 
+                 
+                 
                   <a
                     key={i}
                     href={href}
@@ -179,6 +192,7 @@ export default function ContactPage() {
           <p className="text-sm text-center mt-2 text-green-400">{status}</p>
         )}
       </form>
+    </div>
     </div>
   );
 }

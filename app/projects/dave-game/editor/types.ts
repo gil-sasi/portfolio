@@ -14,12 +14,19 @@ export const OBJECTS = [
 ] as const;
 
 export const PLATFORM_VARIANTS = [
-  "normal",
-  "bridge",
-  "metalbox",
-  "pillar",
-  "small",
-  "small2",
+     "normal",
+      "pillar",
+      "small",
+      "small2",
+      "metalbox",
+      "bridge",
+      "woodenbox",
+      "metalpillar",
+      "goldenpillar",
+      "goldenbox",
+      "goldenplatform",
+      "emptybox",
+      "treasurebox",
 ] as const;
 
 export type LevelObject = {

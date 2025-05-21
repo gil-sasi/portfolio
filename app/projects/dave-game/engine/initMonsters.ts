@@ -49,7 +49,7 @@ export function createMonsters(level: { monsters?: MonsterConfig[] }): MonsterBa
       const runFrames: HTMLImageElement[] = [];
       const attack1Frames: HTMLImageElement[] = [];
       const attack2Frames: HTMLImageElement[] = [];
-
+      
       for (let i = 1; i <= 5; i++) {
         const idle = new Image();
         idle.src = `/assets/images/monsters/ghost/idle/idle${i}.png`;
@@ -82,7 +82,7 @@ export function createMonsters(level: { monsters?: MonsterConfig[] }): MonsterBa
           runFrames,
           [...attack1Frames, ...attack2Frames],
           m.width,
-          m.height
+          m.height,
         )
       );
     }

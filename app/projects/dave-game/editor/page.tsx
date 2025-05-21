@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import LevelEditorCanvas from "./editor-canvas";
 
 export default function LevelEditorPage() {
-  const [authenticated, setAuthenticated] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -18,7 +18,7 @@ export default function LevelEditorPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input === "141291") {
-      setAuthenticated(true); //disable password for now
+      setAuthenticated(true); 
     } else {
       setError("❌ Wrong password");
     }

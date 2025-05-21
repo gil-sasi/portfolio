@@ -13,7 +13,7 @@ export function createPlayerAtSpawn(levelManager: LevelManager): Player {
   const spawnY = spawnPlatform ? spawnPlatform.y - playerHeight : 100;
 
   const player = new Player(spawnX, spawnY);
-
+  player.levelWidth = levelManager.getCurrentLevel().width;
   level.diamonds = levelManager.cloneLevelDiamonds
     ? levelManager.cloneLevelDiamonds()
     : [...level.diamonds];

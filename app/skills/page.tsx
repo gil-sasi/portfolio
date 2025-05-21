@@ -69,8 +69,11 @@ export default function SkillsPage() {
       .join(" ");
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10 text-white">
-      <h1 className="text-4xl font-bold mb-8 text-center">{t("skills")}</h1>
+     <div className="h-screen overflow-y-auto">
+    <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
+      <h1 className="text-3xl font-bold text-center">{t("skills")}</h1>
+
+  
 
       {loading ? (
         <>
@@ -99,5 +102,6 @@ export default function SkillsPage() {
         ))
       )}
     </div>
+      </div>
   );
 }

@@ -18,7 +18,7 @@ export const levels = [
       { x: 420, y: 350, width: 100, height: 80 }, //under the trophy
       { x: 1200, y: 310, width: 100, height: 80 }, //under the door
     ],
-    pistolPickup: { x: 400, y: 700, width: 100, height: 100 },
+    pistolPickup: { x: -2000, y: 700, width: 100, height: 100 },
     m16Pickup: { x: -2000, y: 500, width: 100, height: 100 },
     trophy: { x: 420, y: 265, width: 100, height: 100 },
     door: { x: 1305, y: 515, width: 100, height: 100 },
@@ -44,14 +44,11 @@ export const levels = [
         radiusX: 90,
         radiusY: 150,
         angleSpeed: 0.05,
-        fireball: { width: 40, height: 40 }, // 💥 size of fireball
+        fireball: { width: 40, height: 40 }, 
       },
-      { type: "ghost", x: 1700, y: 670, width: 120, height: 120 },
+   
     ],
-    potions: [
-      { x: 500, y: 730, type: "red" },
-      { x: 700, y: 730, type: "yellow" },
-    ],
+  
   },
 
   {
@@ -130,8 +127,8 @@ export const levels = [
     trophy: { x: 2500, y: 70, width: 100, height: 100 },
     door: { x: 3800, y: 510, width: 100, height: 150 },
 
-    pistolPickup: { x: -600, y: 700, width: 100, height: 100 },
-    m16Pickup: { x: 0, y: 500, width: 100, height: 100 },
+    m16Pickup: { x: -600, y: 700, width: 100, height: 100 },
+    pistolPickup: { x: 0, y: 500, width: 100, height: 100 },
     monsters: [
       {
         type: "dragon",
@@ -177,7 +174,121 @@ export const levels = [
   },
 
   //Level 4
-  // {},
+  {
+    width: 7001,
+    height: 2000,
+    platforms: [
+
+      { x: 0, y: 800, width: 4900, height: 100 }, //floor
+      { x: 300, y: 700, width: 100, height: 100, type: "woodenbox" },
+      { x: 500, y: 600, width: 100, height: 100, type: "woodenbox" },
+      { x: 720, y: 400, width: 400, height: 100, type: "woodenbox" },
+      { x: 1100, y: 400, width: 205, height: 400, type: "pillar" },
+      { x: 1300, y: 400, width: 400, height: 100, type: "woodenbox" },
+
+
+      { x: 5200, y: 500, width: 100, height: 100, type: "small2" },
+      { x: 5900, y: 800, width: 1200, height: 100 },
+      { x: 5500, y: 800, width: 200, height: 80 }, //platform in middle of water
+      { x: 5470, y: 300, width: 250, height: 500, type: "pillar" },
+      { x: 6750, y: 300, width: 250, height: 500, type: "pillar" },
+      { x: 6575, y: 620, width: 182, height: 180, type: "woodenbox" },
+
+
+
+
+      { x: 3500, y: 300, width: 250, height: 500, type: "pillar" },
+      { x: 3345, y: 620, width: 182, height: 180, type: "woodenbox" },
+
+    ],
+
+
+    trophy: { x: 3600, y: 200, width: 100, height: 100 },
+    door: { x: 6850, y: 210, width: 100, height: 100 },
+
+
+    diamonds: [
+      { x: 1000, y: 480, width: 150, height: 150, type: "green" },
+      { x: 900, y: 480, width: 150, height: 150, type: "green" },
+      { x: 800, y: 480, width: 150, height: 150, type: "green" }, //first diamonds
+      { x: 700, y: 480, width: 150, height: 150, type: "green" },
+      { x: 600, y: 480, width: 150, height: 150, type: "green" },
+      { x: 1000, y: 680, width: 150, height: 150, type: "green" },
+      { x: 1000, y: 580, width: 150, height: 150, type: "green" },
+
+      { x: 1270, y: 480, width: 150, height: 150, type: "green" },
+      { x: 1270, y: 580, width: 150, height: 150, type: "green" },
+      { x: 1270, y: 680, width: 150, height: 150, type: "green" },
+      { x: 1270, y: 480, width: 150, height: 150, type: "green" },
+      { x: 1370, y: 480, width: 150, height: 150, type: "green" },
+      { x: 1370, y: 680, width: 150, height: 150, type: "green" },
+      { x: 1370, y: 580, width: 150, height: 150, type: "green" },
+
+
+
+      { x: 3800, y: 680, width: 150, height: 150, type: "blue" },
+      { x: 3900, y: 680, width: 150, height: 150, type: "blue" },
+      { x: 4000, y: 680, width: 150, height: 150, type: "blue" },
+      { x: 4100, y: 680, width: 150, height: 150, type: "blue" },
+      { x: 4200, y: 680, width: 150, height: 150, type: "blue" },
+      { x: 4300, y: 680, width: 150, height: 150, type: "blue" },
+
+    ],
+
+
+    pistolPickup: { x: 750, y: 300, width: 100, height: 100 },
+    m16Pickup: { x: -2000, y: 500, width: 100, height: 100 },
+
+
+    potions: [
+      { x: 3400, y: 550, type: "yellow" },
+      { x: 1700, y: 730, type: "red" },
+
+    ],
+
+
+    monsters: [
+
+
+      { type: "ghost", x: 6750, y: 150, width: 120, height: 120 },
+      { type: "ghost", x: 2500, y: 680, width: 120, height: 120 },
+
+
+
+      {
+        type: "dragon",
+        x: 1550,
+        y: 250,
+        width: 150,
+        height: 150,
+        radiusX: 125,
+        radiusY: 280,
+        angleSpeed: 0.05,
+        fireball: { width: 100, height: 100 },
+      },
+
+
+      {
+        type: "dragon",
+        x: 2300,
+        y: 300,
+        width: 150,
+        height: 150,
+        radiusX: 125,
+        radiusY: 280,
+        angleSpeed: 0.05,
+        fireball: { width: 100, height: 100 },
+      },
+    ],
+    hazards: [
+      { x: 4860, y: 800, width: 635, height: 70, type: "water" },
+      { x: 5700, y: 800, width: 400, height: 65, type: "water" },
+      // { x: 2680, y: 805, width: 3000, height: 65, type: "lava" },
+    ],
+
+
+
+  },
 ];
 
 //green = 100
