@@ -3,12 +3,13 @@ import { GRID_SIZE } from "../types";
 import { drawGrid } from "../utils";
 
 export function useCanvasSetup(
-  canvasRef: React.RefObject<HTMLCanvasElement>,
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
   levelSize: { width: number; height: number }
 ) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
