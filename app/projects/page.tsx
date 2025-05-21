@@ -7,43 +7,44 @@ export default function ProjectsPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="p-6 max-w-4xl mx-auto text-white">
-      <h1 className="text-3xl font-bold mb-6 text-center">{t("myprojects")}</h1>
+    <div className="min-h-screen overflow-auto px-6 py-10 text-white">
+      <h1 className="text-4xl font-extrabold text-center mb-10">{t("myprojects")}</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Link Shortener Project */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Project Card */}
         <Link href="/projects/link-shortener">
-          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
-            <h2 className="text-xl font-semibold mb-2">
+          <div className="bg-gray-800 hover:bg-gray-700 transition rounded-2xl shadow-lg p-6 cursor-pointer border border-gray-700">
+            <h2 className="text-2xl font-semibold mb-2 flex items-center">
               🔗 {t("linkshortener")}
             </h2>
-            <p className="text-sm text-gray-400">{t("linkshortenerdesc")}</p>
+            <p className="text-gray-400 text-sm">{t("linkshortenerdesc")}</p>
           </div>
         </Link>
 
-        {/* Image-to-Text OCR Project */}
         <Link href="/projects/image-to-text">
-          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
-            <h2 className="text-xl font-semibold mb-2">🖼️ {t("ocrtitle")}</h2>
-            <p className="text-sm text-gray-400">{t("ocrdesc")}</p>
+          <div className="bg-gray-800 hover:bg-gray-700 transition rounded-2xl shadow-lg p-6 cursor-pointer border border-gray-700">
+            <h2 className="text-2xl font-semibold mb-2 flex items-center">
+              🖼️ {t("ocrtitle")}
+            </h2>
+            <p className="text-gray-400 text-sm">{t("ocrdesc")}</p>
           </div>
         </Link>
 
-        {/* Dangerous Gil Game Project */}
         <Link href="/projects/dave-game">
-          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
-            <h2 className="text-xl font-semibold mb-2">🎮 {t("gamename")}</h2>
-            <p className="text-sm text-gray-400">{t("gamedescription")}</p>
+          <div className="bg-gray-800 hover:bg-gray-700 transition rounded-2xl shadow-lg p-6 cursor-pointer border border-gray-700">
+            <h2 className="text-2xl font-semibold mb-2 flex items-center">
+              🎮 {t("gamename")}
+            </h2>
+            <p className="text-gray-400 text-sm">{t("gamedescription")}</p>
           </div>
         </Link>
 
-        {/* Barbershop App Project */}
         <Link href="/projects/barbershop">
-          <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-700 transition cursor-pointer shadow-md">
-            <h2 className="text-xl font-semibold mb-2">💈 {t("mobilbarbereapp")}</h2>
-            <p className="text-sm text-gray-400">
-           {t("barbershop")}
-            </p>
+          <div className="bg-gray-800 hover:bg-gray-700 transition rounded-2xl shadow-lg p-6 cursor-pointer border border-gray-700">
+            <h2 className="text-2xl font-semibold mb-2 flex items-center">
+              💈 {t("mobilbarbereapp")}
+            </h2>
+            <p className="text-gray-400 text-sm">{t("barbershop")}</p>
           </div>
         </Link>
       </div>

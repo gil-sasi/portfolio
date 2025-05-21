@@ -19,7 +19,7 @@ export default function HomePage() {
   if (!mounted) return null;
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white px-4">
+    <main className="flex flex-col items-center justify-start min-h-screen h-full overflow-y-auto bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white px-4 pt-111 pb-16">
       <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 text-center">
         <Trans
           i18nKey="heroTitle"
