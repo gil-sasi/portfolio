@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connectToDatabase } from "@/lib/mongodb";
+import { getRawDb } from "@/lib/mongoclient";
 
 const generateCode = () => Math.random().toString(36).substring(2, 8);
 
@@ -15,7 +15,7 @@ export default async function handler(
   if (!url) return res.status(400).json({ error: "Missing URL" });
 
   try {
-    const db = await connectToDatabase();
+    const db = await getRawDb(); // raw mongo client
     const shortCode = generateCode();
 
     await db.collection("links").insertOne({
