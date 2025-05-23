@@ -38,7 +38,7 @@
 
     // Improve build performance
     "incremental": true,
-
+    "forceConsistentCasingInFileNames": true,
     // Enable Next.js TypeScript plugin
     "plugins": [
       {
