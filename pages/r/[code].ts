@@ -1,10 +1,10 @@
 import { GetServerSideProps } from "next";
-import { connectToDatabase } from "@/lib/mongodb";
+import { getRawDb } from "@/lib/mongoclient";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const code = context.params?.code as string;
 
-  const db = await connectToDatabase();
+  const db = await getRawDb();
   const found = await db.collection("links").findOne({ shortCode: code });
 
   if (!found) {
