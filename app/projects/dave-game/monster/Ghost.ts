@@ -31,10 +31,12 @@ export class Ghost extends MonsterBase {
     this.health = new Health(100);
   }
 
-  override move(playerX: number): void {console.log(playerX); }
+  override move(playerX: number): void {
+    console.log(playerX);
+  }
 
   moveWithPlayer(player: Player, effects: FloatingText[]) {
-const platforms: Platform[] = levelManager.cloneLevelPlatforms();
+    const platforms: Platform[] = levelManager.cloneLevelPlatforms();
     const distanceX = Math.abs(this.x - player.x);
     const verticalDiff = Math.abs(this.y - player.y);
     const visionRange = 700;
@@ -58,6 +60,7 @@ const platforms: Platform[] = levelManager.cloneLevelPlatforms();
         this.y = plat.y - this.height;
         this.velocityY = 0;
         this.isOnGround = true;
+        console.log(this.isOnGround);
         break;
       }
     }
@@ -96,30 +99,33 @@ const platforms: Platform[] = levelManager.cloneLevelPlatforms();
     // 🧱 HAZARD AWARENESS
     const hazardTypes = ["lava", "water"];
 
-  const isHazardUnderFoot = platforms.some(
-  (plat) =>
-    hazardTypes.includes(plat.type ?? "") &&
-    this.x + this.width / 2 >= plat.x &&
-    this.x + this.width / 2 <= plat.x + plat.width &&
-    this.y + this.height >= plat.y &&
-    this.y + this.height <= plat.y + 10
-);
+    const isHazardUnderFoot = platforms.some(
+      (plat) =>
+        hazardTypes.includes(plat.type ?? "") &&
+        this.x + this.width / 2 >= plat.x &&
+        this.x + this.width / 2 <= plat.x + plat.width &&
+        this.y + this.height >= plat.y &&
+        this.y + this.height <= plat.y + 10
+    );
 
-const isHazardAhead = platforms.some(
-  (plat) =>
-    hazardTypes.includes(plat.type ?? "") &&
-    stepX >= plat.x &&
-    stepX <= plat.x + plat.width &&
-    feetY >= plat.y &&
-    feetY <= plat.y + 10
-);
+    const isHazardAhead = platforms.some(
+      (plat) =>
+        hazardTypes.includes(plat.type ?? "") &&
+        stepX >= plat.x &&
+        stepX <= plat.x + plat.width &&
+        feetY >= plat.y &&
+        feetY <= plat.y + 10
+    );
 
     const isTooFarX = distanceX > 300;
     const isTooFarY = verticalDiff > 300;
     const isBelowPlayer = this.y > player.y + player.height;
     const nothingToFallTo = !nextTile && !safeLandingBelow;
 
-    if ((isTooFarX && isTooFarY) || (isBelowPlayer && nothingToFallTo && distanceX > 150)) {
+    if (
+      (isTooFarX && isTooFarY) ||
+      (isBelowPlayer && nothingToFallTo && distanceX > 150)
+    ) {
       this.state = "idle";
       this.updateAnimationWithFrames(this.idleFrames);
       this.health.heal(1);
@@ -147,8 +153,7 @@ const isHazardAhead = platforms.some(
         this.updateAnimationWithFrames(this.idleFrames);
         this.health.heal(1);
       }
-    }
-    else {
+    } else {
       this.state = "attack";
       this.updateAnimationWithFrames(this.attackFrames);
 

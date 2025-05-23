@@ -14,6 +14,10 @@ function AuthGate() {
   useEffect(() => {
     console.log("🚀 Running setUserFromToken in AuthGate");
     dispatch(setUserFromToken());
+
+    fetch("/api/skills").catch(() => {
+      console.log("🧊 Warming up /api/skills route");
+    });
   }, [dispatch]);
 
   return null;

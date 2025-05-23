@@ -128,6 +128,7 @@ export default function Navbar() {
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng).catch(console.error);
     localStorage.setItem("i18nextLng", lng);
+    setMenuOpen(false);
   };
 
   if (!hasMounted) return null;
@@ -291,17 +292,31 @@ export default function Navbar() {
       {/* Mobile Menu Items */}
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-3 px-4 mt-4 text-sm">
-          <Link href="/skills">{t("skills")}</Link>
-          <Link href="/projects">{t("projects")}</Link>
-          <Link href="/contact">{t("contact")}</Link>
-          <Link href="/about">{t("about")}</Link>
+          <Link href="/skills" onClick={() => setMenuOpen(false)}>
+            {t("skills")}
+          </Link>
+          <Link href="/projects" onClick={() => setMenuOpen(false)}>
+            {t("projects")}
+          </Link>
+          <Link href="/contact" onClick={() => setMenuOpen(false)}>
+            {t("contact")}
+          </Link>
+          <Link href="/about" onClick={() => setMenuOpen(false)}>
+            {t("about")}
+          </Link>
           {user?.role === "admin" && (
-            <Link href="/admin">{t("adminPanel")}</Link>
+            <Link href="/admin" onClick={() => setMenuOpen(false)}>
+              {t("adminPanel")}
+            </Link>
           )}
-          <Link href="/">{t("home")}</Link>
+          <Link href="/" onClick={() => setMenuOpen(false)}>
+            {t("home")}
+          </Link>
+
           {!user && !onLoginPage && (
             <Link
               href="/login"
+              onClick={() => setMenuOpen(false)}
               className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded"
             >
               {t("login")}
@@ -310,6 +325,7 @@ export default function Navbar() {
           {!user && !onSignupPage && (
             <Link
               href="/signup"
+              onClick={() => setMenuOpen(false)}
               className="bg-gray-600 hover:bg-gray-700 px-4 py-1 rounded"
             >
               {t("signup")}
@@ -319,18 +335,23 @@ export default function Navbar() {
             <>
               <Link
                 href="/profile"
+                onClick={() => setMenuOpen(false)}
                 className="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded text-sm"
               >
                 {t("profile")}
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
                 className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded text-sm"
               >
                 {t("logout")}
               </button>
             </>
           )}
+
           {/* Language Flags (Mobile) */}
           <div className="flex gap-2 items-center mt-2">
             <button onClick={() => handleLanguageChange("en")} title="English">

@@ -69,39 +69,37 @@ export default function SkillsPage() {
       .join(" ");
 
   return (
-     <div className="h-screen overflow-y-auto">
-    <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
-      <h1 className="text-3xl font-bold text-center">{t("skills")}</h1>
+    <div className="h-screen overflow-y-auto">
+      <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
+        <h1 className="text-3xl font-bold text-center">{t("skills")}</h1>
 
-  
-
-      {loading ? (
-        <>
-          <Spinner />
-          <p className="text-center text-gray-400">{t("loading")}...</p>
-        </>
-      ) : skills.length === 0 ? (
-        <p className="text-center text-gray-400">{t("noskillsfound")}</p>
-      ) : (
-        Object.entries(groupedSkills).map(([category, items]) => (
-          <div key={category} className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              {categoryEmojis[category] || "🔹"} {toTitleCase(category)}
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {items.map((skill) => (
-                <span
-                  key={skill._id}
-                  className="bg-blue-700/60 text-sm px-4 py-2 rounded-full border border-blue-400 transition-all duration-200 hover:bg-blue-500 hover:text-white"
-                >
-                  {skill.name}
-                </span>
-              ))}
+        {loading ? (
+          <>
+            <Spinner />
+            <p className="text-center text-gray-400">{t("loading")}...</p>
+          </>
+        ) : skills.length === 0 ? (
+          <p className="text-center text-gray-400">{t("noskillsfound")}</p>
+        ) : (
+          Object.entries(groupedSkills).map(([category, items]) => (
+            <div key={category} className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4">
+                {categoryEmojis[category] || "🔹"} {toTitleCase(category)}
+              </h2>
+              <div className="flex flex-wrap gap-3">
+                {items.map((skill) => (
+                  <span
+                    key={skill._id}
+                    className="bg-blue-700/60 text-sm px-4 py-2 rounded-full border border-blue-400 transition-all duration-200 hover:bg-blue-500 hover:text-white"
+                  >
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))
-      )}
-    </div>
+          ))
+        )}
       </div>
+    </div>
   );
 }
