@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getRawDb } from "@/lib/mongoclient";
+import { getRawDb } from "@/lib/mongoClient";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const code = context.params?.code as string;
