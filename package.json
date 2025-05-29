@@ -34,7 +34,7 @@
     "react-toastify": "^11.0.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "swiper": "^11.2.7",
+    "swiper": "^11.2.8",
     "tesseract.js": "^6.0.1",
     "yet-another-react-lightbox": "^3.23.2"
   },

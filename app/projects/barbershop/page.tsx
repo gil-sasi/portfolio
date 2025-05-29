@@ -1,4 +1,5 @@
 "use client";
+
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -6,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+
 export default function BarbershopProjectPage() {
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
@@ -15,7 +17,14 @@ export default function BarbershopProjectPage() {
   }, []);
 
   const images = [
-    "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png",
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png",
+    "5.png",
+    "6.png",
+    "7.png",
+    "8.png",
   ].map((filename) => `/assets/barbershop/${filename}`);
 
   if (!isMounted) return null;
@@ -49,13 +58,16 @@ export default function BarbershopProjectPage() {
             navigation
             spaceBetween={30}
             slidesPerView={1}
+            width={300}
             className="rounded-xl overflow-hidden custom-swiper"
           >
             {images.map((src, i) => (
               <SwiperSlide key={i}>
-               <Image
+                <Image
                   src={src}
                   alt={`Screenshot ${i + 1}`}
+                  width={300}
+                  height={600}
                   className="w-full max-h-[480px] object-contain rounded-xl"
                 />
               </SwiperSlide>

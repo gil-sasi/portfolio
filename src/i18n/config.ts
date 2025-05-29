@@ -150,19 +150,37 @@ const resources = {
       createlevel: "Create Level",
       enterpassword: "Enter Password",
       unlockeditor: "Unlock Editor",
-      barbershop: "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time",
+      barbershop:
+        "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time",
       mobilbarbereapp: "Barbershop App",
       barbershopApp: "Barbershop App",
-      barbershopDescription: "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time.",
+      barbershopDescription:
+        "A mobile app that allows clients to book appointments with barbers, while barbers can manage their weekly schedules, offer products through an integrated shop, and receive booking notifications in real-time.",
       barbershopFeature1: "Client & barber authentication",
       barbershopFeature2: "Weekly schedule management",
       barbershopFeature3: "Appointment booking system",
       barbershopFeature4: "Real-time notifications via Expo",
       barbershopFeature5: "Online product shop",
-      screenshots: "Screenshots"
-
-
-
+      screenshots: "Screenshots",
+      quizapptitle: "Quiz App",
+      quizappdesc:
+        "A trivia app with random questions, scoring, results screen, and admin panel",
+      quizapp: "Quiz App",
+      quizappFeature1: "Random questions from a large database",
+      quizappFeature2: "Scoring system to track user performance",
+      features: "Features",
+      featuretimer: "Multiple-choice quiz with animated timer",
+      featureadminpanel: "Admin panel to manage questions and users",
+      featurescoreboard: "Scoreboard with total points and ranks",
+      featurejwt: "JWT authentication (login/register)",
+      featurereanimated: "Reanimated animations for smooth UI",
+      featureresponsive: "Mobile-first responsive design",
+      techstack: "Tech Stack",
+      techreactnative: "React Native + TypeScript",
+      techbackend: "Node.js + Express + MongoDB",
+      techjwt: "JWT Auth with token storage",
+      techreanimated: "Reanimated v3 for animations",
+      techvercel: "Vercel for backend hosting",
     },
   },
   he: {
@@ -312,9 +330,11 @@ const resources = {
       createlevel: "צור שלב",
       enterpassword: "הכנס סיסמא",
       unlockeditor: "שחרר עורך",
-      barbershop: "אפליקציה לנייד המאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד הספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות משולבת, ולקבל התראות על תורים בזמן אמת",
+      barbershop:
+        "אפליקציה לנייד המאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד הספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות משולבת, ולקבל התראות על תורים בזמן אמת",
       mobilbarbereapp: "אפליקציית קביעת תור לספר",
-      barbershopDescription: "אפליקציה לנייד שמאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד שהספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות מובנית, ולקבל התראות על הזמנות בזמן אמת.",
+      barbershopDescription:
+        "אפליקציה לנייד שמאפשרת ללקוחות לקבוע תורים עם ספרים, בעוד שהספרים יכולים לנהל את לוחות הזמנים השבועיים שלהם, להציע מוצרים דרך חנות מובנית, ולקבל התראות על הזמנות בזמן אמת.",
       barbershopFeature1: "אימות לקוח וספר",
       barbershopFeature2: "ניהול לוח זמנים שבועי",
       barbershopFeature3: "מערכת לקביעת תורים",
@@ -322,11 +342,26 @@ const resources = {
       barbershopFeature5: "חנות מוצרים אונליין",
       screenshots: "תמונות מסך",
       barbershopApp: "אפליקציה ספרים",
-
-
-
-
-
+      quizapptitle: "אפליקציית טריוויה",
+      quizappdesc:
+        "אפליקציית טריוויה עם שאלות אקראיות, ניקוד, מסך תוצאות ופאנל ניהול",
+      quizapp: "אפליקציית טריוויה",
+      quizappFeature1: "שאלות אקראיות ממאגר גדול",
+      quizappFeature2: "מערכת ניקוד למעקב אחר ביצועי המשתמש",
+      quizappFeature3: "מסך תוצאות עם ניקוד כולל ודירוגים",
+      features: "תכונות",
+      featuretimer: "בחירת תשובות מרובות עם טיימר מונפש",
+      featureadminpanel: "פאנל ניהול לניהול שאלות ומשתמשים",
+      featurescoreboard: "לוח ניקוד עם נקודות כוללות ודירוגים",
+      featurejwt: "אימות JWT (כניסה/הרשמה)",
+      featurereanimated: "אנימציות Reanimated עבור ממשק חלק",
+      featureresponsive: "עיצוב רספונסיבי מותאם לנייד",
+      techstack: "טכנולוגיות",
+      techreactnative: "React Native + TypeScript",
+      techbackend: "Node.js + Express + MongoDB",
+      techjwt: "JWT Auth עם אחסון טוקן",
+      techreanimated: "Reanimated v3 לאנימציות",
+      techvercel: "Vercel לאחסון צד שרת",
     },
   },
 };
