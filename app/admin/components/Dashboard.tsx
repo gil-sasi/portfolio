@@ -81,7 +81,11 @@ export default function Dashboard() {
         setSkills(skillsRes.data);
         setVisitors(visitorsRes.data);
         setLoginStats(loginsRes.data);
-        setClickStats(clicksRes.data); // [{ platform: "GitHub", count: 12 }, ...]
+        setClickStats(
+          ((clicksRes.data ?? []) as ClickStat[]).sort(
+            (a: ClickStat, b: ClickStat) => b.count - a.count
+          )
+        );
       } catch (err) {
         console.error("Dashboard fetch error:", err);
       } finally {
@@ -130,9 +134,7 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-gray-800 border border-gray-700 rounded p-4 mt-8">
-            <h3 className="text-lg font-semibold mb-4">
-              {t("mostcontacted", "Most Contacted Platforms")}
-            </h3>
+            <h3 className="text-lg font-semibold mb-4">{t("mostcontacted")}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {clickStats.map((c) => (
                 <div
