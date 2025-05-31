@@ -6,6 +6,7 @@ import UserManagement from "./components/UserManagement";
 import ContactInfo from "./components/ContactInfo";
 import SkillsSection from "./components/SkillsSection";
 import Visitors from "./components/Visitors";
+import Dashboard from "./components/Dashboard";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
@@ -224,9 +225,7 @@ export default function AdminPage() {
           <Visitors visitors={visitors} loading={visitorsLoading} />
         )}
 
-        {activeTab === "dashboard" && (
-          <div className="text-center text-gray-400">{t("dashboard")}</div>
-        )}
+        {activeTab === "dashboard" && <Dashboard />}
       </section>
     </main>
   );

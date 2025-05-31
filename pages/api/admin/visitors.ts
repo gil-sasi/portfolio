@@ -7,6 +7,7 @@ const visitorSchema = new mongoose.Schema({
   ip: { type: String, required: true, unique: true },
   visitCount: { type: Number, default: 1 },
   lastVisit: { type: Date, default: Date.now },
+  country: { type: String, default: "Unknown" },
 });
 
 const Visitor =
@@ -28,6 +29,7 @@ export default async function handler(
       ip: v.ip,
       visitCount: v.visitCount,
       lastVisit: v.lastVisit?.toISOString() ?? null,
+      country: v.country || "Unknown",
     }));
 
     res.status(200).json(formatted);
