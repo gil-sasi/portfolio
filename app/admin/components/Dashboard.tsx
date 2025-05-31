@@ -16,27 +16,20 @@ interface Visitor {
   country?: string;
   lastVisit: string;
 }
-
-interface User {
-  isBanned: boolean;
-}
-
-interface Status {
-  version: string;
-  deployedAt: string;
-  mongoConnected: boolean;
+interface Skill {
+  _id: string;
 }
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [users, setUsers] = useState<User[]>([]);
-  const [skills, setSkills] = useState<any[]>([]);
+  const [users, setUsers] = useState([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loginStats, setLoginStats] = useState<
     { date: string; count: number }[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState<Status>({
+  const [status, setStatus] = useState({
     version: "",
     deployedAt: "",
     mongoConnected: false,
@@ -80,7 +73,7 @@ export default function Dashboard() {
   }, []);
 
   const totalUsers = users.length;
-  const bannedUsers = users.filter((u) => u.isBanned).length;
+  const bannedUsers = users.filter((u: any) => u.isBanned).length;
   const totalSkills = skills.length;
   const totalVisitors = visitors.length;
 
@@ -93,18 +86,15 @@ export default function Dashboard() {
       ) : (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card title={t("totalUsers", "Total Users")} value={totalUsers} />
-            <Card
-              title={t("bannedUsers", "Banned Users")}
-              value={bannedUsers}
-            />
-            <Card title={t("skills", "Skills")} value={totalSkills} />
-            <Card title={t("visitors", "Visitors")} value={totalVisitors} />
+            <Card title={t("totalusers")} value={totalUsers} />
+            <Card title={t("bannedusers")} value={bannedUsers} />
+            <Card title={t("skills")} value={totalSkills} />
+            <Card title={t("visitors")} value={totalVisitors} />
           </div>
 
           <div className="bg-gray-800 border border-gray-700 rounded p-4 mt-8">
             <h3 className="text-lg font-semibold mb-2">
-              {t("loginsPerDay", "Logins per Day")}
+              {t("loginsperday", "Logins per Day")}
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={loginStats}>

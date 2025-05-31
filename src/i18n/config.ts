@@ -199,6 +199,8 @@ const resources = {
       unitedstates: "United States",
       lastvisit: "Last Visit",
       totalusers: "Total Users",
+      bannedusers: "Banned Users",
+      loginsperday: "Logins per Day",
     },
   },
   he: {
@@ -398,6 +400,8 @@ const resources = {
       UnitedStates: "ארצות הברית",
       lastvisit: "ביקור אחרון",
       totalusers: "סך כל המשתמשים",
+      bannedusers: "משתמשים חסומים",
+      loginsperday: "כניסות ליום",
     },
   },
 };
