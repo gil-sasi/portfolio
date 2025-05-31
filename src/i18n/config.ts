@@ -201,6 +201,12 @@ const resources = {
       totalusers: "Total Users",
       bannedusers: "Banned Users",
       loginsperday: "Logins per Day",
+      version: "Version",
+      deployedAt: "Deployed At",
+      deployed: "Deployed",
+      mongoConnected: "Connected to MongoDB",
+      mostcontacted: "Most Contacted",
+      clickStats: "Click Stats",
     },
   },
   he: {
@@ -402,6 +408,13 @@ const resources = {
       totalusers: "סך כל המשתמשים",
       bannedusers: "משתמשים חסומים",
       loginsperday: "כניסות ליום",
+      version: "גרסה",
+      deployedAt: "פורסם ב",
+      deployed: "פורסם",
+      mongoConnected: "חיבור למסד נתונים MongoDB",
+      mostcontacted: "דרך תקשורת הכי נפוצה",
+
+      clickStats: "סטטיסטיקות לחיצות",
     },
   },
 };

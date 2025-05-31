@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/lib/mongodb";
 import mongoose from "mongoose";
+import { verifyAdminToken } from "@/lib/verifyAdminToken";
 
 const clickSchema = new mongoose.Schema({
   platform: { type: String, required: true },
@@ -13,18 +14,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") return res.status(405).end();
+  const user = verifyAdminToken(req);
+  if (!user) return res.status(401).json({ error: "Unauthorized" });
 
   await connectToDatabase();
 
-  const { platform } = req.body;
-  if (!platform) return res.status(400).json({ error: "Missing platform" });
-
-  await Click.findOneAndUpdate(
-    { platform },
-    { $inc: { count: 1 } },
-    { upsert: true, new: true }
-  );
-
-  res.status(200).json({ success: true });
+  const topPlatforms = await Click.find().sort({ count: -1 }).limit(5);
+  res.status(200).json(topPlatforms);
 }
