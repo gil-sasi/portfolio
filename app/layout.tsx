@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "../components/ClientWrapper";
-
-// Load fonts
+import TrackVisit from "../components/TrackVisit";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
-// SEO Metadata
 export const metadata: Metadata = {
   title: "My Portfolio",
   description: "Create and manage your portfolio with ease.",
@@ -21,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "My Portfolio",
     description: "This is Gil Sasi portfolio enjoy your stay",
-    url: "https://my-portfolio.com",
+    url: "https://gil-sasi.com",
     siteName: "My Portfolio",
     images: [
       {
@@ -36,7 +34,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Root Layout
 export default function RootLayout({
   children,
 }: {
@@ -56,6 +53,7 @@ export default function RootLayout({
           antialiased bg-gray-900 text-white
         `}
       >
+        <TrackVisit /> {/* Log visit on load */}
         <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>

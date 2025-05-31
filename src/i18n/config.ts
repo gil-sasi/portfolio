@@ -181,6 +181,9 @@ const resources = {
       techjwt: "JWT Auth with token storage",
       techreanimated: "Reanimated v3 for animations",
       techvercel: "Vercel for backend hosting",
+      visitors: "Visitors",
+      contactUpdated: "Contact info updated successfully",
+      contactUpdatedDesc: "Contact info updated successfully",
     },
   },
   he: {
@@ -362,6 +365,9 @@ const resources = {
       techjwt: "JWT Auth עם אחסון טוקן",
       techreanimated: "Reanimated v3 לאנימציות",
       techvercel: "Vercel לאחסון צד שרת",
+      contactUpdated: "פרטי הקשר עודכנו בהצלחה",
+      contactUpdatedDesc: "פרטי הקשר עודכנו בהצלחה",
+      visitors: "מבקרים",
     },
   },
 };
