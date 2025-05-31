@@ -2,6 +2,19 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// Track click to /api/track-contact
+const trackClick = async (platform: string) => {
+  try {
+    await fetch("/api/track-contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ platform }),
+    });
+  } catch (err) {
+    console.error("Tracking failed:", err);
+  }
+};
+
 type Social = {
   platform: string;
   url: string;
@@ -43,6 +56,13 @@ export default function ContactInfo({
   return (
     <div className="mt-10 border border-gray-700 bg-gray-800 p-6 rounded">
       <h2 className="text-xl font-bold mb-4">{t("contactInfo")}</h2>
+      <a
+        href={`mailto:${contactEmail}`}
+        onClick={() => trackClick("Email")}
+        className="block text-blue-400 hover:underline mb-4"
+      >
+        {contactEmail}
+      </a>
       <input
         type="email"
         className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded"
@@ -66,6 +86,15 @@ export default function ContactInfo({
             value={s.url}
             onChange={(e) => updateSocial(i, "url", e.target.value)}
           />
+          <a
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
+            onClick={() => trackClick(s.platform)}
+          >
+            🔗
+          </a>
           <button
             className="text-red-400 hover:text-red-600"
             onClick={() => removeSocial(i)}
