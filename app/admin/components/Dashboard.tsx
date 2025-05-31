@@ -17,16 +17,26 @@ interface Visitor {
   lastVisit: string;
 }
 
+interface User {
+  isBanned: boolean;
+}
+
+interface Status {
+  version: string;
+  deployedAt: string;
+  mongoConnected: boolean;
+}
+
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [users, setUsers] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [skills, setSkills] = useState<any[]>([]);
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loginStats, setLoginStats] = useState<
     { date: string; count: number }[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<Status>({
     version: "",
     deployedAt: "",
     mongoConnected: false,
@@ -58,7 +68,7 @@ export default function Dashboard() {
         setUsers(usersRes.data.users);
         setSkills(skillsRes.data);
         setVisitors(visitorsRes.data);
-        setLoginStats(loginsRes.data); // [{ date: '2025-05-25', count: 3 }, ...]
+        setLoginStats(loginsRes.data);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
       } finally {
@@ -70,7 +80,7 @@ export default function Dashboard() {
   }, []);
 
   const totalUsers = users.length;
-  const bannedUsers = users.filter((u: any) => u.isBanned).length;
+  const bannedUsers = users.filter((u) => u.isBanned).length;
   const totalSkills = skills.length;
   const totalVisitors = visitors.length;
 

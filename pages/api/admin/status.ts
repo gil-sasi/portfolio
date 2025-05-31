@@ -16,7 +16,7 @@ export default async function handler(
       deployedAt: process.env.DEPLOYED_AT || new Date().toISOString(),
       mongoConnected: isConnected,
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({
       version: pkg.version,
       deployedAt: process.env.DEPLOYED_AT || new Date().toISOString(),
