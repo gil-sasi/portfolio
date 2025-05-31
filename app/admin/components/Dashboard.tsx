@@ -19,7 +19,18 @@ interface Visitor {
 interface Skill {
   _id: string;
 }
-
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  isBanned: boolean;
+  lastLogin?: {
+    date?: string;
+    ip?: string;
+  };
+}
 export default function Dashboard() {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
@@ -73,7 +84,7 @@ export default function Dashboard() {
   }, []);
 
   const totalUsers = users.length;
-  const bannedUsers = users.filter((u: any) => u.isBanned).length;
+  const bannedUsers = users.filter((u: User) => u.isBanned).length;
   const totalSkills = skills.length;
   const totalVisitors = visitors.length;
 
