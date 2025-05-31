@@ -5,6 +5,7 @@ const visitorSchema = new mongoose.Schema({
   visitedAt: {
     type: Date,
     default: Date.now,
+    country: { type: String, default: "Unknown" },
   },
 });
 

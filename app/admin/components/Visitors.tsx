@@ -6,6 +6,7 @@ interface Visitor {
   ip: string;
   visitCount: number;
   lastVisit: string;
+  country?: string;
 }
 
 interface Props {
@@ -26,16 +27,17 @@ export default function Visitors({ visitors, loading }: Props) {
         <table className="w-full text-sm bg-gray-900 border border-gray-700">
           <thead className="bg-gray-700">
             <tr>
-              <th className="p-2">{t("ip")}</th>
-              <th className="p-2">{t("visits")}</th>
-              <th className="p-2">{t("lastVisit")}</th>
+              <th className="p-2">{t("ip", "IP Address")}</th>
+              <th className="p-2">{t("visits", "Visits")}</th>
+              <th className="p-2">{t("lastVisit", "Last Visit")}</th>
+              <th className="p-2">{t("country", "Country")}</th> {/*  */}
             </tr>
           </thead>
           <tbody>
             {visitors.map((v, i) => (
               <tr key={i} className="border-t border-gray-600">
                 <td className="p-2 font-mono">{v.ip}</td>
-                <td className="p-2 text-center">{v.visitCount}</td>
+                <td className="p-2 text-center">{v.visitCount ?? "–"}</td>
                 <td className="p-2">
                   {v.lastVisit
                     ? new Date(v.lastVisit).toLocaleString("en-GB", {
@@ -43,6 +45,7 @@ export default function Visitors({ visitors, loading }: Props) {
                       })
                     : "–"}
                 </td>
+                <td className="p-2">{v.country || "–"}</td> {/*  */}
               </tr>
             ))}
           </tbody>

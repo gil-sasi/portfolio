@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/lib/mongodb";
 import mongoose from "mongoose";
+import axios from "axios";
 
 const visitorSchema = new mongoose.Schema({
   ip: { type: String, required: true, unique: true },
   visitCount: { type: Number, default: 1 },
   lastVisit: { type: Date, default: Date.now },
+  country: { type: String, default: "Unknown" },
 });
 
 const Visitor =
@@ -22,12 +24,36 @@ export default async function handler(
     req.socket.remoteAddress ||
     "unknown";
 
+  // skip & not log any localhost connection
+  if (ip === "::1" || ip === "127.0.0.1") {
+    return res.status(204).end();
+  }
+
   try {
+    //try to get country from GeoIP
+    let country = "Unknown";
+    try {
+      const geo = await axios.get(`https://ipapi.co/${ip}/country_name/`);
+      if (geo.data) {
+        country = geo.data;
+      }
+    } catch (geoErr) {
+      if (geoErr && typeof geoErr === "object" && "message" in geoErr) {
+        console.warn(
+          "GeoIP lookup failed:",
+          (geoErr as { message: string }).message
+        );
+      } else {
+        console.warn("GeoIP lookup failed:", geoErr);
+      }
+    }
+
     await Visitor.findOneAndUpdate(
       { ip },
       {
         $inc: { visitCount: 1 },
         lastVisit: new Date(),
+        country,
       },
       { upsert: true, new: true }
     );

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { FaIdCard, FaCogs, FaUsers, FaHome } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface Tab {
   key: string;
@@ -13,21 +14,23 @@ interface AdminSidebarProps {
   setActiveTab: (tab: string) => void;
 }
 
-const tabs: Tab[] = [
-  { key: "dashboard", label: "Dashboard", icon: <FaHome /> },
-  { key: "visitors", label: "Visitors", icon: <FaCogs /> },
-  { key: "users", label: "User Management", icon: <FaUsers /> },
-  { key: "contact", label: "Contact Info", icon: <FaIdCard /> },
-  { key: "skills", label: "Skills", icon: <FaCogs /> },
-];
-
 export default function AdminSidebar({
   activeTab,
   setActiveTab,
 }: AdminSidebarProps) {
+  const { t } = useTranslation();
+
+  const tabs: Tab[] = [
+    { key: "dashboard", label: t("dashboard"), icon: <FaHome /> },
+    { key: "visitors", label: t("visitors"), icon: <FaCogs /> },
+    { key: "users", label: t("usermanagement"), icon: <FaUsers /> },
+    { key: "contact", label: t("contactinfo"), icon: <FaIdCard /> },
+    { key: "skills", label: t("skills"), icon: <FaCogs /> },
+  ];
+
   return (
     <aside className="w-64 h-screen bg-gray-900 text-white shadow-md p-4 space-y-2">
-      <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
+      <h2 className="text-xl font-bold mb-4">{t("adminsidebar")}</h2>
       {tabs.map(({ key, label, icon }) => (
         <button
           key={key}
