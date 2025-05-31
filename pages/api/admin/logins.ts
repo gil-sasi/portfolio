@@ -25,16 +25,13 @@ export default async function handler(
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   const oneWeekAgo = new Date(today);
-  oneWeekAgo.setDate(today.getDate() - 6); // Show 7 days including today
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 6);
 
   try {
-    const results = await Login.aggregate([
-      {
-        $match: {
-          date: { $gte: oneWeekAgo },
-        },
-      },
+    const rawStats = await Login.aggregate([
+      { $match: { date: { $gte: oneWeekAgo } } },
       {
         $group: {
           _id: {
@@ -43,28 +40,27 @@ export default async function handler(
           count: { $sum: 1 },
         },
       },
-      {
-        $sort: { _id: 1 },
-      },
+      { $sort: { _id: 1 } },
     ]);
 
-    // Ensure all 7 days are included, even if count is 0
-    const days = [...Array(7)].map((_, i) => {
-      const d = new Date(today);
-      d.setDate(today.getDate() - (6 - i));
-      return d.toISOString().split("T")[0];
+    const rawMap: Record<string, number> = {};
+    rawStats.forEach((entry) => {
+      rawMap[entry._id] = entry.count;
     });
 
-    const loginMap = Object.fromEntries(results.map((r) => [r._id, r.count]));
+    const fullStats = Array.from({ length: 7 }).map((_, i) => {
+      const date = new Date(oneWeekAgo);
+      date.setDate(oneWeekAgo.getDate() + i);
+      const formatted = date.toISOString().slice(0, 10); // YYYY-MM-DD
+      return {
+        date: formatted,
+        count: rawMap[formatted] || 0,
+      };
+    });
 
-    const completeStats = days.map((date) => ({
-      date,
-      count: loginMap[date] || 0,
-    }));
-
-    return res.status(200).json(completeStats);
+    return res.status(200).json(fullStats);
   } catch (err) {
-    console.error("Login aggregation failed:", err);
-    return res.status(500).json({ error: "Failed to fetch login stats" });
+    console.error("Login stats aggregation error:", err);
+    return res.status(500).json({ error: "Failed to load login stats" });
   }
 }
