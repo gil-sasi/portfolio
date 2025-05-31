@@ -413,7 +413,6 @@ const resources = {
       deployed: "פורסם",
       mongoConnected: "חיבור למסד נתונים MongoDB",
       mostcontacted: "דרך תקשורת הכי נפוצה",
-
       clickStats: "סטטיסטיקות לחיצות",
     },
   },

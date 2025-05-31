@@ -44,7 +44,7 @@ export default function AdminPage() {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const [isMounted, setIsMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
