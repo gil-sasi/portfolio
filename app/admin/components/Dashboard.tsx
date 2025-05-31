@@ -69,7 +69,7 @@ export default function Dashboard() {
             axios.get("/api/admin/visitors", {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get("/api/admin/logins", {
+            axios.get(`/api/admin/logins?_=${Date.now()}`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
             axios.get("/api/admin/contact-clicks", {
@@ -81,6 +81,7 @@ export default function Dashboard() {
         setSkills(skillsRes.data);
         setVisitors(visitorsRes.data);
         setLoginStats(loginsRes.data);
+        console.log("Login Stats:", loginsRes.data);
         setClickStats(
           ((clicksRes.data ?? []) as ClickStat[]).sort(
             (a: ClickStat, b: ClickStat) => b.count - a.count

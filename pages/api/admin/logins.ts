@@ -23,9 +23,10 @@ export default async function handler(
 
   await connectToDatabase();
 
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 6); // include today
-  oneWeekAgo.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const oneWeekAgo = new Date(today);
+  oneWeekAgo.setDate(today.getDate() - 6); // Show 7 days including today
 
   try {
     const results = await Login.aggregate([
@@ -47,9 +48,21 @@ export default async function handler(
       },
     ]);
 
-    // Format to { date, count }
-    const formatted = results.map((r) => ({ date: r._id, count: r.count }));
-    return res.status(200).json(formatted);
+    // Ensure all 7 days are included, even if count is 0
+    const days = [...Array(7)].map((_, i) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() - (6 - i));
+      return d.toISOString().split("T")[0];
+    });
+
+    const loginMap = Object.fromEntries(results.map((r) => [r._id, r.count]));
+
+    const completeStats = days.map((date) => ({
+      date,
+      count: loginMap[date] || 0,
+    }));
+
+    return res.status(200).json(completeStats);
   } catch (err) {
     console.error("Login aggregation failed:", err);
     return res.status(500).json({ error: "Failed to fetch login stats" });
