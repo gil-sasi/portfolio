@@ -103,7 +103,7 @@ export default function Dashboard() {
   const totalVisitors = visitors.length;
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen overflow-auto px-2 py-4 sm:px-6 space-y-6">
       <h2 className="text-2xl font-bold">{t("dashboard", "Dashboard")}</h2>
 
       {loading ? (
@@ -139,8 +139,10 @@ export default function Dashboard() {
           <footer className="text-center text-sm text-gray-400 mt-8">
             <p>
               {t("version")}: {status.version} | {t("deployed")}:{" "}
-              {new Date(status.deployedAt).toLocaleString("en-GB")} | MongoDB:{" "}
-              {status.mongoConnected ? "✅" : "❌"}
+              {status.deployedAt
+                ? new Date(status.deployedAt).toLocaleString("en-GB")
+                : ""}
+              | MongoDB: {status.mongoConnected ? "✅" : "❌"}
             </p>
           </footer>
         </>

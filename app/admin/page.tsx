@@ -175,9 +175,13 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="flex min-h-screen text-white">
-      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <section className="flex-1 p-6">
+    <main className="flex flex-col md:flex-row min-h-screen text-white bg-gray-900">
+      {/* Sidebar on left for desktop, on top for mobile */}
+      <div className="md:w-64 flex-shrink-0">
+        <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
+      {/* Main content area: scrollable on mobile */}
+      <section className="flex-1 p-3 sm:p-6 overflow-auto h-full min-h-[calc(100vh-0px)]">
         <h1 className="text-3xl font-bold mb-6 text-center">
           {t("adminPanel", "Admin Panel")}
         </h1>
