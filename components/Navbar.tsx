@@ -266,13 +266,13 @@ export default function Navbar() {
           )}
 
           {/* Language Switcher */}
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-0 items-center">
             <button onClick={() => handleLanguageChange("en")} title="English">
               <Image
                 src="/flags/us.png"
                 alt="English"
-                width={28}
-                height={28}
+                width={40}
+                height={40}
                 className="rounded-sm border border-white"
               />
             </button>
@@ -280,8 +280,8 @@ export default function Navbar() {
               <Image
                 src="/flags/il.png"
                 alt="Hebrew"
-                width={28}
-                height={28}
+                width={40}
+                height={40}
                 className="rounded-sm border border-white"
               />
             </button>

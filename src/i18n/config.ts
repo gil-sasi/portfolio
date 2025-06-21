@@ -211,6 +211,20 @@ const resources = {
       VisitorManagementDescription:
         "Smart management of visitors in Coca-Cola factories, including visit history and event management (first aid, safety events).",
       BacktoProjects: "Back To Projects",
+      backToProjects: "Back to Projects",
+      visitorManagementTitle: "Coca-Cola Visitor Management Web App",
+      visitorManagementDescription:
+        "Smart visitor management for Coca-Cola factories, with visit history and event management (first aid, safety events).",
+      demoVideo: "Demo Video",
+      keyFeatures: "Key Features",
+      multiFactorySupport: "Multi-factory support with global visitor banning",
+      checkInHistory: "Visitor check-in/check-out and visit history",
+      eventManagement: "Event management: first aid, safety events",
+      bulkCheckIn: "Bulk check-in, Excel export",
+      multiLanguage: "Multi-language (Hebrew/English), mobile responsive",
+      techStack: "Tech Stack",
+      links: "Links",
+      liveDemo: "Live Demo",
     },
   },
   he: {
@@ -422,6 +436,20 @@ const resources = {
       VisitorManagementDescription:
         "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריקת ביקורים וניהול אירועים כגון עזרה ראשונה ואירועי בטיחות.",
       BacktoProjects: "בחזרה לעמוד פרויקטים",
+      backToProjects: "חזרה לפרויקטים",
+      visitorManagementTitle: "אפליקציית ניהול מבקרים של קוקה-קולה",
+      visitorManagementDescription:
+        "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריית ביקורים וניהול אירועים (עזרה ראשונה, בטיחות).",
+      demoVideo: "סרטון הדגמה",
+      keyFeatures: "פיצ'רים עיקריים",
+      multiFactorySupport: "תמיכה במספר מפעלים עם חסימה גלובלית",
+      checkInHistory: "צ'ק-אין/צ'ק-אאוט והיסטוריית ביקורים",
+      eventManagement: "ניהול אירועים: עזרה ראשונה, בטיחות",
+      bulkCheckIn: "צ'ק-אין מרובה, ייצוא לאקסל",
+      multiLanguage: "ריבוי שפות (עברית/אנגלית), מותאם לנייד",
+      techStack: "טכנולוגיות",
+      links: "קישורים",
+      liveDemo: "הדגמה חיה",
     },
   },
 };

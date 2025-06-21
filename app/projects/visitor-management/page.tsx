@@ -55,13 +55,13 @@ export default function VisitorManagementProject() {
         href="/projects"
         className="text-blue-400 hover:underline mb-6 inline-block"
       >
-        ← {t("BacktoProjects")}
+        ← {t("backToProjects")}
       </Link>
       <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-        🥤 {t("VisitorManagementTitle")}
+        🥤 {t("visitorManagementTitle")}
       </h1>
       <p className="text-lg text-gray-300 mb-6">
-        {t("VisitorManagementDescription")}
+        {t("visitorManagementDescription")}
       </p>
 
       {/* Demo Video */}
@@ -70,7 +70,7 @@ export default function VisitorManagementProject() {
           width="100%"
           height="380"
           src={demoVideo}
-          title={t("Demo Video")}
+          title={t("demoVideo")}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           className="rounded-2xl border border-gray-700 shadow"
@@ -118,18 +118,18 @@ export default function VisitorManagementProject() {
       )}
 
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("Key Features")}</h2>
+        <h2 className="text-2xl font-semibold mb-2">{t("keyFeatures")}</h2>
         <ul className="list-disc list-inside text-gray-200">
-          <li>{t("Multi-factory support with global visitor banning")}</li>
-          <li>{t("Visitor check-in/check-out and visit history")}</li>
-          <li>{t("Event management: first aid, safety events")}</li>
-          <li>{t("Bulk check-in, Excel export")}</li>
-          <li>{t("Multi-language (Hebrew/English), mobile responsive")}</li>
+          <li>{t("multiFactorySupport")}</li>
+          <li>{t("checkInHistory")}</li>
+          <li>{t("eventManagement")}</li>
+          <li>{t("bulkCheckIn")}</li>
+          <li>{t("multiLanguage")}</li>
         </ul>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("Tech Stack")}</h2>
+        <h2 className="text-2xl font-semibold mb-2">{t("techStack")}</h2>
         <p className="text-gray-200">
           Next.js, React, Tailwind CSS, MongoDB, Node.js, Radix UI, i18n, JWT
           Auth
@@ -137,7 +137,7 @@ export default function VisitorManagementProject() {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("Links")}</h2>
+        <h2 className="text-2xl font-semibold mb-2">{t("links")}</h2>
         <ul className="list-disc list-inside text-gray-200">
           <li>
             <a
@@ -146,7 +146,7 @@ export default function VisitorManagementProject() {
               rel="noopener noreferrer"
               className="text-blue-400 hover:underline"
             >
-              {t("Live Demo")}
+              {t("liveDemo")}
             </a>
           </li>
         </ul>
