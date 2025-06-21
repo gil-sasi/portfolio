@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import Link from "next/link";
 export default function QuizAppProjectPage() {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
@@ -23,6 +23,13 @@ export default function QuizAppProjectPage() {
 
   return (
     <main className="p-6 text-white max-w-6xl mx-auto">
+      <Link
+        href="/projects"
+        className="text-blue-400 hover:underline mb-6 inline-block"
+      >
+        ← {t("BacktoProjects")}
+      </Link>
+
       <h1 className="text-4xl font-extrabold mb-6 text-center">
         🧠 {mounted ? t("quizapp") : ""}
       </h1>

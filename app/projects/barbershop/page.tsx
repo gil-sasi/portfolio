@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import Link from "next/link";
 export default function BarbershopProjectPage() {
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
@@ -32,6 +32,13 @@ export default function BarbershopProjectPage() {
   return (
     <div className="min-h-screen overflow-y-auto">
       <main className="p-6 text-white max-w-5xl mx-auto">
+        <Link
+          href="/projects"
+          className="text-blue-400 hover:underline mb-6 inline-block"
+        >
+          ← {t("BacktoProjects")}
+        </Link>
+
         <h1 className="text-4xl font-extrabold mb-6 text-center">
           💈 {t("barbershopApp")}
         </h1>

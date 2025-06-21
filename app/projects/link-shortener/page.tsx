@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import Link from "next/link";
 export default function LinkShortenerPage() {
   const [url, setUrl] = useState("");
   const [shortCode, setShortCode] = useState("");
@@ -34,7 +34,7 @@ export default function LinkShortenerPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-setShortCode(`${window.location.origin}/r/${data.shortCode}`);
+      setShortCode(`${window.location.origin}/r/${data.shortCode}`);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || t("shortenerror"));
@@ -54,6 +54,12 @@ setShortCode(`${window.location.origin}/r/${data.shortCode}`);
 
   return (
     <div className="max-w-2xl mx-auto p-6 text-white">
+      <Link
+        href="/projects"
+        className="text-blue-400 hover:underline mb-6 inline-block"
+      >
+        ← {t("BacktoProjects")}
+      </Link>
       <h1 className="text-2xl font-bold mb-4 text-center">
         {t("linkshortener")}
       </h1>

@@ -207,6 +207,10 @@ const resources = {
       mongoConnected: "Connected to MongoDB",
       mostcontacted: "Most Contacted",
       clickStats: "Click Stats",
+      VisitorManagementTitle: "Coca-Cola Visitor Management Web App",
+      VisitorManagementDescription:
+        "Smart management of visitors in Coca-Cola factories, including visit history and event management (first aid, safety events).",
+      BacktoProjects: "Back To Projects",
     },
   },
   he: {
@@ -414,6 +418,10 @@ const resources = {
       mongoConnected: "חיבור למסד נתונים MongoDB",
       mostcontacted: "דרך תקשורת הכי נפוצה",
       clickStats: "סטטיסטיקות לחיצות",
+      VisitorManagementTitle: "אתר ניהול מבקרים של קוקה-קולה",
+      VisitorManagementDescription:
+        "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריקת ביקורים וניהול אירועים כגון עזרה ראשונה ואירועי בטיחות.",
+      BacktoProjects: "בחזרה לעמוד פרויקטים",
     },
   },
 };

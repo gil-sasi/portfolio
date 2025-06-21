@@ -62,6 +62,18 @@ export default function ProjectsPage() {
             <p className="text-gray-400 text-sm">{t("quizappdesc")}</p>
           </div>
         </Link>
+
+        {/* Coca Cola Visitor Management Web App */}
+        <Link href="/projects/visitor-management">
+          <div className="bg-gray-800 hover:bg-gray-700 transition rounded-2xl shadow-lg p-6 cursor-pointer border border-gray-700">
+            <h2 className="text-2xl font-semibold mb-2 flex items-center">
+              🥤 {t("VisitorManagementTitle")}
+            </h2>
+            <p className="text-gray-400 text-sm">
+              {t("VisitorManagementDescription")}
+            </p>
+          </div>
+        </Link>
       </div>
     </div>
   );

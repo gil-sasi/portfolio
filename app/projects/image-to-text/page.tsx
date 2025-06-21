@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createWorker } from "tesseract.js";
 import { useTranslation } from "react-i18next";
-
+import Link from "next/link";
 export default function OCRPage() {
   const [image, setImage] = useState<File | null>(null);
   const [text, setText] = useState("");
@@ -83,7 +83,12 @@ export default function OCRPage() {
   return (
     <div className="max-w-2xl mx-auto p-6 text-white">
       <h1 className="text-2xl font-bold mb-6 text-center">{t("ocrtitle")}</h1>
-
+      <Link
+        href="/projects"
+        className="text-blue-400 hover:underline mb-6 inline-block"
+      >
+        ← {t("BacktoProjects")}
+      </Link>
       {/* OCR Language Selector */}
       <div className="mb-4">
         <label className="block text-sm mb-1">{t("selectocr")}</label>
