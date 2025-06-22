@@ -23,13 +23,24 @@ export default function VisitorManagementProject() {
   // Lightbox state
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  // Lock/unlock scroll when lightbox is open/closed
+  // Robust scroll lock and iOS touchmove trap fix
   useEffect(() => {
     if (openIdx !== null) {
       document.body.style.overflow = "hidden";
+      // iOS fix: prevent touchmove on body
+      const preventTouch = (e: TouchEvent) => e.preventDefault();
+      document.body.addEventListener("touchmove", preventTouch, {
+        passive: false,
+      });
+
+      return () => {
+        document.body.style.overflow = "";
+        document.body.removeEventListener("touchmove", preventTouch);
+      };
     } else {
       document.body.style.overflow = "";
     }
+    // Defensive cleanup in case effect dependencies get weird
     return () => {
       document.body.style.overflow = "";
     };
@@ -54,7 +65,6 @@ export default function VisitorManagementProject() {
   // Lightbox overlay click handler
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      // Only close if the overlay itself (not image) was clicked
       if (e.target === e.currentTarget) setOpenIdx(null);
     },
     []

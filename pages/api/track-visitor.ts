@@ -45,7 +45,7 @@ export default async function handler(
     if (existing && existing.lastVisit) {
       const minutesSinceLastVisit =
         (Date.now() - new Date(existing.lastVisit).getTime()) / (60 * 1000);
-      shouldIncrement = minutesSinceLastVisit >= 15;
+      shouldIncrement = minutesSinceLastVisit >= 50;
     }
 
     // Always update lastVisit, but increment visitCount only if enough time has passed
