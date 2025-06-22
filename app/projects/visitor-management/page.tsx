@@ -4,6 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useState, useCallback, useEffect, useRef } from "react";
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from "body-scroll-lock";
 
 export default function VisitorManagementProject() {
   const { t } = useTranslation();
@@ -22,16 +27,23 @@ export default function VisitorManagementProject() {
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  // Add/remove body scroll lock class
+  // Overlay reference for scroll locking
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  // Lock scroll ONLY when overlay is open
   useEffect(() => {
-    if (openIdx !== null) {
-      document.body.classList.add("scroll-lock");
+    const el = overlayRef.current;
+    if (openIdx !== null && el) {
+      disableBodyScroll(el, { reserveScrollBarGap: true });
+      return () => {
+        enableBodyScroll(el);
+        clearAllBodyScrollLocks(); // safety net
+      };
     } else {
-      document.body.classList.remove("scroll-lock");
+      clearAllBodyScrollLocks();
     }
-    return () => {
-      document.body.classList.remove("scroll-lock");
-    };
+    // Clean up if component unmounts
+    return () => clearAllBodyScrollLocks();
   }, [openIdx]);
 
   // ESC closes modal and arrow navigation
@@ -50,20 +62,7 @@ export default function VisitorManagementProject() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openIdx, screenshots.length]);
 
-  // Overlay scroll trap preventer (iOS fix)
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const el = overlayRef.current;
-    if (!el) return;
-    const prevent = (e: TouchEvent) => e.preventDefault();
-    if (openIdx !== null) {
-      el.addEventListener("touchmove", prevent, { passive: false });
-    }
-    return () => {
-      el.removeEventListener("touchmove", prevent);
-    };
-  }, [openIdx]);
-
+  // Overlay click handler
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) setOpenIdx(null);
