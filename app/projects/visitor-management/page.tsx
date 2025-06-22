@@ -26,27 +26,24 @@ export default function VisitorManagementProject() {
   const liveAppLink = "https://coca-cola-visitor-site.vercel.app/";
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
-
-  // Overlay reference for scroll locking
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
-  // Lock scroll ONLY when overlay is open
   useEffect(() => {
     const el = overlayRef.current;
     if (openIdx !== null && el) {
       disableBodyScroll(el, { reserveScrollBarGap: true });
       return () => {
         enableBodyScroll(el);
-        clearAllBodyScrollLocks(); // safety net
       };
-    } else {
-      clearAllBodyScrollLocks();
     }
-    // Clean up if component unmounts
-    return () => clearAllBodyScrollLocks();
   }, [openIdx]);
 
-  // ESC closes modal and arrow navigation
+  useEffect(() => {
+    return () => {
+      clearAllBodyScrollLocks();
+    };
+  }, []);
+
   useEffect(() => {
     if (openIdx === null) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -62,7 +59,6 @@ export default function VisitorManagementProject() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openIdx, screenshots.length]);
 
-  // Overlay click handler
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) setOpenIdx(null);
@@ -85,7 +81,6 @@ export default function VisitorManagementProject() {
         {t("visitorManagementDescription")}
       </p>
 
-      {/* Demo Video */}
       <div className="mb-8">
         <iframe
           width="100%"
@@ -98,7 +93,6 @@ export default function VisitorManagementProject() {
         ></iframe>
       </div>
 
-      {/* Screenshots Gallery */}
       <div className="flex flex-wrap gap-4 mb-8">
         {screenshots.map((shot, idx) => (
           <div
@@ -120,7 +114,6 @@ export default function VisitorManagementProject() {
         ))}
       </div>
 
-      {/* Lightbox Overlay */}
       {openIdx !== null && (
         <div
           ref={overlayRef}
