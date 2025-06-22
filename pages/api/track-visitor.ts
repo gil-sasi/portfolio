@@ -49,9 +49,17 @@ export default async function handler(
     }
 
     // Always update lastVisit, but increment visitCount only if enough time has passed
-    let update: any = {
+    const update: {
+      lastVisit: Date;
+      $inc?: { visitCount: number };
+      country?: string;
+    } = {
       lastVisit: new Date(),
     };
+
+    if (shouldIncrement) {
+      update.$inc = { visitCount: 1 };
+    }
 
     if (shouldIncrement) {
       update.$inc = { visitCount: 1 };
