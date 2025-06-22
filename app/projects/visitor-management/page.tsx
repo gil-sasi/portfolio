@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 export default function VisitorManagementProject() {
   const { t } = useTranslation();
@@ -20,29 +20,17 @@ export default function VisitorManagementProject() {
   const demoVideo = "https://www.youtube.com/embed/pmGokTfo1bM";
   const liveAppLink = "https://coca-cola-visitor-site.vercel.app/";
 
-  // Lightbox state
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  // Robust scroll lock and iOS touchmove trap fix
+  // Add/remove body scroll lock class
   useEffect(() => {
     if (openIdx !== null) {
-      document.body.style.overflow = "hidden";
-      // iOS fix: prevent touchmove on body
-      const preventTouch = (e: TouchEvent) => e.preventDefault();
-      document.body.addEventListener("touchmove", preventTouch, {
-        passive: false,
-      });
-
-      return () => {
-        document.body.style.overflow = "";
-        document.body.removeEventListener("touchmove", preventTouch);
-      };
+      document.body.classList.add("scroll-lock");
     } else {
-      document.body.style.overflow = "";
+      document.body.classList.remove("scroll-lock");
     }
-    // Defensive cleanup in case effect dependencies get weird
     return () => {
-      document.body.style.overflow = "";
+      document.body.classList.remove("scroll-lock");
     };
   }, [openIdx]);
 
@@ -62,7 +50,20 @@ export default function VisitorManagementProject() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openIdx, screenshots.length]);
 
-  // Lightbox overlay click handler
+  // Overlay scroll trap preventer (iOS fix)
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = overlayRef.current;
+    if (!el) return;
+    const prevent = (e: TouchEvent) => e.preventDefault();
+    if (openIdx !== null) {
+      el.addEventListener("touchmove", prevent, { passive: false });
+    }
+    return () => {
+      el.removeEventListener("touchmove", prevent);
+    };
+  }, [openIdx]);
+
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) setOpenIdx(null);
@@ -123,6 +124,7 @@ export default function VisitorManagementProject() {
       {/* Lightbox Overlay */}
       {openIdx !== null && (
         <div
+          ref={overlayRef}
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center cursor-zoom-out"
           onClick={handleOverlayClick}
           style={{ animation: "fadeIn 0.2s" }}
