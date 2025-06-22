@@ -23,7 +23,19 @@ export default function VisitorManagementProject() {
   // Lightbox state
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  // ESC closes modal
+  // Lock/unlock scroll when lightbox is open/closed
+  useEffect(() => {
+    if (openIdx !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openIdx]);
+
+  // ESC closes modal and arrow navigation
   useEffect(() => {
     if (openIdx === null) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -49,7 +61,7 @@ export default function VisitorManagementProject() {
   );
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="max-w-3xl mx-auto px-4 py-8 min-h-screen">
       <Link
         href="/projects"
         className="text-blue-400 hover:underline mb-6 inline-block"
