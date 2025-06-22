@@ -29,10 +29,14 @@ export default async function handler(
     return res.status(204).end();
   }
 
-  // Skip bots
+  // Skip bots and health checks
   const userAgent = req.headers["user-agent"] || "";
-  const isBot = /bot|crawl|spider|slurp|curl|wget/i.test(userAgent);
-  if (isBot) {
+  const isAutomated =
+    /bot|crawl|spider|slurp|curl|wget|vercel|health|uptime|checker|google|ping|preview|netlify|monitor/i.test(
+      userAgent
+    );
+  if (isAutomated) {
+    // console.log("Skipped automated visit:", userAgent, ip);
     return res.status(204).end();
   }
 
@@ -40,7 +44,7 @@ export default async function handler(
     // Lookup visitor by IP
     const existing = await Visitor.findOne({ ip });
 
-    // Only increment visitCount if 15min have passed since lastVisit
+    // Only increment visitCount if 50min have passed since lastVisit
     let shouldIncrement = true;
     if (existing && existing.lastVisit) {
       const minutesSinceLastVisit =
@@ -56,10 +60,6 @@ export default async function handler(
     } = {
       lastVisit: new Date(),
     };
-
-    if (shouldIncrement) {
-      update.$inc = { visitCount: 1 };
-    }
 
     if (shouldIncrement) {
       update.$inc = { visitCount: 1 };
