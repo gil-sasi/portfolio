@@ -80,144 +80,168 @@ export default function ContactPage() {
   if (!mounted) return null;
 
   return (
-    <div className="h-screen overflow-y-auto">
-      <div className="max-w-4xl mx-auto text-white p-4 sm:p-6 space-y-8 sm:space-y-10">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center">
-          {t("contactMe")}
-        </h1>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-20 left-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-20 right-20 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
-        {/* Contact info section */}
-        {loadingInfo ? (
-          <Spinner />
-        ) : (
-          contactInfo && (
-            <div className="bg-gray-800 p-4 sm:p-6 rounded-lg border border-gray-600 shadow-md text-center">
-              <h2 className="text-lg sm:text-xl font-semibold mb-4">
-                {t("contactInfo")}
-              </h2>
-
-              {/* Email */}
-              <div className="flex items-center justify-center gap-2 mb-4 sm:mb-3">
-                <svg
-                  className="w-5 h-5 text-blue-400 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 5.25v13.5A2.25 2.25 0 0119.5 21H4.5A2.25 2.25 0 012.25 18.75V5.25A2.25 2.25 0 014.5 3h15a2.25 2.25 0 012.25 2.25z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 5.25l-9.75 6.75L2.25 5.25"
-                  />
-                </svg>
-                <a
-                  href={`mailto:${contactInfo.email}`}
-                  className="text-blue-400 hover:underline break-all"
-                >
-                  {contactInfo.email}
-                </a>
+      <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-10">
+        <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+          {/* Header */}
+          <div className="text-center">
+            <div className="glass rounded-2xl p-8 max-w-2xl mx-auto">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-2xl font-bold glow">
+                💬
               </div>
-
-              {/* Social Links */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:justify-center gap-3 sm:gap-4 lg:gap-6">
-                {contactInfo.socials.map((s, i) => {
-                  const platformKey = s.platform.toLowerCase();
-                  const icon = platformIcons[platformKey] ?? null;
-                  const href =
-                    platformKey === "whatsapp"
-                      ? `https://wa.me/${s.url.replace(/\D/g, "")}`
-                      : s.url;
-
-                  return (
-                    <a
-                      key={i}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 text-blue-400 hover:underline p-3 sm:p-2 bg-gray-700/50 rounded-lg hover:bg-gray-700/80 transition touch-manipulation"
-                    >
-                      {icon}
-                      <span className="font-medium">{s.platform}</span>
-                    </a>
-                  );
-                })}
-              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                <span className="gradient-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                  {t("contactMe")}
+                </span>
+              </h1>
+              <p className="text-gray-300">{t("letsConnect")}</p>
             </div>
-          )
-        )}
-
-        {/* Contact form */}
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 bg-gray-800 p-4 sm:p-6 rounded border border-gray-600"
-        >
-          <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center">
-            {t("sendMessage", "Send a Message")}
-          </h2>
-
-          {!user && (
-            <>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {t("yourName")}:
-                </label>
-                <input
-                  type="text"
-                  placeholder={t("yourName")}
-                  className="w-full p-3 sm:p-3 rounded bg-gray-700 border border-gray-600 text-base"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {t("yourEmail")}:
-                </label>
-                <input
-                  type="email"
-                  placeholder={t("yourEmail")}
-                  className="w-full p-3 sm:p-3 rounded bg-gray-700 border border-gray-600 text-base"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </>
-          )}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              {t("yourMessage")}:
-            </label>
-            <textarea
-              placeholder={t("yourMessage")}
-              className="w-full p-3 sm:p-3 rounded bg-gray-700 border border-gray-600 h-32 resize-none text-base"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 sm:py-2 rounded font-medium text-base touch-manipulation"
-          >
-            {t("sendMessage")}
-          </button>
-          {status && (
-            <p
-              className={`text-sm text-center mt-2 px-2 py-1 rounded ${
-                status.includes("✅")
-                  ? "text-green-400 bg-green-900/20"
-                  : "text-red-400 bg-red-900/20"
-              }`}
-            >
-              {status}
-            </p>
+
+          {/* Contact info section */}
+          {loadingInfo ? (
+            <div className="flex justify-center">
+              <Spinner />
+            </div>
+          ) : (
+            contactInfo && (
+              <div className="modern-card p-6 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
+                  <span className="gradient-text">{t("getInTouch")}</span>
+                </h2>
+
+                {/* Email */}
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                    📧
+                  </div>
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="text-blue-400 hover:text-blue-300 font-semibold text-lg transition-colors duration-300 break-all"
+                  >
+                    {contactInfo.email}
+                  </a>
+                </div>
+
+                {/* Social Links */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {contactInfo.socials.map((s, i) => {
+                    const platformKey = s.platform.toLowerCase();
+                    const icon = platformIcons[platformKey] ?? null;
+                    const href =
+                      platformKey === "whatsapp"
+                        ? `https://wa.me/${s.url.replace(/\D/g, "")}`
+                        : s.url;
+
+                    const gradients = [
+                      "from-purple-500 to-pink-500",
+                      "from-blue-500 to-cyan-500",
+                      "from-green-500 to-emerald-500",
+                      "from-orange-500 to-yellow-500",
+                    ];
+
+                    return (
+                      <a
+                        key={i}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="glass p-4 rounded-xl hover:scale-105 transition-all duration-300 group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-10 h-10 rounded-full bg-gradient-to-r ${
+                              gradients[i % gradients.length]
+                            } flex items-center justify-center text-lg group-hover:scale-110 transition-transform duration-300`}
+                          >
+                            {icon || "🔗"}
+                          </div>
+                          <span className="font-semibold text-white group-hover:text-blue-300 transition-colors duration-300">
+                            {s.platform}
+                          </span>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )
           )}
-        </form>
+
+          {/* Contact form */}
+          <div className="modern-card p-6 sm:p-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text">{t("sendAMessage")}</span>
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {!user && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">
+                      {t("yourName")}:
+                    </label>
+                    <input
+                      type="text"
+                      placeholder={t("yourName")}
+                      className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">
+                      {t("yourEmail")}:
+                    </label>
+                    <input
+                      type="email"
+                      placeholder={t("yourEmail")}
+                      className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">
+                  {t("yourMessage")}:
+                </label>
+                <textarea
+                  placeholder={t("yourMessage")}
+                  className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 h-32 resize-none focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full btn-primary py-4 text-lg font-semibold rounded-xl"
+              >
+                {t("sendMessage")} 🚀
+              </button>
+
+              {status && (
+                <div
+                  className={`p-4 rounded-xl text-center font-medium ${
+                    status.includes("✅")
+                      ? "bg-green-500/10 border border-green-500/20 text-green-400"
+                      : "bg-red-500/10 border border-red-500/20 text-red-400"
+                  }`}
+                >
+                  {status}
+                </div>
+              )}
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -63,6 +63,16 @@ export default function SkillsPage() {
     other: "🌀",
   };
 
+  const categoryColors: Record<string, string> = {
+    frontend: "from-blue-500 to-cyan-500",
+    backend: "from-green-500 to-emerald-500",
+    devops: "from-orange-500 to-red-500",
+    database: "from-purple-500 to-pink-500",
+    mobile: "from-indigo-500 to-blue-500",
+    tools: "from-yellow-500 to-orange-500",
+    other: "from-gray-500 to-slate-500",
+  };
+
   const toTitleCase = (str: string) =>
     str
       .split(" ")
@@ -70,44 +80,157 @@ export default function SkillsPage() {
       .join(" ");
 
   return (
-    <div className="h-screen overflow-y-auto">
-      <div className="max-w-4xl mx-auto text-white p-4 sm:p-6 space-y-8 sm:space-y-10">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center">
-          {t("skills")}
-        </h1>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-20 right-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-20 left-20 w-32 h-32 bg-pink-500/10 rounded-full blur-xl"></div>
 
-        {loading ? (
-          <div className="flex flex-col items-center space-y-4">
-            <Spinner />
-            <p className="text-center text-gray-400">{t("loading")}...</p>
+      <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-10">
+        <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+          {/* Header */}
+          <div className="text-center">
+            <div className="glass rounded-2xl p-8 max-w-2xl mx-auto">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-400 to-pink-600 flex items-center justify-center text-2xl font-bold glow">
+                🚀
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                <span className="gradient-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  {t("skills")}
+                </span>
+              </h1>
+              <p className="text-gray-300">{t("myTechnicalExpertise")}</p>
+            </div>
           </div>
-        ) : skills.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">{t("noskillsfound")}</p>
-          </div>
-        ) : (
-          Object.entries(groupedSkills).map(([category, items]) => (
-            <div
-              key={category}
-              className="bg-gray-800 p-4 sm:p-6 rounded-lg border border-gray-700"
-            >
-              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center sm:text-left">
-                {categoryEmojis[category] || "🔹"} {toTitleCase(category)}
-              </h2>
-              <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
-                {items.map((skill) => (
-                  <span
-                    key={skill._id}
-                    className="bg-blue-700/60 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border border-blue-400 transition-all duration-200 hover:bg-blue-500 hover:text-white cursor-default touch-manipulation"
-                  >
-                    {skill.name}
-                  </span>
-                ))}
+
+          {/* Skills Content */}
+          {loading ? (
+            <div className="flex flex-col items-center space-y-4">
+              <div className="modern-card p-8">
+                <Spinner />
+                <p className="text-center text-gray-400 mt-4">
+                  {t("loading")}...
+                </p>
               </div>
             </div>
-          ))
-        )}
+          ) : skills.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="modern-card p-8">
+                <p className="text-gray-400 text-lg">{t("noskillsfound")}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {Object.entries(groupedSkills).map(([category, items]) => (
+                <div
+                  key={category}
+                  className="modern-card p-6 sm:p-8 hover:scale-105 transition-all duration-300"
+                >
+                  {/* Category Header */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div
+                      className={`w-12 h-12 rounded-full bg-gradient-to-r ${
+                        categoryColors[category] || "from-gray-500 to-slate-500"
+                      } flex items-center justify-center text-xl`}
+                    >
+                      {categoryEmojis[category] || "🔹"}
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold">
+                      <span className="gradient-text">
+                        {toTitleCase(category)}
+                      </span>
+                    </h2>
+                  </div>
+
+                  {/* Skills Grid */}
+                  <div className="flex flex-wrap gap-3">
+                    {items.map((skill, index) => (
+                      <span
+                        key={skill._id}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-110 cursor-default
+                          bg-gradient-to-r ${
+                            categoryColors[category] ||
+                            "from-gray-500 to-slate-500"
+                          }/20 
+                          border border-white/10 hover:border-white/30 
+                          text-white hover:shadow-lg glow-hover`}
+                        style={{
+                          animationDelay: `${index * 100}ms`,
+                          animation: "fadeInUp 0.6s ease-out forwards",
+                        }}
+                      >
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Skill Count */}
+                  <div className="mt-4 text-right">
+                    <span className="text-xs text-gray-400">
+                      {items.length}{" "}
+                      {items.length === 1
+                        ? t("skill")
+                        : t("skills_plural") || "skills"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Stats Section */}
+          {!loading && skills.length > 0 && (
+            <div className="glass rounded-2xl p-6 sm:p-8">
+              <h3 className="text-xl font-bold text-center mb-6">
+                <span className="gradient-text">{t("skillsOverview")}</span>
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-indigo-400">
+                    {skills.length}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {t("totalSkills")}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-400">
+                    {Object.keys(groupedSkills).length}
+                  </div>
+                  <div className="text-sm text-gray-400">{t("categories")}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-pink-400">
+                    {Math.max(
+                      ...Object.values(groupedSkills).map((arr) => arr.length)
+                    )}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {t("maxPerCategory")}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cyan-400">∞</div>
+                  <div className="text-sm text-gray-400">{t("learning")}</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

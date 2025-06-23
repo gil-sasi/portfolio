@@ -32,7 +32,7 @@ const LanguageSwitcher = () => {
       </button>
       <button onClick={() => handleLanguageChange("he")} title="עברית">
         <Image
-          src="/flags/israel.png"
+          src="/flags/il.png"
           alt="Hebrew"
           width={28}
           height={28}

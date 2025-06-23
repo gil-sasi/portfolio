@@ -17,7 +17,6 @@ export default function AboutPage() {
   const fetchAbout = async () => {
     try {
       const res = await axios.get("/api/about");
-
       setAboutText(res.data.content || "");
     } catch (err) {
       console.error("Failed to fetch about text", err);
@@ -33,7 +32,6 @@ export default function AboutPage() {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-
       await axios.post(
         "/api/about",
         { content: aboutText },
@@ -43,7 +41,6 @@ export default function AboutPage() {
           },
         }
       );
-
       setEditing(false);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
@@ -62,58 +59,76 @@ export default function AboutPage() {
     );
   }
 
- return (
-  <div className="min-h-screen overflow-auto px-4 py-8 bg-gray text-white">
-    <h1 className="text-3xl font-bold mb-6 text-center">{t("about")}</h1>
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-20 right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-xl"></div>
 
-    {editing ? (
-      <>
-        <textarea
-          value={aboutText}
-          onChange={(e) => setAboutText(e.target.value)}
-          className="w-full max-w-4xl mx-auto block h-48 p-3 rounded bg-gray-800 border border-gray-600 resize-none"
-          placeholder="Write something about yourself..."
-        />
-        <div className="flex justify-center gap-4 mt-4">
-          <button
-            onClick={handleSave}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-          >
-            {t("save")}
-          </button>
-          <button
-            onClick={() => setEditing(false)}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded"
-          >
-            {t("cancel")}
-          </button>
-        </div>
-      </>
-    ) : (
-      <>
-        <p className="whitespace-pre-line text-lg max-w-4xl mx-auto text-center min-h-[100px]">
-          {aboutText.trim() || "No about content found."}
-        </p>
-
-        {user?.role === "admin" && (
-          <div className="flex justify-center mt-6">
-            <button
-              onClick={() => setEditing(true)}
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white"
-            >
-              {t("edit")}
-            </button>
+      <div className="relative z-10 px-4 py-8 text-white">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="glass rounded-2xl p-8">
+              <h1 className="text-4xl font-bold mb-4">
+                <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  {t("about")}
+                </span>
+              </h1>
+              <p className="text-gray-300">{t("getToKnowMe")}</p>
+            </div>
           </div>
-        )}
-      </>
-    )}
 
-    {saved && (
-      <p className="text-green-400 text-center mt-4 text-sm">
-        ✅ {t("aboutupdated")}
-      </p>
-    )}
-  </div>
-);
+          {/* Content Section */}
+          {editing ? (
+            <div className="modern-card p-8">
+              <textarea
+                value={aboutText}
+                onChange={(e) => setAboutText(e.target.value)}
+                className="w-full h-48 p-4 rounded-xl bg-gray-800/50 border border-gray-600 resize-none focus:border-blue-400 focus:outline-none text-white"
+                placeholder="Write something about yourself..."
+              />
+              <div className="flex justify-center gap-4 mt-6">
+                <button
+                  onClick={handleSave}
+                  className="btn-success px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                >
+                  {t("save")}
+                </button>
+                <button
+                  onClick={() => setEditing(false)}
+                  className="btn-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="modern-card p-8">
+              <p className="whitespace-pre-line text-lg leading-relaxed text-center min-h-[100px] text-gray-200">
+                {aboutText.trim() || "No about content found."}
+              </p>
 
+              {user?.role === "admin" && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="btn-primary px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                  >
+                    {t("edit")}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {saved && (
+            <p className="text-green-400 text-center mt-4 text-sm">
+              ✅ {t("aboutupdated")}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -195,7 +195,12 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="min-h-screen text-white bg-gray-900">
+    <main className="min-h-screen relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-10 right-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-10 left-10 w-32 h-32 bg-violet-500/10 rounded-full blur-xl"></div>
+
       {/* Responsive Sidebar */}
       <AdminSidebar
         activeTab={activeTab}
@@ -205,60 +210,77 @@ export default function AdminPage() {
 
       {/* Main content area - positioned properly for desktop sidebar */}
       <section
-        className={`transition-all duration-300 p-3 sm:p-6 pt-20 md:pt-4 ${
+        className={`relative z-10 transition-all duration-300 p-3 sm:p-6 pt-20 md:pt-4 ${
           sidebarCollapsed ? "md:ml-16" : "md:ml-64"
         }`}
       >
-        <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
-          {t("adminPanel", "Admin Panel")}
-        </h1>
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="glass rounded-2xl p-6 max-w-2xl mx-auto">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-400 to-violet-600 flex items-center justify-center text-xl font-bold glow">
+                ⚙️
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold">
+                <span className="gradient-text bg-gradient-to-r from-emerald-400 via-violet-500 to-purple-500 bg-clip-text text-transparent">
+                  {t("adminPanel", "Admin Panel")}
+                </span>
+              </h1>
+              <p className="text-gray-300 mt-2">{t("managePortfolio")}</p>
+            </div>
+          </div>
 
-        {activeTab === "users" && (
-          <UserManagement
-            users={users.filter(
-              (u) =>
-                u.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                u.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                u.email.toLowerCase().includes(searchTerm.toLowerCase())
-            )}
-            searchTerm={searchTerm}
-            onSearch={setSearchTerm}
-            onBanToggle={handleBanToggle}
-          />
-        )}
+          {activeTab === "users" && (
+            <UserManagement
+              users={users.filter(
+                (u) =>
+                  u.firstName
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                  u.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  u.email.toLowerCase().includes(searchTerm.toLowerCase())
+              )}
+              searchTerm={searchTerm}
+              onSearch={setSearchTerm}
+              onBanToggle={handleBanToggle}
+            />
+          )}
 
-        {activeTab === "contact" && (
-          <ContactInfo
-            contactEmail={contactEmail}
-            setContactEmail={setContactEmail}
-            socials={socials}
-            setSocials={setSocials}
-            onSave={handleSaveContactInfo}
-            saveStatus={saveStatus}
-          />
-        )}
+          {activeTab === "contact" && (
+            <ContactInfo
+              contactEmail={contactEmail}
+              setContactEmail={setContactEmail}
+              socials={socials}
+              setSocials={setSocials}
+              onSave={handleSaveContactInfo}
+              saveStatus={saveStatus}
+            />
+          )}
 
-        {activeTab === "skills" && (
-          <SkillsSection
-            skills={skills}
-            skillsLoading={skillsLoading}
-            newSkill={newSkill}
-            setNewSkill={setNewSkill}
-            newSkillCategory={newSkillCategory}
-            setNewSkillCategory={setNewSkillCategory}
-            onAddSkill={handleAddSkill}
-            onDeleteSkill={handleDeleteSkill}
-            status={skillStatus}
-          />
-        )}
+          {activeTab === "skills" && (
+            <SkillsSection
+              skills={skills}
+              skillsLoading={skillsLoading}
+              newSkill={newSkill}
+              setNewSkill={setNewSkill}
+              newSkillCategory={newSkillCategory}
+              setNewSkillCategory={setNewSkillCategory}
+              onAddSkill={handleAddSkill}
+              onDeleteSkill={handleDeleteSkill}
+              status={skillStatus}
+            />
+          )}
 
-        {activeTab === "visitors" && (
-          <Visitors visitors={visitors} loading={visitorsLoading} />
-        )}
+          {activeTab === "visitors" && (
+            <Visitors visitors={visitors} loading={visitorsLoading} />
+          )}
 
-        {activeTab === "project-analytics" && <ProjectAnalytics />}
+          {activeTab === "project-analytics" && <ProjectAnalytics />}
 
-        {activeTab === "dashboard" && <Dashboard setActiveTab={setActiveTab} />}
+          {activeTab === "dashboard" && (
+            <Dashboard setActiveTab={setActiveTab} />
+          )}
+        </div>
       </section>
     </main>
   );

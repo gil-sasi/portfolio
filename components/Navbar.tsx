@@ -134,7 +134,7 @@ export default function Navbar() {
   if (!hasMounted) return null;
 
   return (
-    <nav className="bg-gray-800 text-white p-4 shadow-md">
+    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white p-4 shadow-xl border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
@@ -233,32 +233,23 @@ export default function Navbar() {
           <Link href="/">{t("home")}</Link>
 
           {!user && !onLoginPage && (
-            <Link
-              href="/login"
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded"
-            >
+            <Link href="/login" className="btn-primary px-4 py-2 text-sm">
               {t("login")}
             </Link>
           )}
           {!user && !onSignupPage && (
-            <Link
-              href="/signup"
-              className="bg-gray-600 hover:bg-gray-700 px-4 py-1 rounded"
-            >
+            <Link href="/signup" className="btn-secondary px-4 py-2 text-sm">
               {t("signup")}
             </Link>
           )}
           {user && (
             <>
-              <Link
-                href="/profile"
-                className="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded text-sm"
-              >
+              <Link href="/profile" className="btn-secondary px-4 py-2 text-sm">
                 {t("profile")}
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded text-sm"
+                className="btn-danger px-4 py-2 text-sm"
               >
                 {t("logout")}
               </button>
@@ -317,7 +308,7 @@ export default function Navbar() {
             <Link
               href="/login"
               onClick={() => setMenuOpen(false)}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded"
+              className="btn-primary px-4 py-2 text-sm"
             >
               {t("login")}
             </Link>
@@ -326,7 +317,7 @@ export default function Navbar() {
             <Link
               href="/signup"
               onClick={() => setMenuOpen(false)}
-              className="bg-gray-600 hover:bg-gray-700 px-4 py-1 rounded"
+              className="btn-secondary px-4 py-2 text-sm"
             >
               {t("signup")}
             </Link>
@@ -336,7 +327,7 @@ export default function Navbar() {
               <Link
                 href="/profile"
                 onClick={() => setMenuOpen(false)}
-                className="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded text-sm"
+                className="btn-secondary px-4 py-2 text-sm"
               >
                 {t("profile")}
               </Link>
@@ -345,7 +336,7 @@ export default function Navbar() {
                   handleLogout();
                   setMenuOpen(false);
                 }}
-                className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded text-sm"
+                className="btn-danger px-4 py-2 text-sm"
               >
                 {t("logout")}
               </button>

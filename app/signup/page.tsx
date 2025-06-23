@@ -24,6 +24,7 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
@@ -36,9 +37,11 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (password !== confirmPassword) {
       setMessage(t("passwordMismatch", "Passwords do not match"));
+      setIsLoading(false);
       return;
     }
 
@@ -63,6 +66,8 @@ export default function SignupPage() {
     } catch (err) {
       console.error("Signup error:", err);
       setMessage(t("signupFailed", "Signup failed"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,79 +78,161 @@ export default function SignupPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
-      <form
-        onSubmit={handleSignup}
-        className="bg-gray-800 p-8 rounded shadow-md w-full max-w-md space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center">{t("signUp")}</h2>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-10"></div>
+      <div className="absolute top-10 right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-10 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
-        <div className="flex gap-4">
-          <input
-            type="text"
-            placeholder={t("fullName")}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            className="w-1/2 p-3 rounded bg-gray-700 text-white"
-          />
-          <input
-            type="text"
-            placeholder={t("lastName")}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            className="w-1/2 p-3 rounded bg-gray-700 text-white"
-          />
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-2xl font-bold glow">
+              👤
+            </div>
+            <h1 className="text-3xl font-bold mb-2">
+              <span className="gradient-text bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                {t("signUp")}
+              </span>
+            </h1>
+            <p className="text-gray-400">{t("createAccount")}</p>
+          </div>
+
+          {/* Signup Form */}
+          <form onSubmit={handleSignup} className="modern-card p-8 space-y-6">
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">
+                  {t("fullName")}
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder={t("fullName")}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">
+                  {t("lastName")}
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder={t("lastName")}
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Email Input */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">
+                {t("email")}
+              </label>
+              <div className="relative">
+                <input
+                  type="email"
+                  placeholder={t("email")}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  📧
+                </div>
+              </div>
+            </div>
+
+            {/* Password Fields */}
+            <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">
+                  {t("password")}
+                </label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder={t("password")}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                  />
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    🔒
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">
+                  {t("confirmPassword")}
+                </label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder={t("confirmPassword")}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                  />
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    🔐
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full btn-primary py-4 text-lg font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  {t("creatingAccount")}
+                </div>
+              ) : (
+                t("signUp")
+              )}
+            </button>
+
+            {/* Error Message */}
+            {message && (
+              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center">
+                {message}
+              </div>
+            )}
+          </form>
+
+          {/* Login Link */}
+          <div className="text-center mt-6">
+            <p className="text-gray-400">
+              {t("alreadyHaveAccount")}{" "}
+              <button
+                onClick={() => router.push("/login")}
+                className="text-purple-400 hover:text-purple-300 font-medium transition-colors duration-300"
+              >
+                {t("signInHere")}
+              </button>
+            </p>
+          </div>
         </div>
-
-        <input
-          type="email"
-          placeholder={t("email")}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full p-3 rounded bg-gray-700 text-white"
-        />
-
-        <input
-          type="password"
-          placeholder={t("password")}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full p-3 rounded bg-gray-700 text-white"
-        />
-
-        <input
-          type="password"
-          placeholder={t("confirmPassword")}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className="w-full p-3 rounded bg-gray-700 text-white"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
-        >
-          {t("signUp")}
-        </button>
-
-        <div className="mt-4 text-center">
-          <button
-            onClick={handleForgotPassword}
-            className="text-blue-400 hover:text-blue-600"
-          >
-            {t("forgotPassword")}
-          </button>
-        </div>
-
-        {message && (
-          <p className="text-center text-sm mt-2 text-red-400">{message}</p>
-        )}
-      </form>
+      </div>
     </div>
   );
 }
