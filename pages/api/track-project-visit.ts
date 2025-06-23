@@ -54,7 +54,7 @@ function isBot(ua: string): boolean {
   return BOT_PATTERNS.some((pattern) => pattern.test(ua));
 }
 
-function isDevelopmentIP(ip: string): boolean {
+function isDevelopmentIP(_ip: string): boolean {
   // TEMPORARILY DISABLED FOR TESTING - normally we filter out development IPs
   return false;
 
