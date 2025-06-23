@@ -300,7 +300,9 @@ export default function AdminMessagesPage() {
 
           <select
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as any)}
+            onChange={(e) =>
+              setFilterStatus(e.target.value as "all" | "read" | "unread")
+            }
             className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
           >
             <option value="all">{t("allMessages", "All Messages")}</option>
@@ -312,7 +314,7 @@ export default function AdminMessagesPage() {
             value={`${sortBy}-${sortOrder}`}
             onChange={(e) => {
               const [field, order] = e.target.value.split("-");
-              setSortBy(field as any);
+              setSortBy(field as "date" | "name");
               setSortOrder(order as "asc" | "desc");
             }}
             className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"

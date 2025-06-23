@@ -319,7 +319,7 @@ export default function Visitors({ visitors, loading }: Props) {
           value={`${sortBy}-${sortOrder}`}
           onChange={(e) => {
             const [field, order] = e.target.value.split("-");
-            setSortBy(field as any);
+            setSortBy(field as "visits" | "lastVisit" | "country");
             setSortOrder(order as "asc" | "desc");
           }}
           className="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
