@@ -235,7 +235,7 @@ const resources = {
       VisitorManagementTitle: "Coca-Cola Visitor Management Web App",
       VisitorManagementDescription:
         "Smart management of visitors in Coca-Cola factories, including visit history and event management (first aid, safety events).",
-      BacktoProjects: "Back To Projects",
+
       backToProjects: "Back to Projects",
       visitorManagementTitle: "Coca-Cola Visitor Management Web App",
       visitorManagementDescription:
@@ -385,6 +385,7 @@ const resources = {
       gil: "גיל",
       sasi: "סאסי",
       somethingWentWrong: "משהו השתבש",
+      backToProjects: "בחזרה לפרויקטים",
       about: "אודות",
       profile: "    פרופיל",
       notAuthorized: "עליך להתחבר כדי לצפות בדף זה",
