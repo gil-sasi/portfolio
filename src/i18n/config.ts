@@ -584,6 +584,18 @@ const resources = {
       messages: "messages",
       guest: "Guest",
       reply: "Reply",
+
+      // Notification system translations
+      notifications: "Notifications",
+      justNow: "Just now",
+      allCaughtUp: "All caught up!",
+      noMessagesDesc: "You're all caught up! New messages will appear here.",
+      manageInbox: "Manage your inbox",
+
+      // Admin messages page translations
+      total: "Total",
+      unread: "Unread",
+      refresh: "Refresh",
     },
   },
   he: {
@@ -906,6 +918,18 @@ const resources = {
       messages: "הודעות",
       guest: "אורח",
       reply: "השב",
+
+      // Notification system translations
+      notifications: "התראות",
+      justNow: "ממש עכשיו",
+      allCaughtUp: "הכל עדכני!",
+      noMessagesDesc: "אתה מעודכן! הודעות חדשות יופיעו כאן.",
+      manageInbox: "נהל את תיבת הדואר",
+
+      // Admin messages page translations
+      total: "סה״כ",
+      unread: "לא נקרא",
+      refresh: "רענן",
       pleasewait: "אנא המתן לטקסט...",
       ocrdesc: "העלה תמונה והפק ממנה טקסט באופן אוטומטי.",
       dropimage: "שחרר את התמונה כאן",
