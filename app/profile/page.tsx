@@ -313,8 +313,8 @@ export default function ProfilePage() {
                       </span>
                       <p className="text-xs text-gray-400 mt-1">
                         {user.role === "admin"
-                          ? "Full system access"
-                          : "Standard user access"}
+                          ? t("fullSystemAccess")
+                          : t("standardUserAccess")}
                       </p>
                     </div>
                   </div>

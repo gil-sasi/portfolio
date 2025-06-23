@@ -305,6 +305,8 @@ const resources = {
       dragDropImage: "Drag & drop an image here, or click to select",
       imageSize: "Max size: 5MB",
       supportedFormats: "Supported formats: JPG, PNG, GIF",
+      fullSystemAccess: "Full system access",
+      standardUserAccess: "Standard user access",
     },
   },
   he: {
@@ -610,6 +612,8 @@ const resources = {
       dragDropImage: "גרור ושחרר תמונה כאן, או לחץ לבחירה",
       imageSize: "גודל מקסימלי: 5MB",
       supportedFormats: "פורמטים נתמכים: JPG, PNG, GIF",
+      fullSystemAccess: "גישה מלאה למערכת",
+      standardUserAccess: "גישת משתמש רגיל",
     },
   },
 };
