@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import TrackProjectVisit from "../../../components/TrackProjectVisit";
 import { useEffect, useState } from "react";
 
 export default function DangerousGilHome() {
@@ -16,6 +17,10 @@ export default function DangerousGilHome() {
 
   return (
     <main className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center text-white px-4">
+      <TrackProjectVisit
+        projectId="dave-game"
+        projectName="Dave's Adventure Game"
+      />
       <h1 className="text-5xl font-bold mb-10 text-center">Dangerous Gil</h1>
 
       <div className="flex flex-col gap-6 w-full max-w-xs">

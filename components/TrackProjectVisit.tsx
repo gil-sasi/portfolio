@@ -2,16 +2,26 @@
 
 import { useEffect, useRef } from "react";
 
-export default function TrackVisit() {
+interface TrackProjectVisitProps {
+  projectId: string;
+  projectName: string;
+}
+
+export default function TrackProjectVisit({
+  projectId,
+  projectName,
+}: TrackProjectVisitProps) {
   const hasTracked = useRef(false);
 
   useEffect(() => {
-    // Only track once per session
+    // Only track once per session for this project
     if (hasTracked.current) return;
 
     // Skip tracking in development mode
     if (process.env.NODE_ENV === "development") {
-      console.log("Skipping visitor tracking in development mode");
+      console.log(
+        `Skipping project visit tracking in development mode: ${projectName}`
+      );
       return;
     }
 
@@ -40,18 +50,19 @@ export default function TrackVisit() {
       return;
     }
 
-    // Track the visit with a slight delay to ensure page is loaded
+    // Track the project visit with a slight delay to ensure page is loaded
     setTimeout(() => {
       if (!hasTracked.current) {
         hasTracked.current = true;
 
-        fetch("/api/track-visitor", {
+        fetch("/api/track-project-visit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // Add some client-side context
           body: JSON.stringify({
+            projectId,
+            projectName,
             timestamp: Date.now(),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             screen: {
@@ -61,11 +72,11 @@ export default function TrackVisit() {
           }),
         }).catch((err) => {
           // Silently fail - don't block user experience
-          console.debug("Visitor tracking failed:", err);
+          console.debug("Project visit tracking failed:", err);
         });
       }
-    }, 1000);
-  }, []);
+    }, 1500); // Slightly longer delay than general tracking
+  }, [projectId, projectName]);
 
   return null; // nothing to render
 }

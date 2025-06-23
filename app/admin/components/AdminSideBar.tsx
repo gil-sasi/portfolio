@@ -7,6 +7,7 @@ import {
   FaHome,
   FaChevronLeft,
   FaChevronRight,
+  FaChartBar,
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
@@ -38,6 +39,11 @@ export default function AdminSidebar({
   const tabs: Tab[] = [
     { key: "dashboard", label: t("dashboard"), icon: <FaHome /> },
     { key: "visitors", label: t("visitors"), icon: <FaCogs /> },
+    {
+      key: "project-analytics",
+      label: t("projectanalytics"),
+      icon: <FaChartBar />,
+    },
     { key: "users", label: t("usermanagement"), icon: <FaUsers /> },
     { key: "contact", label: t("contactinfo"), icon: <FaIdCard /> },
     { key: "skills", label: t("skills"), icon: <FaCogs /> },

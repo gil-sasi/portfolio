@@ -3,8 +3,10 @@ import { connectToDatabase } from "@/lib/mongodb";
 import mongoose from "mongoose";
 import axios from "axios";
 
-const visitorSchema = new mongoose.Schema({
-  ip: { type: String, required: true, unique: true },
+const projectVisitorSchema = new mongoose.Schema({
+  projectId: { type: String, required: true },
+  projectName: { type: String, required: true },
+  ip: { type: String, required: true },
   visitCount: { type: Number, default: 1 },
   lastVisit: { type: Date, default: Date.now },
   firstVisit: { type: Date, default: Date.now },
@@ -14,36 +16,28 @@ const visitorSchema = new mongoose.Schema({
   isValidVisitor: { type: Boolean, default: true },
 });
 
-const Visitor =
-  mongoose.models.Visitor || mongoose.model("Visitor", visitorSchema);
+// Add indexes after schema creation
+projectVisitorSchema.index({ projectId: 1, ip: 1 });
+projectVisitorSchema.index({ projectId: 1, lastVisit: -1 });
+projectVisitorSchema.index({ lastVisit: -1 });
 
-// Enhanced bot detection patterns
+const ProjectVisitor =
+  mongoose.models.ProjectVisitor ||
+  mongoose.model("ProjectVisitor", projectVisitorSchema);
+
+// Enhanced bot detection patterns (same as main visitor tracking)
 const BOT_PATTERNS = [
-  // Search engine bots
   /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebookexternalhit/i,
-  // Social media crawlers
   /twitterbot|linkedinbot|whatsapp|telegram|discord|slack/i,
-  // Development and monitoring
   /curl|wget|postman|insomnia|httpie|axios|fetch|node|python|ruby|go-http|java|php/i,
-  // Deployment platforms
   /vercel|netlify|github|gitlab|travis|jenkins|circleci|heroku|aws/i,
-  // Security scanners
   /nmap|nikto|sqlmap|burpsuite|owasp|security|scanner/i,
-  // Generic bot patterns
   /bot|crawl|spider|scraper|checker|monitor|uptime|health|preview|meta|validator/i,
-  // Headless browsers
   /headless|phantom|selenium|playwright|puppeteer/i,
 ];
 
-// Known development/testing IPs or ranges (you can expand this)
-const DEVELOPMENT_IPS = [
-  "127.0.0.1",
-  "::1",
-  "localhost",
-  // Add your development IPs here if needed
-];
+const DEVELOPMENT_IPS = ["127.0.0.1", "::1", "localhost"];
 
-// Suspicious referrer patterns
 const SUSPICIOUS_REFERRERS = [
   /vercel\.app/i,
   /netlify\.app/i,
@@ -57,7 +51,6 @@ const SUSPICIOUS_REFERRERS = [
 
 function isBot(ua: string): boolean {
   if (!ua || ua.length < 10) return true;
-
   return BOT_PATTERNS.some((pattern) => pattern.test(ua));
 }
 
@@ -77,19 +70,10 @@ function isSuspiciousReferrer(referrer: string): boolean {
 }
 
 function isValidVisitor(ua: string, ip: string, referrer: string): boolean {
-  // Check if it's a bot
   if (isBot(ua)) return false;
-
-  // Check if it's a development IP
   if (isDevelopmentIP(ip)) return false;
-
-  // Check for suspicious referrers
   if (isSuspiciousReferrer(referrer)) return false;
-
-  // Check for very short user agents (likely automated)
   if (ua.length < 20) return false;
-
-  // Check for missing common browser headers
   if (
     !ua.includes("Mozilla") &&
     !ua.includes("Safari") &&
@@ -97,7 +81,6 @@ function isValidVisitor(ua: string, ip: string, referrer: string): boolean {
   ) {
     return false;
   }
-
   return true;
 }
 
@@ -105,7 +88,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   await connectToDatabase();
+
+  const { projectId, projectName } = req.body;
+
+  if (!projectId || !projectName) {
+    return res.status(400).json({ error: "Project ID and name are required" });
+  }
 
   const ip =
     req.headers["x-forwarded-for"]?.toString().split(",")[0]?.trim() ||
@@ -124,16 +117,14 @@ export default async function handler(
   const isValid = isValidVisitor(userAgent, ip, referrer);
 
   if (!isValid) {
-    // Optionally log suspicious visits for debugging
-    // console.log("Filtered out visit:", { ip, userAgent: userAgent.substring(0, 100), referrer });
     return res.status(204).end();
   }
 
   try {
-    // Lookup visitor by IP
-    const existing = await Visitor.findOne({ ip });
+    // Look for existing project visit by this IP for this project
+    const existing = await ProjectVisitor.findOne({ projectId, ip });
 
-    // Only increment visitCount if 30min have passed since lastVisit (reduced from 50min)
+    // Only increment visitCount if 30min have passed since lastVisit
     let shouldIncrement = true;
     if (existing && existing.lastVisit) {
       const minutesSinceLastVisit =
@@ -144,6 +135,7 @@ export default async function handler(
     // Prepare update object
     const update: {
       lastVisit: Date;
+      projectName: string;
       $inc?: { visitCount: number };
       country?: string;
       userAgent?: string;
@@ -152,8 +144,9 @@ export default async function handler(
       firstVisit?: Date;
     } = {
       lastVisit: new Date(),
-      userAgent: userAgent.substring(0, 500), // Limit length
-      referrer: referrer.substring(0, 200), // Limit length
+      projectName, // Update project name in case it changed
+      userAgent: userAgent.substring(0, 500),
+      referrer: referrer.substring(0, 200),
       isValidVisitor: true,
     };
 
@@ -171,26 +164,28 @@ export default async function handler(
     if (ip !== "unknown" && !isDevelopmentIP(ip)) {
       try {
         const geo = await axios.get(`https://ipapi.co/${ip}/country_name/`, {
-          timeout: 3000, // 3 second timeout
+          timeout: 3000,
           headers: {
-            "User-Agent": "Portfolio-Visitor-Tracker/1.0",
+            "User-Agent": "Portfolio-Project-Tracker/1.0",
           },
         });
         if (geo.data && typeof geo.data === "string" && geo.data.length > 0) {
           country = geo.data;
         }
       } catch (geoError) {
-        // Don't block on geo errors, but optionally log for debugging
-        // console.log("Geo lookup failed for IP:", ip);
+        // Silently fail on geo errors
       }
     }
     update.country = country;
 
-    await Visitor.findOneAndUpdate({ ip }, update, { upsert: true, new: true });
+    await ProjectVisitor.findOneAndUpdate({ projectId, ip }, update, {
+      upsert: true,
+      new: true,
+    });
 
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Visitor tracking error:", err);
+    console.error("Project visitor tracking error:", err);
     res.status(500).json({ success: false });
   }
 }

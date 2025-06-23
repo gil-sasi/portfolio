@@ -7,6 +7,7 @@ import ContactInfo from "./components/ContactInfo";
 import SkillsSection from "./components/SkillsSection";
 import Visitors from "./components/Visitors";
 import Dashboard from "./components/Dashboard";
+import ProjectAnalytics from "./components/ProjectAnalytics";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
@@ -253,6 +254,10 @@ export default function AdminPage() {
 
         {activeTab === "visitors" && (
           <Visitors visitors={visitors} loading={visitorsLoading} />
+        )}
+
+        {activeTab === "project-analytics" && (
+          <ProjectAnalytics loading={visitorsLoading} />
         )}
 
         {activeTab === "dashboard" && <Dashboard setActiveTab={setActiveTab} />}

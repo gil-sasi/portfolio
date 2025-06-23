@@ -8,6 +8,8 @@ import "swiper/css/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import TrackProjectVisit from "../../../components/TrackProjectVisit";
+import TestProjectTracking from "../../../components/TestProjectTracking";
 export default function BarbershopProjectPage() {
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
@@ -31,6 +33,14 @@ export default function BarbershopProjectPage() {
 
   return (
     <div className="min-h-screen overflow-y-auto">
+      <TrackProjectVisit
+        projectId="barbershop"
+        projectName="Barbershop Management App"
+      />
+      <TestProjectTracking
+        projectId="barbershop"
+        projectName="Barbershop Management App"
+      />
       <main className="p-6 text-white max-w-5xl mx-auto">
         <Link
           href="/projects"
