@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password: string;
   role: "user" | "admin";
   isBanned: boolean;
+  profilePicture?: string;
   lastLogin?: {
     date: Date;
     ip: string;
@@ -26,6 +27,7 @@ const UserSchema = new Schema<IUser>({
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "admin"], default: "user" },
   isBanned: { type: Boolean, default: false },
+  profilePicture: { type: String, default: null },
   lastLogin: {
     date: { type: Date, default: null },
     ip: { type: String, default: "" },

@@ -287,6 +287,24 @@ const resources = {
 
       // Contact form error message
       sendFailed: "Failed to send message. Try again.",
+
+      // Profile page translations
+      manageAccountSettings: "Manage your account settings",
+      accountInformation: "Account Information",
+      securitySettings: "Security Settings",
+      keepAccountSecure:
+        "Keep your account secure by updating your password regularly",
+      profilePicture: "Profile Picture",
+      uploadProfilePicture: "Upload Profile Picture",
+      changeProfilePicture: "Change Profile Picture",
+      removeProfilePicture: "Remove Profile Picture",
+      profilePictureUpdated: "Profile picture updated successfully",
+      profilePictureRemoved: "Profile picture removed successfully",
+      profilePictureError: "Error updating profile picture",
+      selectImage: "Select Image",
+      dragDropImage: "Drag & drop an image here, or click to select",
+      imageSize: "Max size: 5MB",
+      supportedFormats: "Supported formats: JPG, PNG, GIF",
     },
   },
   he: {
@@ -574,6 +592,24 @@ const resources = {
 
       // Contact form error message
       sendFailed: "שליחת ההודעה נכשלה. נסה שוב.",
+
+      // Profile page translations
+      manageAccountSettings: "נהל את הגדרות החשבון שלך",
+      accountInformation: "פרטי החשבון",
+      securitySettings: "הגדרות אבטחה",
+      keepAccountSecure:
+        "שמור על החשבון שלך מאובטח על ידי עדכון הסיסמה באופן קבוע",
+      profilePicture: "תמונת פרופיל",
+      uploadProfilePicture: "העלה תמונת פרופיל",
+      changeProfilePicture: "שנה תמונת פרופיל",
+      removeProfilePicture: "הסר תמונת פרופיל",
+      profilePictureUpdated: "תמונת הפרופיל עודכנה בהצלחה",
+      profilePictureRemoved: "תמונת הפרופיל הוסרה בהצלחה",
+      profilePictureError: "שגיאה בעדכון תמונת הפרופיל",
+      selectImage: "בחר תמונה",
+      dragDropImage: "גרור ושחרר תמונה כאן, או לחץ לבחירה",
+      imageSize: "גודל מקסימלי: 5MB",
+      supportedFormats: "פורמטים נתמכים: JPG, PNG, GIF",
     },
   },
 };

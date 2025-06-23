@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
   const [mounted, setMounted] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // Calculate years of experience dynamically (started in 2024)
   const getYearsOfExperience = () => {
@@ -52,15 +55,27 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="glass rounded-3xl p-8 sm:p-12 mb-8 max-w-4xl mx-auto">
           <div className="mb-6">
-            <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-4xl font-bold glow">
-              GS
-            </div>
+            {user?.profilePicture ? (
+              <img
+                src={user.profilePicture}
+                alt="Profile"
+                className="w-32 h-32 mx-auto mb-6 rounded-full object-cover border-4 border-gradient-to-br from-blue-400 to-purple-600 glow"
+              />
+            ) : (
+              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-4xl font-bold glow">
+                {user
+                  ? `${user.firstName.charAt(0).toUpperCase()}${user.lastName
+                      .charAt(0)
+                      .toUpperCase()}`
+                  : "GS"}
+              </div>
+            )}
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
             <Trans
               i18nKey="heroTitle"
-              values={{ name: "Gil" }}
+              values={{ name: user?.firstName || "Gil" }}
               components={[
                 <span
                   key="name"

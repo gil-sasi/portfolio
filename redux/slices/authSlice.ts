@@ -8,6 +8,7 @@ export interface DecodedToken {
   lastName: string;
   role: string;
   email: string;
+  profilePicture?: string | null;
 }
 
 //  Define the shape of your auth state in Redux
@@ -30,6 +31,13 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
 
+    //  Update user profile picture
+    updateProfilePicture: (state, action: PayloadAction<string | null>) => {
+      if (state.user) {
+        state.user.profilePicture = action.payload;
+      }
+    },
+
     //  Clear user info and remove token from sessionStorage (on logout)
     logout: (state) => {
       state.user = null;
@@ -41,7 +49,7 @@ const authSlice = createSlice({
 });
 
 //  Export actions for use in your app
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateProfilePicture } = authSlice.actions;
 
 /**
  *  Auto-login from token if sessionStorage contains it.
