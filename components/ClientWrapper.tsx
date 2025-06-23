@@ -8,17 +8,29 @@ import { AppDispatch } from "../redux/store";
 import { setUserFromToken } from "../redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
 import Navbar from "./Navbar";
+import ErrorBoundary from "./ErrorBoundary";
 
 function AuthGate() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     console.log("🚀 Running setUserFromToken in AuthGate");
-    dispatch(setUserFromToken());
 
-    fetch("/api/skills").catch(() => {
-      console.log("🧊 Warming up /api/skills route");
-    });
+    // Wrap in try-catch to handle any potential errors
+    try {
+      dispatch(setUserFromToken());
+    } catch (error) {
+      console.warn("Error in setUserFromToken:", error);
+    }
+
+    // Warm up API route with proper error handling
+    fetch("/api/skills")
+      .then(() => {
+        console.log("🧊 Warmed up /api/skills route");
+      })
+      .catch((error) => {
+        console.log("🧊 Warming up /api/skills route failed:", error);
+      });
   }, [dispatch]);
 
   return null;
@@ -58,9 +70,11 @@ function LanguageDirectionHandler({ children }: { children: ReactNode }) {
 
 export default function ClientWrapper({ children }: { children: ReactNode }) {
   return (
-    <Provider store={store}>
-      <AuthGate />
-      <LanguageDirectionHandler>{children}</LanguageDirectionHandler>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <AuthGate />
+        <LanguageDirectionHandler>{children}</LanguageDirectionHandler>
+      </Provider>
+    </ErrorBoundary>
   );
 }

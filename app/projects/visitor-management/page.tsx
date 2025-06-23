@@ -303,14 +303,29 @@ export default function VisitorManagementProject() {
                 🚀 {t("tryItOut")}
               </span>
             </h2>
-            <a
-              href={liveAppLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary px-8 py-4 rounded-xl font-semibold text-lg glow-hover transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
-            >
-              {t("liveDemo")} 🔗
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="group px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25">
+                <span className="flex items-center justify-center gap-2">
+                  🚀 {t("tryItOut")}
+                  <svg
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <button className="px-8 py-4 border-2 border-indigo-500/50 hover:border-indigo-400 rounded-lg font-semibold text-indigo-400 hover:text-indigo-300 transition-all duration-300 hover:scale-105 hover:bg-indigo-500/10">
+                🎥 {t("projectDemo")}
+              </button>
+            </div>
           </div>
         </div>
       </div>

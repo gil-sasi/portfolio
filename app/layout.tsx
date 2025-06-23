@@ -46,6 +46,16 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon/icon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>My Portfolio</title>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('unhandledrejection', function(event) {
+                console.warn('Unhandled promise rejection:', event.reason);
+                event.preventDefault();
+              });
+            `,
+          }}
+        />
       </head>
       <body
         className={`

@@ -117,108 +117,132 @@ export default function DangerousGilHome() {
             </div>
           </div>
 
-          {/* Game Features */}
+          {/* Game Features Section */}
           <div className="modern-card p-8">
-            <h2 className="text-2xl font-bold mb-8 text-center">
+            <h2 className="text-2xl font-bold mb-6 text-center">
               <span className="gradient-text bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
-                🌟 Game Features
+                🌟 {t("gameFeatures")}
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {gameFeatures.map((feature, index) => (
-                <div
-                  key={index}
-                  className="glass p-6 rounded-xl hover:scale-105 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-12 h-12 rounded-full bg-gradient-to-br ${feature.color} flex items-center justify-center text-xl glow flex-shrink-0`}
-                    >
-                      {feature.icon}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white mb-2">
-                        {feature.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-500/20 flex items-center justify-center text-xl">
+                  🎮
                 </div>
-              ))}
+                <h3 className="font-semibold text-red-400 mb-2">
+                  {t("actionAdventure")}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {t("fastPacedPlatformer")}
+                </p>
+              </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-500/20 flex items-center justify-center text-xl">
+                  🏗️
+                </div>
+                <h3 className="font-semibold text-pink-400 mb-2">
+                  {t("levelEditor")}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {t("createShareLevels")}
+                </p>
+              </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-500/20 flex items-center justify-center text-xl">
+                  💎
+                </div>
+                <h3 className="font-semibold text-purple-400 mb-2">
+                  {t("collectibles")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("gatherDiamonds")}</p>
+              </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-orange-500/20 flex items-center justify-center text-xl">
+                  👾
+                </div>
+                <h3 className="font-semibold text-orange-400 mb-2">
+                  {t("bossBattles")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("fightEnemies")}</p>
+              </div>
             </div>
           </div>
 
-          {/* How to Play */}
+          {/* How to Play Section */}
           <div className="modern-card p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">
-              <span className="gradient-text bg-gradient-to-r from-pink-400 to-red-500 bg-clip-text text-transparent">
+              <span className="gradient-text bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
                 🕹️ {t("howToUse")}
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-4">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center text-2xl">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center text-2xl">
                   ⬅️➡️
                 </div>
-                <h3 className="font-semibold text-red-400 mb-2">Move</h3>
-                <p className="text-sm text-gray-400">
-                  Use arrow keys or WASD to move around
-                </p>
+                <h3 className="font-semibold text-blue-400 mb-2">
+                  {t("move")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("useArrowKeys")}</p>
               </div>
               <div className="text-center p-4">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-500/20 flex items-center justify-center text-2xl">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center text-2xl">
                   ⬆️
                 </div>
-                <h3 className="font-semibold text-pink-400 mb-2">Jump</h3>
-                <p className="text-sm text-gray-400">
-                  Press spacebar or up arrow to jump
-                </p>
+                <h3 className="font-semibold text-green-400 mb-2">
+                  {t("jump")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("pressSpacebar")}</p>
               </div>
               <div className="text-center p-4">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center text-2xl">
                   🔫
                 </div>
-                <h3 className="font-semibold text-orange-400 mb-2">Shoot</h3>
-                <p className="text-sm text-gray-400">
-                  Press Ctrl to shoot (pick up guns first!)
-                </p>
+                <h3 className="font-semibold text-orange-400 mb-2">
+                  {t("shoot")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("pressCtrlToShoot")}</p>
               </div>
             </div>
           </div>
 
-          {/* Tech Stack */}
+          {/* Tech Stack Section */}
           <div className="modern-card p-8">
-            <h2 className="text-2xl font-bold mb-8 text-center">
-              <span className="gradient-text bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
-                🛠️ Built With
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                🛠️ {t("builtWith")}
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="glass p-6 rounded-xl">
-                <h3 className="font-semibold text-red-400 mb-4 flex items-center gap-2">
-                  🎮 Game Engine
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-500/20 flex items-center justify-center text-xl">
+                  🎮
+                </div>
+                <h3 className="font-semibold text-purple-400 mb-2">
+                  {t("gameEngine")}
                 </h3>
                 <div className="space-y-2">
-                  <span className="inline-block px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm border border-red-500/30">
-                    Custom JavaScript
+                  <span className="inline-block bg-purple-500/10 text-purple-300 px-3 py-1 rounded-full text-xs">
+                    {t("customJavaScript")}
                   </span>
-                  <span className="inline-block px-3 py-1 bg-orange-500/20 text-orange-300 rounded-full text-sm border border-orange-500/30 ml-2">
-                    HTML5 Canvas
+                  <span className="inline-block bg-purple-500/10 text-purple-300 px-3 py-1 rounded-full text-xs ml-2">
+                    {t("html5Canvas")}
                   </span>
                 </div>
               </div>
-              <div className="glass p-6 rounded-xl">
-                <h3 className="font-semibold text-pink-400 mb-4 flex items-center gap-2">
-                  🖥️ Frontend
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-500/20 flex items-center justify-center text-xl">
+                  🖥️
+                </div>
+                <h3 className="font-semibold text-pink-400 mb-2">
+                  {t("frontend")}
                 </h3>
                 <div className="space-y-2">
-                  <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm border border-blue-500/30">
-                    Next.js
+                  <span className="inline-block bg-pink-500/10 text-pink-300 px-3 py-1 rounded-full text-xs">
+                    {t("nextjsTypeScript")}
                   </span>
-                  <span className="inline-block px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm border border-cyan-500/30 ml-2">
-                    TypeScript
+                  <span className="inline-block bg-pink-500/10 text-pink-300 px-3 py-1 rounded-full text-xs ml-2">
+                    {t("typeScript")}
                   </span>
                 </div>
               </div>
