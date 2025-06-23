@@ -9,6 +9,8 @@ import {
   enableBodyScroll,
   clearAllBodyScrollLocks,
 } from "body-scroll-lock";
+import TrackProjectVisit from "../../../components/TrackProjectVisit";
+import TestProjectTracking from "../../../components/TestProjectTracking";
 
 export default function VisitorManagementProject() {
   const { t } = useTranslation();
@@ -68,6 +70,14 @@ export default function VisitorManagementProject() {
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8 min-h-screen">
+      <TrackProjectVisit
+        projectId="visitor-management"
+        projectName="Coca-Cola Visitor Management App"
+      />
+      <TestProjectTracking
+        projectId="visitor-management"
+        projectName="Coca-Cola Visitor Management App"
+      />
       <Link
         href="/projects"
         className="text-blue-400 hover:underline mb-6 inline-block"
