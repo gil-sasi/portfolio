@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
-import ContactInfoModel from "../../../models/ContactInfo";
+import ContactInfo from "../../../models/ContactInfo";
 import jwt from "jsonwebtoken";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
@@ -21,7 +21,7 @@ export default async function handler(
   // GET: Allow public read access (no token required)
   if (req.method === "GET") {
     try {
-      const doc = await ContactInfoModel.findOne();
+      const doc = await ContactInfo.findOne();
       return res.status(200).json(doc || {});
     } catch (err) {
       console.error("Failed to fetch contact info:", err);
@@ -48,13 +48,13 @@ export default async function handler(
     const { email, socials } = req.body;
 
     try {
-      const doc = await ContactInfoModel.findOne();
+      const doc = await ContactInfo.findOne();
       if (doc) {
         doc.email = email;
         doc.socials = socials;
         await doc.save();
       } else {
-        await ContactInfoModel.create({ email, socials });
+        await ContactInfo.create({ email, socials });
       }
 
       return res.status(200).json({ message: "Contact info saved" });

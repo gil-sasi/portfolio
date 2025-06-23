@@ -31,11 +31,11 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
 
-    //  Clear user info and remove token from sessionStorage (on logout)
+    //  Clear user info and remove token from localStorage (on logout)
     logout: (state) => {
       state.user = null;
       if (typeof window !== "undefined") {
-        sessionStorage.removeItem("token"); // 🔁 Clears token when user logs out
+        localStorage.removeItem("token"); // 🔁 Clears token when user logs out
       }
     },
   },
@@ -45,13 +45,13 @@ const authSlice = createSlice({
 export const { login, logout } = authSlice.actions;
 
 /**
- *  Auto-login from token if sessionStorage contains it.
+ *  Auto-login from token if localStorage contains it.
  * Called when app loads to restore user from existing token.
  */
 export const setUserFromToken = () => async (dispatch: any) => {
   if (typeof window === "undefined") return; // Skip on server
 
-  const token = sessionStorage.getItem("token"); //  Use sessionStorage instead of localStorage
+  const token = localStorage.getItem("token"); //  Use localStorage for consistency
   console.log("🧠 setUserFromToken running");
   console.log("📦 Token from storage:", token);
 
@@ -67,7 +67,7 @@ export const setUserFromToken = () => async (dispatch: any) => {
       }
     } catch (err) {
       console.error("❌ Error decoding token:", err);
-      sessionStorage.removeItem("token"); // 🧹 Clean up bad token
+      localStorage.removeItem("token"); // 🧹 Clean up bad token
     }
   }
 };

@@ -63,7 +63,7 @@ export default function LoginPage() {
       }
 
       const token = data.token;
-      sessionStorage.setItem("token", token);
+      localStorage.setItem("token", token);
 
       const decoded = jwt.decode(token) as DecodedToken;
       dispatch(login(decoded));
