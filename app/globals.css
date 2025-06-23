@@ -27,6 +27,22 @@ body {
   touch-action: none;
 }
 
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+  body {
+    touch-action: manipulation;
+  }
+}
+
+/* Hide scrollbars */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
 /* Canvas styling */
 canvas {
   display: block;
@@ -36,7 +52,7 @@ canvas {
   touch-action: none;
 }
 
-/* Touch button UI */
+/* Touch button UI - Enhanced for mobile */
 .touch-btn {
   width: 64px;
   height: 64px;
@@ -49,6 +65,22 @@ canvas {
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .touch-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+}
+
+/* Improved button styles for mobile */
+button,
+.btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Swiper Slide Reset */
@@ -99,4 +131,12 @@ canvas {
 
 .swiper-button-prev {
   left: 0 !important;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

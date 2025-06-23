@@ -20,12 +20,13 @@ export default function SkillsPage() {
     const lang = localStorage.getItem("i18nextLng");
     if (lang && lang !== i18n.language) {
       i18n.changeLanguage(lang).finally(() => {
-        setMounted(true); // Wait for language to load
+        setMounted(true);
       });
     } else {
       setMounted(true);
     }
   }, [i18n]);
+
   useEffect(() => {
     if (!mounted) return;
     const fetchSkills = async () => {
@@ -70,27 +71,34 @@ export default function SkillsPage() {
 
   return (
     <div className="h-screen overflow-y-auto">
-      <div className="max-w-4xl mx-auto text-white p-6 space-y-10">
-        <h1 className="text-3xl font-bold text-center">{t("skills")}</h1>
+      <div className="max-w-4xl mx-auto text-white p-4 sm:p-6 space-y-8 sm:space-y-10">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center">
+          {t("skills")}
+        </h1>
 
         {loading ? (
-          <>
+          <div className="flex flex-col items-center space-y-4">
             <Spinner />
             <p className="text-center text-gray-400">{t("loading")}...</p>
-          </>
+          </div>
         ) : skills.length === 0 ? (
-          <p className="text-center text-gray-400">{t("noskillsfound")}</p>
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">{t("noskillsfound")}</p>
+          </div>
         ) : (
           Object.entries(groupedSkills).map(([category, items]) => (
-            <div key={category} className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4">
+            <div
+              key={category}
+              className="bg-gray-800 p-4 sm:p-6 rounded-lg border border-gray-700"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center sm:text-left">
                 {categoryEmojis[category] || "🔹"} {toTitleCase(category)}
               </h2>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
                 {items.map((skill) => (
                   <span
                     key={skill._id}
-                    className="bg-blue-700/60 text-sm px-4 py-2 rounded-full border border-blue-400 transition-all duration-200 hover:bg-blue-500 hover:text-white"
+                    className="bg-blue-700/60 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-full border border-blue-400 transition-all duration-200 hover:bg-blue-500 hover:text-white cursor-default touch-manipulation"
                   >
                     {skill.name}
                   </span>

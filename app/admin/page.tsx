@@ -64,6 +64,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
 
     const fetchAll = async () => {
       try {
@@ -107,7 +111,21 @@ export default function AdminPage() {
     };
 
     fetchAll();
-  }, []);
+
+    // Listen for custom events from dashboard quick actions
+    const handleTabChange = (event: CustomEvent) => {
+      setActiveTab(event.detail);
+    };
+
+    window.addEventListener("adminTabChange", handleTabChange as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        "adminTabChange",
+        handleTabChange as EventListener
+      );
+    };
+  }, [isMounted]);
 
   if (!isMounted) return null;
   if (!user || user.role !== "admin") {
@@ -175,14 +193,13 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="flex flex-col md:flex-row min-h-screen text-white bg-gray-900">
-      {/* Sidebar on left for desktop, on top for mobile */}
-      <div className="md:w-64 flex-shrink-0">
-        <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      </div>
-      {/* Main content area: scrollable on mobile */}
-      <section className="flex-1 p-3 sm:p-6 overflow-auto h-full min-h-[calc(100vh-0px)]">
-        <h1 className="text-3xl font-bold mb-6 text-center">
+    <main className="min-h-screen text-white bg-gray-900">
+      {/* Responsive Sidebar */}
+      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Main content area - positioned properly for desktop sidebar */}
+      <section className="md:ml-64 p-3 sm:p-6 min-h-screen">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
           {t("adminPanel", "Admin Panel")}
         </h1>
 
@@ -203,8 +220,8 @@ export default function AdminPage() {
         {activeTab === "contact" && (
           <ContactInfo
             contactEmail={contactEmail}
-            socials={socials}
             setContactEmail={setContactEmail}
+            socials={socials}
             setSocials={setSocials}
             onSave={handleSaveContactInfo}
             saveStatus={saveStatus}
@@ -216,8 +233,8 @@ export default function AdminPage() {
             skills={skills}
             skillsLoading={skillsLoading}
             newSkill={newSkill}
-            newSkillCategory={newSkillCategory}
             setNewSkill={setNewSkill}
+            newSkillCategory={newSkillCategory}
             setNewSkillCategory={setNewSkillCategory}
             onAddSkill={handleAddSkill}
             onDeleteSkill={handleDeleteSkill}
@@ -229,7 +246,7 @@ export default function AdminPage() {
           <Visitors visitors={visitors} loading={visitorsLoading} />
         )}
 
-        {activeTab === "dashboard" && <Dashboard />}
+        {activeTab === "dashboard" && <Dashboard setActiveTab={setActiveTab} />}
       </section>
     </main>
   );

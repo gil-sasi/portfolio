@@ -15,19 +15,19 @@ const trackClick = async (platform: string) => {
   }
 };
 
-type Social = {
+interface Social {
   platform: string;
   url: string;
-};
+}
 
-type ContactInfoProps = {
+interface Props {
   contactEmail: string;
   socials: Social[];
   setContactEmail: (email: string) => void;
   setSocials: (socials: Social[]) => void;
   onSave: () => void;
-  saveStatus?: string;
-};
+  saveStatus: string;
+}
 
 export default function ContactInfo({
   contactEmail,
@@ -36,91 +36,135 @@ export default function ContactInfo({
   setSocials,
   onSave,
   saveStatus,
-}: ContactInfoProps) {
+}: Props) {
   const { t } = useTranslation();
 
-  const updateSocial = (
-    i: number,
-    field: "platform" | "url",
+  const handleSocialChange = (
+    index: number,
+    field: keyof Social,
     value: string
   ) => {
     const updated = [...socials];
-    updated[i] = { ...updated[i], [field]: value };
+    updated[index] = { ...updated[index], [field]: value };
     setSocials(updated);
   };
 
-  const removeSocial = (i: number) => {
-    setSocials(socials.filter((_, idx) => idx !== i));
+  const addSocial = () => {
+    setSocials([...socials, { platform: "", url: "" }]);
+  };
+
+  const removeSocial = (index: number) => {
+    setSocials(socials.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="mt-10 border border-gray-700 bg-gray-800 p-6 rounded">
-      <h2 className="text-xl font-bold mb-4">{t("contactInfo")}</h2>
-      <a
-        href={`mailto:${contactEmail}`}
-        onClick={() => trackClick("Email")}
-        className="block text-blue-400 hover:underline mb-4"
-      >
-        {contactEmail}
-      </a>
-      <input
-        type="email"
-        className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded"
-        placeholder={t("publicEmail")}
-        value={contactEmail}
-        onChange={(e) => setContactEmail(e.target.value)}
-      />
-      {socials.map((s, i) => (
-        <div key={i} className="flex gap-2 mb-2">
-          <input
-            type="text"
-            className="flex-1 p-2 bg-gray-700 border border-gray-600 rounded"
-            placeholder="Platform"
-            value={s.platform}
-            onChange={(e) => updateSocial(i, "platform", e.target.value)}
-          />
-          <input
-            type="text"
-            className="flex-1 p-2 bg-gray-700 border border-gray-600 rounded"
-            placeholder="URL"
-            value={s.url}
-            onChange={(e) => updateSocial(i, "url", e.target.value)}
-          />
-          <a
-            href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:underline"
-            onClick={() => trackClick(s.platform)}
-          >
-            🔗
-          </a>
+    <div className="bg-gray-800 p-3 sm:p-6 rounded border border-gray-700">
+      <h2 className="text-lg sm:text-xl font-bold mb-4">{t("contactinfo")}</h2>
+
+      {/* Email Input - Mobile Optimized */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium mb-2">{t("email")}:</label>
+        <input
+          type="email"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+          className="w-full p-3 sm:p-2 bg-gray-700 rounded border border-gray-600 text-base sm:text-sm"
+          placeholder="your@email.com"
+        />
+      </div>
+
+      {/* Social Links Section */}
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-0">
+            {t("sociallinks", "Social Links")}
+          </h3>
           <button
-            className="text-red-400 hover:text-red-600"
-            onClick={() => removeSocial(i)}
+            onClick={addSocial}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium text-sm w-full sm:w-auto"
           >
-            ✕
+            + {t("addsocial", "Add Social")}
           </button>
         </div>
-      ))}
-      <button
-        className="text-blue-400 hover:underline text-sm mt-2"
-        onClick={() => setSocials([...socials, { platform: "", url: "" }])}
-      >
-        + {t("addsocial")}
-      </button>
 
-      <div className="flex justify-end mt-4 ltr">
-        <button
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
-          onClick={onSave}
-        >
-          {t("save")}
-        </button>
+        {/* Social Links List */}
+        <div className="space-y-4">
+          {socials.map((social, index) => (
+            <div
+              key={index}
+              className="bg-gray-900 p-4 rounded border border-gray-600"
+            >
+              {/* Mobile: Stack vertically, Desktop: Side by side */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-400 mb-1">
+                    {t("platform")}:
+                  </label>
+                  <input
+                    type="text"
+                    value={social.platform}
+                    onChange={(e) =>
+                      handleSocialChange(index, "platform", e.target.value)
+                    }
+                    className="w-full p-3 sm:p-2 bg-gray-700 rounded border border-gray-600 text-base sm:text-sm"
+                    placeholder="e.g., GitHub, LinkedIn, Twitter"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-400 mb-1">
+                    {t("url")}:
+                  </label>
+                  <input
+                    type="url"
+                    value={social.url}
+                    onChange={(e) =>
+                      handleSocialChange(index, "url", e.target.value)
+                    }
+                    className="w-full p-3 sm:p-2 bg-gray-700 rounded border border-gray-600 text-base sm:text-sm"
+                    placeholder="https://..."
+                  />
+                </div>
+                <div className="flex sm:flex-col justify-end sm:justify-center">
+                  <button
+                    onClick={() => removeSocial(index)}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium w-full sm:w-auto mt-2 sm:mt-0"
+                    title="Remove social link"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {socials.length === 0 && (
+          <div className="text-center py-8 text-gray-400">
+            <p className="mb-2">
+              {t("nosocials", "No social links added yet")}
+            </p>
+            <p className="text-sm">
+              {t("clickadd", "Click 'Add Social' to get started")}
+            </p>
+          </div>
+        )}
       </div>
-      {saveStatus && (
-        <p className="mt-2 text-sm text-green-400">{saveStatus}</p>
-      )}
+
+      {/* Save Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <button
+          onClick={onSave}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 sm:py-2 rounded font-medium text-base sm:text-sm w-full sm:w-auto"
+        >
+          {t("savechanges", "Save Changes")}
+        </button>
+
+        {saveStatus && (
+          <p className="text-sm text-green-400 text-center sm:text-left">
+            {saveStatus}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
