@@ -58,12 +58,12 @@ function LanguageDirectionHandler({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white ${
+      className={`min-h-screen mobile-container bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white ${
         isRTL ? "rtl" : "ltr"
       }`}
     >
       <Navbar />
-      <main className="px-4 py-10">{children}</main>
+      <div className="px-4 py-10">{children}</div>
     </div>
   );
 }

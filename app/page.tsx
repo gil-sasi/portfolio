@@ -58,9 +58,9 @@ export default function HomePage() {
   if (!mounted) return null;
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen">
       {/* Animated Background */}
-      <div className="absolute inset-0 animated-bg opacity-10"></div>
+      <div className="fixed inset-0 animated-bg opacity-10 -z-10"></div>
 
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-blue-500 rounded-full opacity-20 float-animation"></div>
