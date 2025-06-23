@@ -53,7 +53,7 @@ export default function AboutPage() {
   if (loading) {
     return (
       <div className="text-center">
-        <p className="text-white p-4">{t("Loading...", "טוען...")}</p>
+        <p className="text-white p-4">{t("loading")}</p>
         <Spinner />
       </div>
     );

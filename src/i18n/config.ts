@@ -288,6 +288,13 @@ const resources = {
       // Contact form error message
       sendFailed: "Failed to send message. Try again.",
 
+      // Visitor Management specific
+      appScreenshots: "App Screenshots",
+      loadingPage: "Loading Page",
+      spinnerLoading: "Loading with spinner",
+      loadingProfile: "Loading profile...",
+      loadingContactInfo: "Loading contact info...",
+
       // Profile page translations
       welcome: "Welcome",
       accountInfo: "Account Information",
@@ -678,6 +685,13 @@ const resources = {
 
       // Contact form error message
       sendFailed: "שליחת ההודעה נכשלה. נסה שוב.",
+
+      // Visitor Management specific
+      appScreenshots: "צילומי מסך של האפליקציה",
+      loadingPage: "עמוד טעינה",
+      spinnerLoading: "טעינה עם ספינר",
+      loadingProfile: "טוען פרופיל...",
+      loadingContactInfo: "טוען פרטי קשר...",
 
       // Profile page translations
       manageAccountSettings: "נהל את הגדרות החשבון שלך",

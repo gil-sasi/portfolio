@@ -211,7 +211,7 @@ export default function ProfilePage() {
         <div className="relative z-10 flex justify-center items-center min-h-screen px-4">
           <div className="modern-card p-8 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading profile...</p>
+            <p className="text-gray-400">{t("loading")}</p>
           </div>
         </div>
       </div>

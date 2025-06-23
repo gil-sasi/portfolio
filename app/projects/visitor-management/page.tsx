@@ -216,7 +216,7 @@ export default function VisitorManagementProject() {
           <div className="modern-card p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">
               <span className="gradient-text bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                📸 App Screenshots
+                📸 {t("appScreenshots")}
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
