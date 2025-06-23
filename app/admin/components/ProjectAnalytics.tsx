@@ -163,11 +163,13 @@ export default function ProjectAnalytics({ loading }: Props) {
                       </div>
                     </div>
                     <div>
-                      <span className="text-gray-400">Countries:</span>
+                      <span className="text-gray-400">{t("countries")}:</span>
                       <div className="font-semibold">{stat.countriesCount}</div>
                     </div>
                     <div>
-                      <span className="text-gray-400">Last Visit:</span>
+                      <span className="text-gray-400">
+                        {t("lastVisitLabel")}:
+                      </span>
                       <div className="text-xs">
                         {stat.lastVisit
                           ? new Date(stat.lastVisit).toLocaleDateString()

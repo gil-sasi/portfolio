@@ -230,6 +230,8 @@ const resources = {
       topcountries: "Top Countries",
       visitorsfor: "Visitors for",
       noprojectvisitors: "No visitors found for this project",
+      countries: "Countries",
+      lastVisitLabel: "Last Visit",
       VisitorManagementTitle: "Coca-Cola Visitor Management Web App",
       VisitorManagementDescription:
         "Smart management of visitors in Coca-Cola factories, including visit history and event management (first aid, safety events).",
@@ -478,6 +480,8 @@ const resources = {
       topcountries: "מדינות מובילות",
       visitorsfor: "מבקרים עבור",
       noprojectvisitors: "לא נמצאו מבקרים עבור פרויקט זה",
+      countries: "מדינות",
+      lastVisitLabel: "ביקור אחרון",
       VisitorManagementTitle: "אתר ניהול מבקרים של קוקה-קולה",
       VisitorManagementDescription:
         "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריקת ביקורים וניהול אירועים כגון עזרה ראשונה ואירועי בטיחות.",
