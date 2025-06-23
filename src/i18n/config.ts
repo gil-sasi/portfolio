@@ -641,33 +641,6 @@ const resources = {
       supportedFormats: "פורמטים נתמכים: JPG, PNG, GIF",
       fullSystemAccess: "גישה מלאה למערכת",
       standardUserAccess: "גישת משתמש רגיל",
-
-      // Project pages translations
-      backToProjects: "חזרה לפרויקטים",
-      testLink: "בדוק קישור",
-      enterUrlToStart: "הזן כתובת URL כדי להתחיל",
-      projectDemoSection: "הדגמה",
-      howToUse: "איך להשתמש",
-      aboutProject: "אודות הפרויקט",
-      projectDemo: "הדגמת הפרויקט",
-      tryItOut: "נסה את זה",
-      getStarted: "התחל",
-
-      // Link shortener specific
-      lightningFast: "מהיר כברק",
-      instantUrlShortening: "קיצור URL מיידי עם ביצועים מותאמים",
-      secure: "מאובטח",
-      safeAndReliable: "שירות קיצור URL בטוח ואמין",
-      analyticsReady: "מוכן לאנליטיקה",
-      builtInTracking: "מעקב מובנה עבור אנליטיקת לחיצות",
-
-      // OCR specific
-      uploadImageToExtract: "העלה תמונה כדי לחלץ טקסט",
-      upload: "העלאה",
-      selectImageOrDrag: "בחר תמונה או גרור ושחרר אותה",
-      extract: "חלץ",
-      chooseLanguageAndProcess: "בחר שפה ועבד",
-      copyExtractedText: "העתק את הטקסט שחולץ",
     },
   },
 };
