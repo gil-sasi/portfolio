@@ -1,6 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FaIdCard, FaCogs, FaUsers, FaHome } from "react-icons/fa";
+import {
+  FaIdCard,
+  FaCogs,
+  FaUsers,
+  FaHome,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
 interface Tab {
@@ -12,14 +19,17 @@ interface Tab {
 interface AdminSidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onSidebarToggle?: (isCollapsed: boolean) => void;
 }
 
 export default function AdminSidebar({
   activeTab,
   setActiveTab,
+  onSidebarToggle,
 }: AdminSidebarProps) {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -40,21 +50,46 @@ export default function AdminSidebar({
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 h-screen bg-gray-900 text-white shadow-md p-4 space-y-2">
-        <h2 className="text-xl font-bold mb-4">{t("adminsidebar")}</h2>
+      <aside
+        className={`hidden md:block fixed left-0 top-16 h-[calc(100vh-4rem)] bg-gray-900 text-white shadow-md p-4 space-y-2 z-10 transition-all duration-300 ${
+          isCollapsed ? "w-16" : "w-64"
+        }`}
+      >
+        <div
+          className={`flex items-center mb-4 ${
+            isCollapsed ? "justify-center" : "justify-between"
+          }`}
+        >
+          {!isCollapsed && (
+            <h2 className="text-xl font-bold">{t("adminsidebar")}</h2>
+          )}
+          <button
+            onClick={() => {
+              const newCollapsed = !isCollapsed;
+              setIsCollapsed(newCollapsed);
+              onSidebarToggle?.(newCollapsed);
+            }}
+            className="p-2 hover:bg-gray-700 rounded transition-colors"
+            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+          </button>
+        </div>
         {tabs.map(({ key, label, icon }) => (
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className={`flex items-center w-full gap-3 px-4 py-2 rounded text-left transition-all duration-200
-              ${
-                activeTab === key
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-700 text-gray-300"
-              }`}
+            className={`flex items-center w-full rounded text-left transition-all duration-200 ${
+              isCollapsed ? "justify-center px-2 py-3" : "gap-3 px-4 py-2"
+            } ${
+              activeTab === key
+                ? "bg-blue-600 text-white"
+                : "hover:bg-gray-700 text-gray-300"
+            }`}
+            title={isCollapsed ? label : undefined}
           >
-            {icon}
-            <span>{label}</span>
+            <div className={isCollapsed ? "text-lg" : ""}>{icon}</div>
+            {!isCollapsed && <span>{label}</span>}
           </button>
         ))}
       </aside>

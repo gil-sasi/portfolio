@@ -45,6 +45,7 @@ export default function AdminPage() {
 
   const [isMounted, setIsMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -195,11 +196,19 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen text-white bg-gray-900">
       {/* Responsive Sidebar */}
-      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <AdminSidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onSidebarToggle={setSidebarCollapsed}
+      />
 
       {/* Main content area - positioned properly for desktop sidebar */}
-      <section className="md:ml-64 p-3 sm:p-6 min-h-screen">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
+      <section
+        className={`transition-all duration-300 p-3 sm:p-6 pt-20 md:pt-4 ${
+          sidebarCollapsed ? "md:ml-16" : "md:ml-64"
+        }`}
+      >
+        <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
           {t("adminPanel", "Admin Panel")}
         </h1>
 

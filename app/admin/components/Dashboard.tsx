@@ -139,7 +139,7 @@ export default function Dashboard({ setActiveTab }: Props) {
     <div className="space-y-6">
       <div className="bg-gray-800 p-4 sm:p-6 rounded-lg border border-gray-700">
         <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">
-          {t("dashboard", "Dashboard Overview")}
+          {t("dashboardoverview")}
         </h2>
 
         {/* Stats Grid - Responsive */}
@@ -148,9 +148,7 @@ export default function Dashboard({ setActiveTab }: Props) {
           <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400">
-                  {t("totalusers", "Total Users")}
-                </p>
+                <p className="text-sm text-gray-400">{t("totalusers")}</p>
                 <p className="text-2xl sm:text-3xl font-bold text-white">
                   {stats.totalUsers}
                 </p>
@@ -158,7 +156,7 @@ export default function Dashboard({ setActiveTab }: Props) {
               <div className="text-blue-500 text-2xl sm:text-3xl">👥</div>
             </div>
             <div className="mt-2 text-xs text-gray-500">
-              {t("bannedusers", "Banned")}: {stats.bannedUsers}
+              {t("bannedusers")}: {stats.bannedUsers}
             </div>
           </div>
 
@@ -166,9 +164,7 @@ export default function Dashboard({ setActiveTab }: Props) {
           <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400">
-                  {t("totalvisitors", "Total Visitors")}
-                </p>
+                <p className="text-sm text-gray-400">{t("totalvisitors")}</p>
                 <p className="text-2xl sm:text-3xl font-bold text-white">
                   {stats.totalVisitors}
                 </p>
@@ -181,9 +177,7 @@ export default function Dashboard({ setActiveTab }: Props) {
           <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400">
-                  {t("totalmessages", "Total Messages")}
-                </p>
+                <p className="text-sm text-gray-400">{t("totalmessages")}</p>
                 <p className="text-2xl sm:text-3xl font-bold text-white">
                   {stats.totalMessages}
                 </p>
@@ -196,9 +190,7 @@ export default function Dashboard({ setActiveTab }: Props) {
           <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400">
-                  {t("totalskills", "Total Skills")}
-                </p>
+                <p className="text-sm text-gray-400">{t("totalskills")}</p>
                 <p className="text-2xl sm:text-3xl font-bold text-white">
                   {stats.totalSkills}
                 </p>
@@ -211,32 +203,32 @@ export default function Dashboard({ setActiveTab }: Props) {
         {/* Quick Actions - Mobile Optimized */}
         <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600">
           <h3 className="text-base sm:text-lg font-semibold mb-4">
-            {t("quickactions", "Quick Actions")}
+            {t("quickactions")}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <button
               onClick={() => handleQuickAction("messages")}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 sm:py-2 rounded font-medium text-sm transition touch-manipulation cursor-pointer"
             >
-              {t("viewmessages", "View Messages")}
+              {t("viewmessages")}
             </button>
             <button
               onClick={() => handleQuickAction("users")}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 sm:py-2 rounded font-medium text-sm transition touch-manipulation cursor-pointer"
             >
-              {t("manageusers", "Manage Users")}
+              {t("manageusers")}
             </button>
             <button
               onClick={() => handleQuickAction("visitors")}
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 sm:py-2 rounded font-medium text-sm transition touch-manipulation cursor-pointer"
             >
-              {t("viewvisitors", "View Visitors")}
+              {t("viewvisitors")}
             </button>
             <button
               onClick={() => handleQuickAction("skills")}
               className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-3 sm:py-2 rounded font-medium text-sm transition touch-manipulation cursor-pointer"
             >
-              {t("manageskills", "Manage Skills")}
+              {t("manageskills")}
             </button>
           </div>
         </div>
@@ -244,22 +236,18 @@ export default function Dashboard({ setActiveTab }: Props) {
         {/* System Status */}
         <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border border-gray-600 mt-6">
           <h3 className="text-base sm:text-lg font-semibold mb-4">
-            {t("systemstatus", "System Status")}
+            {t("systemstatus")}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex items-center justify-between p-3 bg-gray-800 rounded">
-              <span className="text-sm text-gray-300">
-                {t("serverstatus", "Server Status")}
-              </span>
+              <span className="text-sm text-gray-300">{t("serverstatus")}</span>
               <span className="text-green-400 text-sm font-medium flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                {t("online", "Online")}
+                {t("online")}
               </span>
             </div>
             <div className="flex items-center justify-between p-3 bg-gray-800 rounded">
-              <span className="text-sm text-gray-300">
-                {t("database", "Database")}
-              </span>
+              <span className="text-sm text-gray-300">{t("database")}</span>
               <span
                 className={`text-sm font-medium flex items-center ${
                   systemStatus.mongoConnected
@@ -273,19 +261,19 @@ export default function Dashboard({ setActiveTab }: Props) {
                   }`}
                 ></div>
                 {systemStatus.mongoConnected
-                  ? t("connected", "Connected")
-                  : t("disconnected", "Disconnected")}
+                  ? t("connected")
+                  : t("disconnected")}
               </span>
             </div>
           </div>
 
           {systemStatus.version && (
             <div className="mt-4 text-center text-xs text-gray-500">
-              {t("version", "Version")}: {systemStatus.version} |
+              {t("version")}: {systemStatus.version} |
               {systemStatus.deployedAt && (
                 <>
                   {" "}
-                  {t("deployed", "Deployed")}:{" "}
+                  {t("deployed")}:{" "}
                   {new Date(systemStatus.deployedAt).toLocaleString()}
                 </>
               )}
