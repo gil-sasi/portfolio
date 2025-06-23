@@ -6,6 +6,14 @@ import User from "../../models/User";
 const MONGODB_URI = process.env.MONGODB_URI!;
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
+interface DecodedToken {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -22,7 +30,7 @@ export default async function handler(
           return res.status(401).json({ message: "No token provided" });
         }
 
-        const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
         const { profilePicture } = req.body;
 
         const user = await User.findByIdAndUpdate(
@@ -35,10 +43,13 @@ export default async function handler(
           return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({ message: "Profile picture updated", user });
+        res.status(200).json({
+          message: "Profile picture updated successfully",
+          profilePicture: user.profilePicture,
+        });
       } catch (error) {
-        console.error("Profile picture update error:", error);
-        res.status(500).json({ message: "Error updating profile picture" });
+        console.error("Error updating profile picture:", error);
+        res.status(500).json({ message: "Failed to update profile picture" });
       }
     } else if (req.method === "DELETE") {
       try {
@@ -47,7 +58,7 @@ export default async function handler(
           return res.status(401).json({ message: "No token provided" });
         }
 
-        const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
 
         const user = await User.findByIdAndUpdate(
           decoded.id,
@@ -59,10 +70,12 @@ export default async function handler(
           return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({ message: "Profile picture removed", user });
+        res.status(200).json({
+          message: "Profile picture removed successfully",
+        });
       } catch (error) {
-        console.error("Profile picture removal error:", error);
-        res.status(500).json({ message: "Error removing profile picture" });
+        console.error("Error removing profile picture:", error);
+        res.status(500).json({ message: "Failed to remove profile picture" });
       }
     } else {
       res.setHeader("Allow", ["POST", "DELETE"]);

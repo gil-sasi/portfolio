@@ -80,7 +80,7 @@ export default function LinkShortenerPage() {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            {t("BacktoProjects")}
+            {t("backToProjects")}
           </Link>
 
           {/* Header */}
@@ -179,7 +179,7 @@ export default function LinkShortenerPage() {
                       rel="noopener noreferrer"
                       className="btn-secondary px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2 hover:scale-105 transition-all duration-300"
                     >
-                      Test Link 🚀
+                      {t("testLink")} 🚀
                     </a>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function LinkShortenerPage() {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-700/50 flex items-center justify-center text-2xl">
                     🔗
                   </div>
-                  <p className="text-gray-400">Enter a URL to get started</p>
+                  <p className="text-gray-400">{t("enterUrlToStart")}</p>
                 </div>
               )}
             </div>
@@ -238,6 +238,46 @@ export default function LinkShortenerPage() {
                 <p className="text-sm text-gray-400">
                   Built-in tracking for click analytics
                 </p>
+              </div>
+            </div>
+          </div>
+
+          {/* How to Use Section */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
+                ✨ {t("keyFeatures")}
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-yellow-500/20 flex items-center justify-center text-xl">
+                  ⚡
+                </div>
+                <h3 className="font-semibold text-yellow-400 mb-2">
+                  {t("lightningFast")}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {t("instantUrlShortening")}
+                </p>
+              </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-green-500/20 flex items-center justify-center text-xl">
+                  🔒
+                </div>
+                <h3 className="font-semibold text-green-400 mb-2">
+                  {t("secure")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("safeAndReliable")}</p>
+              </div>
+              <div className="text-center p-6 glass rounded-xl">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-blue-500/20 flex items-center justify-center text-xl">
+                  📊
+                </div>
+                <h3 className="font-semibold text-blue-400 mb-2">
+                  {t("analyticsReady")}
+                </h3>
+                <p className="text-sm text-gray-400">{t("builtInTracking")}</p>
               </div>
             </div>
           </div>

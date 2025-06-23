@@ -67,7 +67,7 @@ export default function ProjectsPage() {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <Link
               key={project.id}
               href={`/projects/${project.id}`}

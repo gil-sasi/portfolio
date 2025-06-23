@@ -6,6 +6,7 @@ import { updateProfilePicture } from "../../redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
 import { useState, useRef } from "react";
 import axios from "axios";
+import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../src/i18n/config";
@@ -94,9 +95,10 @@ export default function ProfilePage() {
     }
   };
 
-  const handleRemoveProfilePicture = async () => {
+  const removeProfilePicture = async () => {
+    if (!user) return;
+
     try {
-      setUploadingPicture(true);
       const token = localStorage.getItem("token");
       await axios.delete("/api/profile-picture", {
         headers: { Authorization: `Bearer ${token}` },
@@ -104,11 +106,9 @@ export default function ProfilePage() {
 
       dispatch(updateProfilePicture(null));
       toast.success(t("profilePictureRemoved"));
-    } catch (err) {
-      toast.error(t("profilePictureError"));
-      console.error("Error removing profile picture:", err);
-    } finally {
-      setUploadingPicture(false);
+    } catch (error) {
+      console.error("Error removing profile picture:", error);
+      toast.error(t("profilePictureRemoveError"));
     }
   };
 
@@ -158,15 +158,17 @@ export default function ProfilePage() {
             <div className="glass rounded-2xl p-8">
               <div className="relative inline-block mb-4">
                 {user.profilePicture ? (
-                  <img
+                  <Image
                     src={user.profilePicture}
                     alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover border-4 border-gradient-to-br from-blue-400 to-purple-600 glow"
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 rounded-full object-cover border-2 border-white/20"
                   />
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl font-bold glow">
-                    {user.firstName.charAt(0).toUpperCase()}
-                    {user.lastName.charAt(0).toUpperCase()}
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl font-bold text-white border-2 border-white/20">
+                    {user.firstName[0]}
+                    {user.lastName[0]}
                   </div>
                 )}
               </div>
@@ -189,16 +191,15 @@ export default function ProfilePage() {
 
             <div className="text-center space-y-4">
               <div className="w-32 h-32 mx-auto mb-4 rounded-full border-4 border-dashed border-gray-600 flex items-center justify-center relative overflow-hidden">
-                {user.profilePicture ? (
-                  <img
-                    src={user.profilePicture}
-                    alt="Profile"
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : (
-                  <div className="text-gray-400 text-center">
-                    <div className="text-3xl mb-2">📸</div>
-                    <p className="text-sm">{t("selectImage")}</p>
+                {user.profilePicture && (
+                  <div className="mb-4">
+                    <Image
+                      src={user.profilePicture}
+                      alt="Current profile picture"
+                      width={120}
+                      height={120}
+                      className="w-30 h-30 rounded-full object-cover mx-auto border-2 border-gray-600"
+                    />
                   </div>
                 )}
               </div>
@@ -237,7 +238,7 @@ export default function ProfilePage() {
 
                 {user.profilePicture && (
                   <button
-                    onClick={handleRemoveProfilePicture}
+                    onClick={removeProfilePicture}
                     disabled={uploadingPicture}
                     className="btn-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
                   >

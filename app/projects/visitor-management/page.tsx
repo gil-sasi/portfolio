@@ -16,12 +16,73 @@ export default function VisitorManagementProject() {
   const { t } = useTranslation();
 
   const screenshots = [
-    { src: "/assets/visitor-management/1.png" },
-    { src: "/assets/visitor-management/2.png" },
-    { src: "/assets/visitor-management/3.png" },
-    { src: "/assets/visitor-management/4.png" },
-    { src: "/assets/visitor-management/5.png" },
-    { src: "/assets/visitor-management/6.png" },
+    { src: "/assets/visitor-management/1.png", title: "Dashboard" },
+    { src: "/assets/visitor-management/2.png", title: "Check-in Form" },
+    { src: "/assets/visitor-management/3.png", title: "Visitor List" },
+    { src: "/assets/visitor-management/4.png", title: "Event Management" },
+    { src: "/assets/visitor-management/5.png", title: "Settings" },
+    { src: "/assets/visitor-management/6.png", title: "Reports" },
+  ];
+
+  const features = [
+    {
+      icon: "🏭",
+      title: t("multiFactorySupport"),
+      color: "from-indigo-500 to-blue-500",
+    },
+    {
+      icon: "📋",
+      title: t("checkInHistory"),
+      color: "from-blue-500 to-cyan-500",
+    },
+    {
+      icon: "🎉",
+      title: t("eventManagement"),
+      color: "from-purple-500 to-pink-500",
+    },
+    {
+      icon: "👥",
+      title: t("bulkCheckIn"),
+      color: "from-green-500 to-teal-500",
+    },
+    {
+      icon: "🌐",
+      title: t("multiLanguage"),
+      color: "from-yellow-500 to-orange-500",
+    },
+  ];
+
+  const techStack = [
+    {
+      icon: "🖥️",
+      title: "Frontend",
+      technologies: [
+        { name: "Next.js", color: "from-gray-800 to-black" },
+        { name: "React", color: "from-blue-400 to-blue-600" },
+        { name: "Tailwind CSS", color: "from-cyan-400 to-cyan-600" },
+        { name: "Radix UI", color: "from-purple-400 to-purple-600" },
+      ],
+    },
+    {
+      icon: "⚙️",
+      title: "Backend",
+      technologies: [
+        { name: "Node.js", color: "from-green-500 to-green-700" },
+        { name: "MongoDB", color: "from-green-600 to-green-800" },
+      ],
+    },
+    {
+      icon: "🔐",
+      title: "Authentication",
+      technologies: [
+        { name: "JWT Auth", color: "from-orange-500 to-orange-700" },
+      ],
+    },
+    {
+      icon: "🌍",
+      title: "Internationalization",
+      technologies: [{ name: "i18n", color: "from-pink-500 to-pink-700" }],
+    },
   ];
 
   const demoVideo = "https://www.youtube.com/embed/pmGokTfo1bM";
@@ -69,7 +130,7 @@ export default function VisitorManagementProject() {
   );
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8 min-h-screen">
+    <div className="min-h-screen relative overflow-hidden">
       <TrackProjectVisit
         projectId="visitor-management"
         projectName="Coca-Cola Visitor Management App"
@@ -78,52 +139,183 @@ export default function VisitorManagementProject() {
         projectId="visitor-management"
         projectName="Coca-Cola Visitor Management App"
       />
-      <Link
-        href="/projects"
-        className="text-blue-400 hover:underline mb-6 inline-block"
-      >
-        ← {t("backToProjects")}
-      </Link>
-      <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-        🥤 {t("visitorManagementTitle")}
-      </h1>
-      <p className="text-lg text-gray-300 mb-6">
-        {t("visitorManagementDescription")}
-      </p>
 
-      <div className="mb-8">
-        <iframe
-          width="100%"
-          height="380"
-          src={demoVideo}
-          title={t("demoVideo")}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="rounded-2xl border border-gray-700 shadow"
-        ></iframe>
-      </div>
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-20 right-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-20 left-20 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
-      <div className="flex flex-wrap gap-4 mb-8">
-        {screenshots.map((shot, idx) => (
-          <div
-            key={idx}
-            className="cursor-zoom-in"
-            onClick={() => setOpenIdx(idx)}
-            tabIndex={0}
-            aria-label="Zoom screenshot"
+      {/* Floating Elements */}
+      <div className="absolute top-10 left-10 w-16 h-16 bg-indigo-500 rounded-full opacity-20 float-animation"></div>
+      <div
+        className="absolute top-40 right-10 w-12 h-12 bg-blue-500 rounded-full opacity-20 float-animation"
+        style={{ animationDelay: "2s" }}
+      ></div>
+
+      <div className="relative z-10 px-4 sm:px-6 py-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Back Button */}
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-medium transition-colors duration-300 group"
           >
-            <Image
-              src={shot.src}
-              alt=""
-              width={320}
-              height={200}
-              className="rounded-xl border border-gray-700 shadow object-cover transition hover:scale-105"
-              draggable={false}
-            />
+            <svg
+              className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            {t("backToProjects")}
+          </Link>
+
+          {/* Header */}
+          <div className="text-center">
+            <div className="glass rounded-2xl p-8 max-w-3xl mx-auto">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-400 to-blue-600 flex items-center justify-center text-3xl font-bold glow">
+                🥤
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                <span className="gradient-text bg-gradient-to-r from-indigo-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                  {t("VisitorManagementTitle")}
+                </span>
+              </h1>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                {t("VisitorManagementDescription")}
+              </p>
+            </div>
           </div>
-        ))}
+
+          {/* Demo Video */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">
+                🎥 {t("projectDemo")}
+              </span>
+            </h2>
+            <div className="glass rounded-2xl p-4 max-w-4xl mx-auto">
+              <iframe
+                width="100%"
+                height="400"
+                src={demoVideo}
+                title={t("demoVideo")}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="rounded-xl border border-gray-700 shadow-lg"
+              />
+            </div>
+          </div>
+
+          {/* Screenshots */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                📸 App Screenshots
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {screenshots.map((shot, idx) => (
+                <div
+                  key={idx}
+                  className="glass p-4 rounded-xl cursor-zoom-in hover:scale-105 transition-all duration-300"
+                  onClick={() => setOpenIdx(idx)}
+                  tabIndex={0}
+                  aria-label="Zoom screenshot"
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.title}
+                    width={320}
+                    height={200}
+                    className="rounded-lg w-full h-48 object-cover mb-3"
+                    draggable={false}
+                  />
+                  <h3 className="text-center font-medium text-indigo-400">
+                    {shot.title}
+                  </h3>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Features */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-8 text-center">
+              <span className="gradient-text bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">
+                ✨ {t("keyFeatures")}
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="glass p-6 rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  <div
+                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${feature.color} flex items-center justify-center text-xl mb-3 glow`}
+                  >
+                    {feature.icon}
+                  </div>
+                  <p className="text-gray-200 font-medium">{feature.title}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tech Stack */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-8 text-center">
+              <span className="gradient-text bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                🛠️ {t("techStack")}
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+              {techStack.map((section, index) => (
+                <div key={index} className="glass p-6 rounded-xl">
+                  <h3 className="font-semibold text-indigo-400 mb-4 flex items-center gap-2">
+                    {section.icon} {section.title}
+                  </h3>
+                  <div className="space-y-2">
+                    {section.technologies.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className={`inline-block px-3 py-1 bg-gradient-to-r ${tech.color} bg-opacity-20 text-white rounded-full text-sm border border-gray-600 mb-1 mr-1`}
+                      >
+                        {tech.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Live Demo Link */}
+          <div className="modern-card p-8 text-center">
+            <h2 className="text-2xl font-bold mb-6">
+              <span className="gradient-text bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">
+                🚀 {t("tryItOut")}
+              </span>
+            </h2>
+            <a
+              href={liveAppLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary px-8 py-4 rounded-xl font-semibold text-lg glow-hover transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
+            >
+              {t("liveDemo")} 🔗
+            </a>
+          </div>
+        </div>
       </div>
 
+      {/* Screenshot Modal */}
       {openIdx !== null && (
         <div
           ref={overlayRef}
@@ -131,51 +323,35 @@ export default function VisitorManagementProject() {
           onClick={handleOverlayClick}
           style={{ animation: "fadeIn 0.2s" }}
         >
-          <Image
-            src={screenshots[openIdx].src}
-            alt=""
-            width={1200}
-            height={800}
-            className="max-w-full max-h-[90vh] rounded-xl border-4 border-white shadow-2xl"
-            draggable={false}
-          />
+          <div className="relative max-w-6xl max-h-[90vh] p-4">
+            <Image
+              src={screenshots[openIdx].src}
+              alt={screenshots[openIdx].title}
+              width={1200}
+              height={800}
+              className="max-w-full max-h-full rounded-xl border-4 border-white shadow-2xl"
+              draggable={false}
+            />
+            <button
+              onClick={() => setOpenIdx(null)}
+              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("keyFeatures")}</h2>
-        <ul className="list-disc list-inside text-gray-200">
-          <li>{t("multiFactorySupport")}</li>
-          <li>{t("checkInHistory")}</li>
-          <li>{t("eventManagement")}</li>
-          <li>{t("bulkCheckIn")}</li>
-          <li>{t("multiLanguage")}</li>
-        </ul>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("techStack")}</h2>
-        <p className="text-gray-200">
-          Next.js, React, Tailwind CSS, MongoDB, Node.js, Radix UI, i18n, JWT
-          Auth
-        </p>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">{t("links")}</h2>
-        <ul className="list-disc list-inside text-gray-200">
-          <li>
-            <a
-              href={liveAppLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:underline"
-            >
-              {t("liveDemo")}
-            </a>
-          </li>
-        </ul>
-      </section>
-    </main>
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </div>
   );
 }

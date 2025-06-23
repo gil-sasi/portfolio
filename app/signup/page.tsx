@@ -22,9 +22,9 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
@@ -37,11 +37,11 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
 
     if (password !== confirmPassword) {
-      setMessage(t("passwordMismatch", "Passwords do not match"));
-      setIsLoading(false);
+      setError(t("passwordMismatch", "Passwords do not match"));
+      setLoading(false);
       return;
     }
 
@@ -65,9 +65,9 @@ export default function SignupPage() {
       router.push("/");
     } catch (err) {
       console.error("Signup error:", err);
-      setMessage(t("signupFailed", "Signup failed"));
+      setError(t("signupFailed", "Signup failed"));
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -198,10 +198,10 @@ export default function SignupPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
               className="w-full btn-primary py-4 text-lg font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? (
+              {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   {t("creatingAccount")}
@@ -212,9 +212,9 @@ export default function SignupPage() {
             </button>
 
             {/* Error Message */}
-            {message && (
+            {error && (
               <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center">
-                {message}
+                {error}
               </div>
             )}
           </form>

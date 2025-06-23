@@ -13,31 +13,219 @@ export default function DangerousGilHome() {
     setMounted(true);
   }, []);
 
+  const gameFeatures = [
+    {
+      icon: "🎮",
+      title: "Action Adventure",
+      description: "Fast-paced 2D platformer gameplay",
+      color: "from-red-500 to-pink-500",
+    },
+    {
+      icon: "🏗️",
+      title: "Level Editor",
+      description: "Create and share custom levels",
+      color: "from-blue-500 to-cyan-500",
+    },
+    {
+      icon: "💎",
+      title: "Collectibles",
+      description: "Gather diamonds and power-ups",
+      color: "from-purple-500 to-violet-500",
+    },
+    {
+      icon: "👾",
+      title: "Boss Battles",
+      description: "Fight challenging enemies",
+      color: "from-orange-500 to-yellow-500",
+    },
+  ];
+
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center text-white px-4">
+    <div className="min-h-screen relative overflow-hidden">
       <TrackProjectVisit
         projectId="dave-game"
         projectName="Dave's Adventure Game"
       />
-      <h1 className="text-5xl font-bold mb-10 text-center">Dangerous Gil</h1>
 
-      <div className="flex flex-col gap-6 w-full max-w-xs">
-        <Link
-          href="/projects/dave-game/play"
-          className="game-button border border-white text-white hover:bg-white/10"
-        >
-          🎮 {t("newgame")}
-        </Link>
+      {/* Background Effects */}
+      <div className="absolute inset-0 animated-bg opacity-5"></div>
+      <div className="absolute top-20 right-20 w-40 h-40 bg-red-500/10 rounded-full blur-xl"></div>
+      <div className="absolute bottom-20 left-20 w-32 h-32 bg-pink-500/10 rounded-full blur-xl"></div>
 
-        <Link
-          href="/projects/dave-game/editor"
-          className="game-button border border-yellow-400 text-yellow-400 hover:bg-yellow-400/10"
-        >
-          🧱 {t("createlevel")}
-        </Link>
+      {/* Floating Elements */}
+      <div className="absolute top-10 left-10 w-16 h-16 bg-red-500 rounded-full opacity-20 float-animation"></div>
+      <div
+        className="absolute top-40 right-10 w-12 h-12 bg-pink-500 rounded-full opacity-20 float-animation"
+        style={{ animationDelay: "2s" }}
+      ></div>
+
+      <div className="relative z-10 px-4 sm:px-6 py-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Back Button */}
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 font-medium transition-colors duration-300 group"
+          >
+            <svg
+              className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            {t("backToProjects")}
+          </Link>
+
+          {/* Header */}
+          <div className="text-center">
+            <div className="glass rounded-2xl p-8 max-w-3xl mx-auto">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-400 to-pink-600 flex items-center justify-center text-3xl font-bold glow">
+                🎮
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-bold mb-4">
+                <span className="gradient-text bg-gradient-to-r from-red-400 via-pink-500 to-red-600 bg-clip-text text-transparent">
+                  {t("gamename")}
+                </span>
+              </h1>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                {t("gamedescription")}
+              </p>
+
+              {/* Game Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link
+                  href="/projects/dave-game/play"
+                  className="btn-primary px-8 py-4 rounded-xl font-semibold text-lg glow-hover transition-all duration-300 hover:scale-105 inline-flex items-center gap-2 w-full sm:w-auto justify-center"
+                >
+                  🎮 {t("newgame")}
+                </Link>
+                <Link
+                  href="/projects/dave-game/editor"
+                  className="btn-secondary px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 w-full sm:w-auto justify-center"
+                >
+                  🧱 {t("createlevel")}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Game Features */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-8 text-center">
+              <span className="gradient-text bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
+                🌟 Game Features
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {gameFeatures.map((feature, index) => (
+                <div
+                  key={index}
+                  className="glass p-6 rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-full bg-gradient-to-br ${feature.color} flex items-center justify-center text-xl glow flex-shrink-0`}
+                    >
+                      {feature.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* How to Play */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-pink-400 to-red-500 bg-clip-text text-transparent">
+                🕹️ {t("howToUse")}
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center text-2xl">
+                  ⬅️➡️
+                </div>
+                <h3 className="font-semibold text-red-400 mb-2">Move</h3>
+                <p className="text-sm text-gray-400">
+                  Use arrow keys or WASD to move around
+                </p>
+              </div>
+              <div className="text-center p-4">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-500/20 flex items-center justify-center text-2xl">
+                  ⬆️
+                </div>
+                <h3 className="font-semibold text-pink-400 mb-2">Jump</h3>
+                <p className="text-sm text-gray-400">
+                  Press spacebar or up arrow to jump
+                </p>
+              </div>
+              <div className="text-center p-4">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center text-2xl">
+                  🔫
+                </div>
+                <h3 className="font-semibold text-orange-400 mb-2">Shoot</h3>
+                <p className="text-sm text-gray-400">
+                  Press Ctrl to shoot (pick up guns first!)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tech Stack */}
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold mb-8 text-center">
+              <span className="gradient-text bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
+                🛠️ Built With
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="glass p-6 rounded-xl">
+                <h3 className="font-semibold text-red-400 mb-4 flex items-center gap-2">
+                  🎮 Game Engine
+                </h3>
+                <div className="space-y-2">
+                  <span className="inline-block px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm border border-red-500/30">
+                    Custom JavaScript
+                  </span>
+                  <span className="inline-block px-3 py-1 bg-orange-500/20 text-orange-300 rounded-full text-sm border border-orange-500/30 ml-2">
+                    HTML5 Canvas
+                  </span>
+                </div>
+              </div>
+              <div className="glass p-6 rounded-xl">
+                <h3 className="font-semibold text-pink-400 mb-4 flex items-center gap-2">
+                  🖥️ Frontend
+                </h3>
+                <div className="space-y-2">
+                  <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm border border-blue-500/30">
+                    Next.js
+                  </span>
+                  <span className="inline-block px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm border border-cyan-500/30 ml-2">
+                    TypeScript
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

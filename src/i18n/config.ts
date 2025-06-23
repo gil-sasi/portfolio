@@ -301,12 +301,40 @@ const resources = {
       profilePictureUpdated: "Profile picture updated successfully",
       profilePictureRemoved: "Profile picture removed successfully",
       profilePictureError: "Error updating profile picture",
+      profilePictureRemoveError: "Error removing profile picture",
       selectImage: "Select Image",
       dragDropImage: "Drag & drop an image here, or click to select",
       imageSize: "Max size: 5MB",
       supportedFormats: "Supported formats: JPG, PNG, GIF",
       fullSystemAccess: "Full system access",
       standardUserAccess: "Standard user access",
+
+      // Project pages translations
+
+      testLink: "Test Link",
+      enterUrlToStart: "Enter a URL to get started",
+      projectDemoSection: "Demo",
+      howToUse: "How to Use",
+      aboutProject: "About This Project",
+      projectDemo: "Project Demo",
+      tryItOut: "Try It Out",
+      getStarted: "Get Started",
+
+      // Link shortener specific
+      lightningFast: "מהיר כברק",
+      instantUrlShortening: "קיצור URL מיידי עם ביצועים מותאמים",
+      secure: "מאובטח",
+      safeAndReliable: "שירות קיצור URL בטוח ואמין",
+      analyticsReady: "מוכן לאנליטיקה",
+      builtInTracking: "מעקב מובנה עבור אנליטיקת לחיצות",
+
+      // OCR specific
+      uploadImageToExtract: "העלה תמונה כדי לחלץ טקסט",
+      upload: "העלאה",
+      selectImageOrDrag: "בחר תמונה או גרור ושחרר אותה",
+      extract: "חלץ",
+      chooseLanguageAndProcess: "בחר שפה ועבד",
+      copyExtractedText: "העתק את הטקסט שחולץ",
     },
   },
   he: {
@@ -542,8 +570,6 @@ const resources = {
       VisitorManagementTitle: "אתר ניהול מבקרים של קוקה-קולה",
       VisitorManagementDescription:
         "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריקת ביקורים וניהול אירועים כגון עזרה ראשונה ואירועי בטיחות.",
-      BacktoProjects: "בחזרה לעמוד פרויקטים",
-      backToProjects: "חזרה לפרויקטים",
       visitorManagementTitle: "אפליקציית ניהול מבקרים של קוקה-קולה",
       visitorManagementDescription:
         "ניהול חכם של מבקרים במפעלי קוקה-קולה, כולל היסטוריית ביקורים וניהול אירועים (עזרה ראשונה, בטיחות).",
@@ -608,12 +634,40 @@ const resources = {
       profilePictureUpdated: "תמונת הפרופיל עודכנה בהצלחה",
       profilePictureRemoved: "תמונת הפרופיל הוסרה בהצלחה",
       profilePictureError: "שגיאה בעדכון תמונת הפרופיל",
+      profilePictureRemoveError: "שגיאה בהסרת תמונת הפרופיל",
       selectImage: "בחר תמונה",
       dragDropImage: "גרור ושחרר תמונה כאן, או לחץ לבחירה",
       imageSize: "גודל מקסימלי: 5MB",
       supportedFormats: "פורמטים נתמכים: JPG, PNG, GIF",
       fullSystemAccess: "גישה מלאה למערכת",
       standardUserAccess: "גישת משתמש רגיל",
+
+      // Project pages translations
+      backToProjects: "חזרה לפרויקטים",
+      testLink: "בדוק קישור",
+      enterUrlToStart: "הזן כתובת URL כדי להתחיל",
+      projectDemoSection: "הדגמה",
+      howToUse: "איך להשתמש",
+      aboutProject: "אודות הפרויקט",
+      projectDemo: "הדגמת הפרויקט",
+      tryItOut: "נסה את זה",
+      getStarted: "התחל",
+
+      // Link shortener specific
+      lightningFast: "מהיר כברק",
+      instantUrlShortening: "קיצור URL מיידי עם ביצועים מותאמים",
+      secure: "מאובטח",
+      safeAndReliable: "שירות קיצור URL בטוח ואמין",
+      analyticsReady: "מוכן לאנליטיקה",
+      builtInTracking: "מעקב מובנה עבור אנליטיקת לחיצות",
+
+      // OCR specific
+      uploadImageToExtract: "העלה תמונה כדי לחלץ טקסט",
+      upload: "העלאה",
+      selectImageOrDrag: "בחר תמונה או גרור ושחרר אותה",
+      extract: "חלץ",
+      chooseLanguageAndProcess: "בחר שפה ועבד",
+      copyExtractedText: "העתק את הטקסט שחולץ",
     },
   },
 };

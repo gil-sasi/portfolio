@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -15,14 +16,12 @@ export default function HomePage() {
   const getYearsOfExperience = () => {
     const startYear = 2024;
     const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1; // 0-based, so +1
 
-    // If we're still in 2024, show as "1" year, otherwise calculate the difference
-    if (currentYear === startYear) {
-      return "1";
-    } else {
-      return `${currentYear - startYear + 1}`;
-    }
+    // If we're still in 2024, show "1 year"
+    // Otherwise calculate the difference
+    return currentYear >= startYear
+      ? Math.max(1, currentYear - startYear + 1)
+      : 1;
   };
 
   useEffect(() => {
@@ -56,18 +55,16 @@ export default function HomePage() {
         <div className="glass rounded-3xl p-8 sm:p-12 mb-8 max-w-4xl mx-auto">
           <div className="mb-6">
             {user?.profilePicture ? (
-              <img
+              <Image
                 src={user.profilePicture}
                 alt="Profile"
-                className="w-32 h-32 mx-auto mb-6 rounded-full object-cover border-4 border-gradient-to-br from-blue-400 to-purple-600 glow"
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-full object-cover border-2 border-white/20"
               />
             ) : (
-              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-4xl font-bold glow">
-                {user
-                  ? `${user.firstName.charAt(0).toUpperCase()}${user.lastName
-                      .charAt(0)
-                      .toUpperCase()}`
-                  : "GS"}
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl font-bold text-white border-2 border-white/20">
+                {user ? `${user.firstName[0]}${user.lastName[0]}` : "GS"}
               </div>
             )}
           </div>
