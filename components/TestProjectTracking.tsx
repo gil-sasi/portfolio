@@ -14,7 +14,10 @@ export default function TestProjectTracking({
   const [trackingStatus, setTrackingStatus] = useState<
     "pending" | "success" | "error"
   >("pending");
-  const [responseData, setResponseData] = useState<any>(null);
+  const [responseData, setResponseData] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
 
   useEffect(() => {
     // Test the tracking by sending a manual request

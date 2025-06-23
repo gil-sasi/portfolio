@@ -3,31 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-interface Visitor {
-  ip: string;
-  country?: string;
-  lastVisit: string;
-}
-interface Skill {
-  _id: string;
-}
-interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  isBanned: boolean;
-  lastLogin?: {
-    date?: string;
-    ip?: string;
-  };
-}
-interface LoginStat {
-  date: string;
-  count: number;
-}
-
 interface DashboardStats {
   totalUsers: number;
   totalVisitors: number;
@@ -91,7 +66,8 @@ export default function Dashboard({ setActiveTab }: Props) {
           totalVisitors: visitors.length,
           totalMessages: messages.length,
           totalSkills: skills.length,
-          bannedUsers: users.filter((u: any) => u.isBanned).length,
+          bannedUsers: users.filter((u: { isBanned: boolean }) => u.isBanned)
+            .length,
         });
 
         setSystemStatus(statusRes.data);

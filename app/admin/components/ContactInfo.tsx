@@ -3,17 +3,17 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // Track click to /api/track-contact
-const trackClick = async (platform: string) => {
-  try {
-    await fetch("/api/track-contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ platform }),
-    });
-  } catch (err) {
-    console.error("Tracking failed:", err);
-  }
-};
+// const trackClick = async (platform: string) => {
+//   try {
+//     await fetch("/api/track-contact", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ platform }),
+//     });
+//   } catch (err) {
+//     console.error("Tracking failed:", err);
+//   }
+// };
 
 interface Social {
   platform: string;

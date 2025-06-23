@@ -179,7 +179,7 @@ export default async function handler(
         if (geo.data && typeof geo.data === "string" && geo.data.length > 0) {
           country = geo.data;
         }
-      } catch (geoError) {
+      } catch {
         // Don't block on geo errors, but optionally log for debugging
         // console.log("Geo lookup failed for IP:", ip);
       }

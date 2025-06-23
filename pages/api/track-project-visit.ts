@@ -36,7 +36,7 @@ const BOT_PATTERNS = [
   /headless|phantom|selenium|playwright|puppeteer/i,
 ];
 
-const DEVELOPMENT_IPS = ["127.0.0.1", "::1", "localhost"];
+// const DEVELOPMENT_IPS = ["127.0.0.1", "::1", "localhost"];
 
 const SUSPICIOUS_REFERRERS = [
   /vercel\.app/i,
@@ -103,7 +103,7 @@ export default async function handler(
     return res.status(400).json({ error: "Project ID and name are required" });
   }
 
-  const ip =
+  const clientIp =
     req.headers["x-forwarded-for"]?.toString().split(",")[0]?.trim() ||
     req.headers["x-real-ip"]?.toString() ||
     req.socket.remoteAddress ||
@@ -117,7 +117,7 @@ export default async function handler(
   ).toString();
 
   // Enhanced filtering
-  const isValid = isValidVisitor(userAgent, ip, referrer);
+  const isValid = isValidVisitor(userAgent, clientIp, referrer);
 
   if (!isValid) {
     return res.status(204).end();
@@ -125,7 +125,7 @@ export default async function handler(
 
   try {
     // Look for existing project visit by this IP for this project
-    const existing = await ProjectVisitor.findOne({ projectId, ip });
+    const existing = await ProjectVisitor.findOne({ projectId, ip: clientIp });
 
     // Only increment visitCount if 30min have passed since lastVisit
     let shouldIncrement = true;
@@ -164,24 +164,27 @@ export default async function handler(
 
     // Get country with better error handling
     let country = existing?.country || "Unknown";
-    if (ip !== "unknown" && !isDevelopmentIP(ip)) {
+    if (clientIp !== "unknown" && !isDevelopmentIP(clientIp)) {
       try {
-        const geo = await axios.get(`https://ipapi.co/${ip}/country_name/`, {
-          timeout: 3000,
-          headers: {
-            "User-Agent": "Portfolio-Project-Tracker/1.0",
-          },
-        });
+        const geo = await axios.get(
+          `https://ipapi.co/${clientIp}/country_name/`,
+          {
+            timeout: 3000,
+            headers: {
+              "User-Agent": "Portfolio-Project-Tracker/1.0",
+            },
+          }
+        );
         if (geo.data && typeof geo.data === "string" && geo.data.length > 0) {
           country = geo.data;
         }
-      } catch (geoError) {
+      } catch {
         // Silently fail on geo errors
       }
     }
     update.country = country;
 
-    await ProjectVisitor.findOneAndUpdate({ projectId, ip }, update, {
+    await ProjectVisitor.findOneAndUpdate({ projectId, ip: clientIp }, update, {
       upsert: true,
       new: true,
     });

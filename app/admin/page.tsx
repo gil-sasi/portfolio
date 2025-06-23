@@ -256,9 +256,7 @@ export default function AdminPage() {
           <Visitors visitors={visitors} loading={visitorsLoading} />
         )}
 
-        {activeTab === "project-analytics" && (
-          <ProjectAnalytics loading={visitorsLoading} />
-        )}
+        {activeTab === "project-analytics" && <ProjectAnalytics />}
 
         {activeTab === "dashboard" && <Dashboard setActiveTab={setActiveTab} />}
       </section>

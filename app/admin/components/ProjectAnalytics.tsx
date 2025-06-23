@@ -22,9 +22,9 @@ interface ProjectVisitor {
   referrer: string;
 }
 
-interface Props {
-  loading: boolean;
-}
+// interface Props {
+//   loading: boolean;
+// }
 
 // Helper function to extract browser name from user agent
 const getBrowserName = (userAgent: string): string => {
@@ -40,7 +40,7 @@ const getBrowserName = (userAgent: string): string => {
   return "Other";
 };
 
-export default function ProjectAnalytics({ loading }: Props) {
+export default function ProjectAnalytics() {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [projectStats, setProjectStats] = useState<ProjectStat[]>([]);
