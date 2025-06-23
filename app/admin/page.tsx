@@ -63,7 +63,6 @@ export default function AdminPage() {
 
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [visitorsLoading, setVisitorsLoading] = useState(true);
-  const [authError, setAuthError] = useState(false);
 
   const isRTL = i18n.language === "he";
 
@@ -118,12 +117,13 @@ export default function AdminPage() {
         setSocials(contactRes.data.socials || []);
         setSkills(skillsRes.data || []);
         setVisitors(visitorsRes.data || []);
-        setAuthError(false);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Fetch error:", err);
-        if (err.response?.status === 401) {
-          setAuthError(true);
-          localStorage.removeItem("token");
+        if (err && typeof err === "object" && "response" in err) {
+          const axiosError = err as { response?: { status?: number } };
+          if (axiosError.response?.status === 401) {
+            localStorage.removeItem("token");
+          }
         }
       } finally {
         setSkillsLoading(false);
@@ -192,10 +192,13 @@ export default function AdminPage() {
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, isBanned: !isBanned } : u))
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to update user ban status", err);
-      if (err.response?.status === 401) {
-        setAuthError(true);
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          localStorage.removeItem("token");
+        }
       }
     }
   };
@@ -215,10 +218,13 @@ export default function AdminPage() {
       );
       setSaveStatus(t("contactUpdated", "✅ Contact info updated!"));
       setTimeout(() => setSaveStatus(""), 3000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      if (err.response?.status === 401) {
-        setAuthError(true);
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          localStorage.removeItem("token");
+        }
       } else {
         setSaveStatus(t("saveFailed", "Failed to save contact info"));
         setTimeout(() => setSaveStatus(""), 3000);

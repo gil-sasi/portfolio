@@ -17,11 +17,11 @@ export default function VisitorManagementProject() {
 
   const screenshots = [
     { src: "/assets/visitor-management/1.png", title: "Dashboard" },
-    { src: "/assets/visitor-management/2.png", title: "Check-in Form" },
-    { src: "/assets/visitor-management/3.png", title: "Visitor List" },
-    { src: "/assets/visitor-management/4.png", title: "Event Management" },
-    { src: "/assets/visitor-management/5.png", title: "Settings" },
-    { src: "/assets/visitor-management/6.png", title: "Reports" },
+    { src: "/assets/visitor-management/2.png", title: "Edit Visitor" },
+    { src: "/assets/visitor-management/3.png", title: "Events Journal" },
+    { src: "/assets/visitor-management/4.png", title: "Create New Event" },
+    { src: "/assets/visitor-management/5.png", title: "Visitor History" },
+    { src: "/assets/visitor-management/6.png", title: "Create Visitor Page" },
   ];
 
   const features = [

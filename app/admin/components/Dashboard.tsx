@@ -10,7 +10,6 @@ import {
   FaShieldAlt,
   FaChartLine,
   FaArrowUp,
-  FaArrowDown,
   FaSync,
   FaDatabase,
   FaCheckCircle,
@@ -28,6 +27,22 @@ interface DashboardStats {
     newMessages: number;
     newVisitors: number;
   };
+}
+
+interface User {
+  _id: string;
+  createdAt?: string;
+  isBanned: boolean;
+}
+
+interface Message {
+  _id: string;
+  createdAt?: string;
+}
+
+interface Visitor {
+  _id: string;
+  firstVisit?: string;
 }
 
 interface Props {
@@ -63,7 +78,7 @@ export default function Dashboard({ setActiveTab }: Props) {
   useEffect(() => {
     if (!mounted) return;
     fetchAllData();
-  }, [mounted]);
+  }, [mounted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchAllData = async () => {
     try {
@@ -110,17 +125,17 @@ export default function Dashboard({ setActiveTab }: Props) {
           .length,
         recentActivity: {
           newUsers: users.filter(
-            (u: any) =>
+            (u: User) =>
               new Date(u.createdAt || Date.now()) >
               new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
           ).length,
           newMessages: messages.filter(
-            (m: any) =>
+            (m: Message) =>
               new Date(m.createdAt || Date.now()) >
               new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
           ).length,
           newVisitors: visitors.filter(
-            (v: any) =>
+            (v: Visitor) =>
               new Date(v.firstVisit || Date.now()) >
               new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
           ).length,
@@ -128,11 +143,14 @@ export default function Dashboard({ setActiveTab }: Props) {
       });
 
       setSystemStatus(statusRes.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to fetch dashboard data:", error);
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+      if (error && typeof error === "object" && "response" in error) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
       }
     } finally {
       setLoading(false);

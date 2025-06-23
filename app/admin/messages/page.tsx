@@ -7,13 +7,9 @@ import {
   FaEnvelopeOpen,
   FaEnvelope,
   FaSearch,
-  FaFilter,
-  FaSortAmountDown,
-  FaSortAmountUp,
   FaCalendarAlt,
   FaUser,
   FaReply,
-  FaArchive,
   FaSync,
 } from "react-icons/fa";
 
@@ -76,10 +72,13 @@ export default function AdminMessagesPage() {
       const data = await res.json();
       setMessages(data);
       setAuthError(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to fetch messages", err);
-      if (err.response?.status === 401) {
-        setAuthError(true);
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          setAuthError(true);
+        }
       }
     } finally {
       setLoading(false);
@@ -165,7 +164,7 @@ export default function AdminMessagesPage() {
   useEffect(() => {
     if (!mounted) return;
     fetchMessages();
-  }, [mounted]);
+  }, [mounted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter and sort messages
   const filteredAndSortedMessages = messages

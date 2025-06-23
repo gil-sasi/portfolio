@@ -6,7 +6,6 @@ import {
   FaEye,
   FaUsers,
   FaGlobe,
-  FaCalendarAlt,
   FaDesktop,
   FaMobile,
   FaChrome,
@@ -14,9 +13,6 @@ import {
   FaSafari,
   FaEdge,
   FaSearch,
-  FaFilter,
-  FaArrowUp,
-  FaArrowDown,
   FaSpinner,
   FaProjectDiagram,
   FaChartLine,
@@ -24,13 +20,9 @@ import {
   FaUserFriends,
   FaMousePointer,
   FaClock,
-  FaGraduationCap,
-  FaSortAmountDown,
-  FaSortAmountUp,
   FaExternalLinkAlt,
   FaTrophy,
   FaFire,
-  FaStar,
 } from "react-icons/fa";
 
 interface ProjectStat {
@@ -188,7 +180,7 @@ export default function ProjectAnalytics() {
 
   // Filter and sort visitors
   const filteredAndSortedVisitors = useMemo(() => {
-    let filtered = projectVisitors.filter((visitor) => {
+    const filtered = projectVisitors.filter((visitor) => {
       const matchesSearch =
         visitor.ip.includes(searchTerm) ||
         visitor.country.toLowerCase().includes(searchTerm.toLowerCase());
@@ -296,7 +288,9 @@ export default function ProjectAnalytics() {
         <div className="flex items-center gap-3">
           <select
             value={timeRange}
-            onChange={(e) => setTimeRange(e.target.value as any)}
+            onChange={(e) =>
+              setTimeRange(e.target.value as "7d" | "30d" | "all")
+            }
             className="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
           >
             <option value="7d">{t("last7Days", "Last 7 Days")}</option>

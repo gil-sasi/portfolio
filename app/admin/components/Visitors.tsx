@@ -11,7 +11,6 @@ import {
   FaEdge,
   FaTrash,
   FaSync,
-  FaDownload,
   FaFilter,
   FaSortAmountDown,
   FaSortAmountUp,
@@ -37,6 +36,7 @@ interface Props {
 }
 
 // Helper function to extract browser name from user agent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getBrowserName = (userAgent: string, t: any): string => {
   if (!userAgent) return t("unknown", "Unknown");
 
@@ -76,6 +76,7 @@ const getBrowserIcon = (userAgent: string) => {
 };
 
 // Helper function to get device type from user agent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getDeviceType = (userAgent: string, t: any): string => {
   if (!userAgent) return t("unknown", "Unknown");
 
@@ -150,10 +151,10 @@ export default function Visitors({ visitors, loading }: Props) {
     return sortOrder === "desc" ? -comparison : comparison;
   });
 
-  // Get unique countries for filter dropdown
-  const countries = Array.from(
-    new Set(displayVisitors.map((v) => v.country).filter(Boolean))
-  ).sort();
+  // Get unique countries for filter dropdown (used in UI)
+  // const countries = Array.from(
+  //   new Set(displayVisitors.map((v) => v.country).filter(Boolean))
+  // ).sort();
 
   // Check if migration is needed (visitors with missing userAgent or firstVisit)
   const needsMigration = visitors.some((v) => !v.userAgent || !v.firstVisit);

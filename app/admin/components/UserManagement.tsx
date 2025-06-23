@@ -4,17 +4,13 @@ import { useTranslation } from "react-i18next";
 import {
   FaUsers,
   FaSearch,
-  FaUserShield,
-  FaUser,
   FaBan,
   FaUserCheck,
-  FaCalendarAlt,
   FaCrown,
   FaEye,
   FaEyeSlash,
   FaSortAmountDown,
   FaSortAmountUp,
-  FaFilter,
   FaUserTimes,
   FaSignInAlt,
 } from "react-icons/fa";
@@ -224,7 +220,9 @@ export default function UserManagement({
         {/* Role Filter */}
         <select
           value={filterRole}
-          onChange={(e) => setFilterRole(e.target.value as any)}
+          onChange={(e) =>
+            setFilterRole(e.target.value as "all" | "admin" | "user")
+          }
           className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
         >
           <option value="all">{t("allRoles", "All Roles")}</option>
@@ -235,7 +233,9 @@ export default function UserManagement({
         {/* Status Filter */}
         <select
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value as any)}
+          onChange={(e) =>
+            setFilterStatus(e.target.value as "all" | "active" | "banned")
+          }
           className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
         >
           <option value="all">{t("allStatuses", "All Statuses")}</option>

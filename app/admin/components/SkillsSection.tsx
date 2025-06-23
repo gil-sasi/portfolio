@@ -5,9 +5,7 @@ import {
   FaCode,
   FaPlus,
   FaTrash,
-  FaSave,
   FaSearch,
-  FaFilter,
   FaSortAmountDown,
   FaSortAmountUp,
   FaDesktop,
@@ -16,13 +14,10 @@ import {
   FaDatabase,
   FaMobile,
   FaTools,
-  FaGraduationCap,
   FaLightbulb,
   FaChartBar,
-  FaEdit,
   FaCheckCircle,
   FaExclamationTriangle,
-  FaEye,
   FaLayerGroup,
 } from "react-icons/fa";
 
@@ -124,7 +119,7 @@ export default function SkillsSection({
 
   // Filter and sort skills
   const filteredAndSortedSkills = useMemo(() => {
-    let filtered = skills.filter((skill) => {
+    const filtered = skills.filter((skill) => {
       const matchesSearch = skill.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
@@ -350,7 +345,7 @@ export default function SkillsSection({
           value={`${sortBy}-${sortOrder}`}
           onChange={(e) => {
             const [field, order] = e.target.value.split("-");
-            setSortBy(field as any);
+            setSortBy(field as "name" | "category" | "date");
             setSortOrder(order as "asc" | "desc");
           }}
           className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
