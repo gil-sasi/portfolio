@@ -17,13 +17,13 @@ export default function TrackProjectVisit({
     // Only track once per session for this project
     if (hasTracked.current) return;
 
-    // Skip tracking in development mode
-    if (process.env.NODE_ENV === "development") {
-      console.log(
-        `Skipping project visit tracking in development mode: ${projectName}`
-      );
-      return;
-    }
+    // Skip tracking in development mode (TEMPORARILY DISABLED FOR TESTING)
+    // if (process.env.NODE_ENV === "development") {
+    //   console.log(
+    //     `Skipping project visit tracking in development mode: ${projectName}`
+    //   );
+    //   return;
+    // }
 
     // Skip if running in iframe (embedded content)
     if (window !== window.top) {

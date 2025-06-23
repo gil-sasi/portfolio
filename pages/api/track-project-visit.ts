@@ -55,13 +55,16 @@ function isBot(ua: string): boolean {
 }
 
 function isDevelopmentIP(ip: string): boolean {
-  return (
-    DEVELOPMENT_IPS.includes(ip) ||
-    ip.startsWith("192.168.") ||
-    ip.startsWith("10.") ||
-    ip.startsWith("172.16.") ||
-    ip === "unknown"
-  );
+  // TEMPORARILY DISABLED FOR TESTING - normally we filter out development IPs
+  return false;
+
+  // return (
+  //   DEVELOPMENT_IPS.includes(ip) ||
+  //   ip.startsWith("192.168.") ||
+  //   ip.startsWith("10.") ||
+  //   ip.startsWith("172.16.") ||
+  //   ip === "unknown"
+  // );
 }
 
 function isSuspiciousReferrer(referrer: string): boolean {
