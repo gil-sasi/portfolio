@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { createWorker } from "tesseract.js";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function OCRPage() {
   const [image, setImage] = useState<File | null>(null);
@@ -190,9 +191,11 @@ export default function OCRPage() {
               {image && (
                 <div className="mt-6">
                   <div className="glass p-4 rounded-xl">
-                    <img
+                    <Image
                       src={URL.createObjectURL(image)}
                       alt="Selected"
+                      width={500}
+                      height={256}
                       className="w-full max-h-64 object-contain rounded-lg"
                     />
                     <div className="mt-4 text-center">

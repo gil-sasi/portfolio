@@ -13,33 +13,6 @@ export default function DangerousGilHome() {
     setMounted(true);
   }, []);
 
-  const gameFeatures = [
-    {
-      icon: "🎮",
-      title: "Action Adventure",
-      description: "Fast-paced 2D platformer gameplay",
-      color: "from-red-500 to-pink-500",
-    },
-    {
-      icon: "🏗️",
-      title: "Level Editor",
-      description: "Create and share custom levels",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      icon: "💎",
-      title: "Collectibles",
-      description: "Gather diamonds and power-ups",
-      color: "from-purple-500 to-violet-500",
-    },
-    {
-      icon: "👾",
-      title: "Boss Battles",
-      description: "Fight challenging enemies",
-      color: "from-orange-500 to-yellow-500",
-    },
-  ];
-
   if (!mounted) return null;
 
   return (

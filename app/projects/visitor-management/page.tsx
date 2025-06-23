@@ -86,7 +86,6 @@ export default function VisitorManagementProject() {
   ];
 
   const demoVideo = "https://www.youtube.com/embed/pmGokTfo1bM";
-  const liveAppLink = "https://coca-cola-visitor-site.vercel.app/";
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);

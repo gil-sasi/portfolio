@@ -71,10 +71,6 @@ export default function SignupPage() {
     }
   };
 
-  const handleForgotPassword = () => {
-    router.push("/forgot-password");
-  };
-
   if (!mounted) return null;
 
   return (
