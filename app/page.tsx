@@ -4,13 +4,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import axios from "axios";
+
+interface AdminProfile {
+  firstName: string;
+  lastName: string;
+  profilePicture?: string | null;
+}
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const user = useSelector((state: RootState) => state.auth.user);
+  const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
 
   // Calculate years of experience dynamically (started in 2024)
   const getYearsOfExperience = () => {
@@ -30,6 +35,24 @@ export default function HomePage() {
       i18n.changeLanguage(lng);
     }
     setMounted(true);
+
+    // Load admin profile data for everyone to see
+    const loadAdminProfile = async () => {
+      try {
+        const response = await axios.get("/api/admin-profile");
+        setAdminProfile(response.data);
+      } catch (error) {
+        console.error("Error loading admin profile:", error);
+        // Set default values if API fails
+        setAdminProfile({
+          firstName: "Gil",
+          lastName: "Shalev",
+          profilePicture: null,
+        });
+      }
+    };
+
+    loadAdminProfile();
   }, [i18n]);
 
   if (!mounted) return null;
@@ -53,18 +76,20 @@ export default function HomePage() {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 text-center">
         {/* Hero Section */}
         <div className="glass rounded-3xl p-8 sm:p-12 mb-8 max-w-4xl mx-auto">
-          <div className="mb-6">
-            {user?.profilePicture ? (
+          <div className="mb-8">
+            {adminProfile?.profilePicture ? (
               <Image
-                src={user.profilePicture}
-                alt="Profile"
-                width={80}
-                height={80}
-                className="w-20 h-20 rounded-full object-cover border-2 border-white/20"
+                src={adminProfile.profilePicture}
+                alt="Gil Shalev Profile"
+                width={120}
+                height={120}
+                className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl font-bold text-white border-2 border-white/20">
-                {user ? `${user.firstName[0]}${user.lastName[0]}` : "GS"}
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl sm:text-4xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
+                {adminProfile
+                  ? `${adminProfile.firstName[0]}${adminProfile.lastName[0]}`
+                  : "GS"}
               </div>
             )}
           </div>
@@ -72,7 +97,7 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
             <Trans
               i18nKey="heroTitle"
-              values={{ name: user?.firstName || "Gil" }}
+              values={{ name: adminProfile?.firstName || "Gil" }}
               components={[
                 <span
                   key="name"

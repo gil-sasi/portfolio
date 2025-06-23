@@ -54,7 +54,7 @@ export default function SignupPage() {
       });
 
       const token = res.data.token;
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
 
       const decoded = jwt.decode(token) as DecodedToken;
       if (decoded?.firstName && decoded?.lastName) {

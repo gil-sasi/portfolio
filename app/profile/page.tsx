@@ -1,26 +1,105 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../redux/store";
-import { updateProfilePicture } from "../../redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../src/i18n/config";
 
+interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  profilePicture?: string | null;
+}
+
 export default function ProfilePage() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const [user, setUser] = useState<User | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editedFirstName, setEditedFirstName] = useState("");
+  const [editedLastName, setEditedLastName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploadingPicture, setUploadingPicture] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [savingProfile, setSavingProfile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load user data on component mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        setInitialLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get("/api/user-profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(response.data);
+        setEditedFirstName(response.data.firstName);
+        setEditedLastName(response.data.lastName);
+      } catch (error) {
+        console.error("Error loading user data:", error);
+        sessionStorage.removeItem("token");
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
+  const handleSaveProfile = async () => {
+    if (!editedFirstName.trim() || !editedLastName.trim()) {
+      toast.error("First name and last name are required");
+      return;
+    }
+
+    if (editedFirstName.length < 2 || editedLastName.length < 2) {
+      toast.error("Names must be at least 2 characters long");
+      return;
+    }
+
+    try {
+      setSavingProfile(true);
+      const token = sessionStorage.getItem("token");
+      const response = await axios.put(
+        "/api/update-profile",
+        {
+          firstName: editedFirstName.trim(),
+          lastName: editedLastName.trim(),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setUser(response.data.user);
+      setEditMode(false);
+      toast.success(t("profileUpdated"));
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error(t("profileUpdateError"));
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditedFirstName(user?.firstName || "");
+    setEditedLastName(user?.lastName || "");
+    setEditMode(false);
+  };
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
@@ -30,7 +109,7 @@ export default function ProfilePage() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       await axios.post(
         "/api/change-password",
         { newPassword },
@@ -56,13 +135,11 @@ export default function ProfilePage() {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       toast.error("File size must be less than 5MB");
       return;
     }
 
-    // Check file type
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
@@ -74,22 +151,37 @@ export default function ProfilePage() {
       reader.onloadend = async () => {
         const base64String = reader.result as string;
 
-        const token = localStorage.getItem("token");
-        const response = await axios.post(
-          "/api/profile-picture",
-          { profilePicture: base64String },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+          toast.error("No authentication token found. Please login again.");
+          return;
+        }
 
-        dispatch(updateProfilePicture(base64String));
-        toast.success(t("profilePictureUpdated"));
+        try {
+          await axios.post(
+            "/api/profile-picture",
+            { profilePicture: base64String },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          setUser((prev) =>
+            prev ? { ...prev, profilePicture: base64String } : null
+          );
+          toast.success(t("profilePictureUpdated"));
+        } catch (apiError) {
+          console.error("API Error:", apiError);
+          toast.error(t("profilePictureError"));
+        }
       };
       reader.readAsDataURL(file);
     } catch (err) {
+      console.error("File reading error:", err);
       toast.error(t("profilePictureError"));
-      console.error("Error uploading profile picture:", err);
     } finally {
       setUploadingPicture(false);
     }
@@ -99,12 +191,12 @@ export default function ProfilePage() {
     if (!user) return;
 
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       await axios.delete("/api/profile-picture", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      dispatch(updateProfilePicture(null));
+      setUser((prev) => (prev ? { ...prev, profilePicture: null } : null));
       toast.success(t("profilePictureRemoved"));
     } catch (error) {
       console.error("Error removing profile picture:", error);
@@ -112,12 +204,24 @@ export default function ProfilePage() {
     }
   };
 
+  if (initialLoading) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 animated-bg opacity-5"></div>
+        <div className="relative z-10 flex justify-center items-center min-h-screen px-4">
+          <div className="modern-card p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading profile...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {/* Background Effects */}
         <div className="absolute inset-0 animated-bg opacity-5"></div>
-
         <div className="relative z-10 flex justify-center items-center min-h-screen px-4">
           <div className="modern-card p-8 text-center">
             <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-2xl font-bold">
@@ -177,218 +281,195 @@ export default function ProfilePage() {
                   {t("profile")}
                 </span>
               </h1>
-              <p className="text-gray-300">{t("manageAccountSettings")}</p>
+              <p className="text-gray-300 text-lg">
+                {t("welcome")}, {user.firstName} {user.lastName}!
+              </p>
             </div>
           </div>
 
-          {/* Profile Picture Management */}
-          <div className="modern-card p-8">
-            <h2 className="text-xl font-bold mb-6 text-center">
-              <span className="gradient-text bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
-                {t("profilePicture")}
-              </span>
-            </h2>
+          {/* User Information */}
+          <div className="modern-card p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">
+                <span className="gradient-text bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                  {t("accountInfo")}
+                </span>
+              </h2>
+              <button
+                onClick={() =>
+                  editMode ? handleCancelEdit() : setEditMode(true)
+                }
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover:scale-105"
+              >
+                {editMode ? t("cancel") : t("editProfile")}
+              </button>
+            </div>
 
-            <div className="text-center space-y-4">
-              <div className="w-32 h-32 mx-auto mb-4 rounded-full border-4 border-dashed border-gray-600 flex items-center justify-center relative overflow-hidden">
-                {user.profilePicture && (
-                  <div className="mb-4">
-                    <Image
-                      src={user.profilePicture}
-                      alt="Current profile picture"
-                      width={120}
-                      height={120}
-                      className="w-30 h-30 rounded-full object-cover mx-auto border-2 border-gray-600"
-                    />
-                  </div>
+            <div className="space-y-4">
+              {/* First Name */}
+              <div className="flex justify-between items-center p-4 glass rounded-lg">
+                <span className="text-gray-400">{t("firstName")}:</span>
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={editedFirstName}
+                    onChange={(e) => setEditedFirstName(e.target.value)}
+                    className="bg-gray-800/50 border border-gray-600 text-white px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={t("firstName")}
+                  />
+                ) : (
+                  <span className="text-white font-medium">
+                    {user.firstName}
+                  </span>
                 )}
               </div>
 
-              <div className="space-y-2">
-                <p className="text-sm text-gray-400">{t("dragDropImage")}</p>
-                <p className="text-xs text-gray-500">{t("imageSize")}</p>
-                <p className="text-xs text-gray-500">{t("supportedFormats")}</p>
+              {/* Last Name */}
+              <div className="flex justify-between items-center p-4 glass rounded-lg">
+                <span className="text-gray-400">{t("lastName")}:</span>
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={editedLastName}
+                    onChange={(e) => setEditedLastName(e.target.value)}
+                    className="bg-gray-800/50 border border-gray-600 text-white px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={t("lastName")}
+                  />
+                ) : (
+                  <span className="text-white font-medium">
+                    {user.lastName}
+                  </span>
+                )}
               </div>
 
+              {/* Email */}
+              <div className="flex justify-between items-center p-4 glass rounded-lg">
+                <span className="text-gray-400">{t("email")}:</span>
+                <span className="text-white font-medium">{user.email}</span>
+              </div>
+
+              {/* Role with Special Indicator */}
+              <div className="flex justify-between items-center p-4 glass rounded-lg">
+                <span className="text-gray-400">{t("role")}:</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-white font-medium capitalize">
+                    {user.role}
+                  </span>
+                  {user.role === "admin" && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-yellow-400 text-lg">👑</span>
+                      <span className="text-xs text-yellow-400 font-medium">
+                        ADMIN
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Save Button for Edit Mode */}
+              {editMode && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    onClick={handleSaveProfile}
+                    disabled={savingProfile}
+                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg font-medium hover:from-green-600 hover:to-blue-700 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {savingProfile ? t("updating") : t("saveChanges")}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Profile Picture Section */}
+          <div className="modern-card p-6">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                {t("profilePicture")}
+              </span>
+            </h2>
+            <div className="text-center space-y-4">
               <input
-                ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                ref={fileInputRef}
                 onChange={handleProfilePictureUpload}
+                accept="image/*"
                 className="hidden"
               />
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadingPicture}
-                  className="btn-primary px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
+                  className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {uploadingPicture ? (
-                    <div className="flex justify-center items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      {t("updating")}...
-                    </div>
-                  ) : user.profilePicture ? (
-                    t("changeProfilePicture")
-                  ) : (
-                    t("uploadProfilePicture")
-                  )}
+                  {uploadingPicture
+                    ? t("uploading")
+                    : user.profilePicture
+                    ? t("changeProfilePicture")
+                    : t("uploadProfilePicture")}
                 </button>
-
                 {user.profilePicture && (
                   <button
                     onClick={removeProfilePicture}
-                    disabled={uploadingPicture}
-                    className="btn-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
+                    className="px-6 py-3 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg font-medium hover:from-red-600 hover:to-pink-700 transition-all duration-300 hover:scale-105"
                   >
                     {t("removeProfilePicture")}
                   </button>
                 )}
               </div>
+              <p className="text-gray-400 text-sm">{t("profilePictureHint")}</p>
             </div>
           </div>
 
-          {/* Profile Information */}
-          <div className="modern-card p-8">
-            <h2 className="text-xl font-bold mb-6 text-center">
-              <span className="gradient-text bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                {t("accountInformation")}
+          {/* Password Change Section */}
+          <div className="modern-card p-6">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              <span className="gradient-text bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                {t("security")}
               </span>
             </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400 uppercase tracking-wide">
-                  {t("firstName")}
-                </label>
-                <div className="glass p-4 rounded-xl">
-                  <p className="text-white font-semibold">{user.firstName}</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400 uppercase tracking-wide">
-                  {t("lastName")}
-                </label>
-                <div className="glass p-4 rounded-xl">
-                  <p className="text-white font-semibold">{user.lastName}</p>
-                </div>
-              </div>
-
-              <div className="space-y-2 sm:col-span-2">
-                <label className="text-sm font-medium text-gray-400 uppercase tracking-wide">
-                  {t("email")}
-                </label>
-                <div className="glass p-4 rounded-xl">
-                  <p className="text-white font-semibold break-all">
-                    {user.email}
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-2 sm:col-span-2">
-                <label className="text-sm font-medium text-gray-400 uppercase tracking-wide">
-                  {t("role")}
-                </label>
-                <div className="glass p-4 rounded-xl flex items-center">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
-                        user.role === "admin"
-                          ? "bg-gradient-to-r from-purple-500 to-pink-500"
-                          : "bg-gradient-to-r from-blue-500 to-cyan-500"
-                      }`}
-                    >
-                      {user.role === "admin" ? "👑" : "👤"}
-                    </div>
-                    <div>
-                      <span
-                        className={`inline-flex px-4 py-2 rounded-full text-sm font-bold ${
-                          user.role === "admin"
-                            ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                            : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
-                        }`}
-                      >
-                        {t(user.role)}
-                      </span>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {user.role === "admin"
-                          ? t("fullSystemAccess")
-                          : t("standardUserAccess")}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Password Management */}
-          <div className="modern-card p-8">
-            <h2 className="text-xl font-bold mb-6 text-center">
-              <span className="gradient-text bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-                {t("securitySettings")}
-              </span>
-            </h2>
-
             {!showPasswordFields ? (
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-blue-600 flex items-center justify-center text-2xl">
-                  🔒
-                </div>
-                <p className="text-gray-300 mb-6">{t("keepAccountSecure")}</p>
                 <button
                   onClick={() => setShowPasswordFields(true)}
-                  className="btn-primary px-6 py-3 rounded-xl font-semibold transition-all duration-300 glow-hover"
+                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-700 transition-all duration-300 hover:scale-105"
                 >
                   {t("changePassword")}
                 </button>
               </div>
             ) : (
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">
-                      {t("newPassword")}
-                    </label>
-                    <input
-                      type="password"
-                      placeholder={t("newPassword")}
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">
-                      {t("confirmPassword")}
-                    </label>
-                    <input
-                      type="password"
-                      placeholder={t("confirmPassword")}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full p-4 rounded-xl bg-gray-800/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
-                    />
-                  </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">
+                    {t("newPassword")}
+                  </label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full p-3 glass rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={t("enterNewPassword")}
+                  />
                 </div>
-
+                <div>
+                  <label className="block text-gray-300 mb-2">
+                    {t("confirmPassword")}
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full p-3 glass rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={t("confirmNewPassword")}
+                  />
+                </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleChangePassword}
-                    disabled={loading}
-                    className="flex-1 btn-primary px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={loading || !newPassword || !confirmPassword}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg font-medium hover:from-green-600 hover:to-blue-700 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? (
-                      <div className="flex justify-center items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        {t("updating")}...
-                      </div>
-                    ) : (
-                      t("updatePassword")
-                    )}
+                    {loading ? t("updating") : t("updatePassword")}
                   </button>
                   <button
                     onClick={() => {
@@ -396,7 +477,7 @@ export default function ProfilePage() {
                       setNewPassword("");
                       setConfirmPassword("");
                     }}
-                    className="flex-1 btn-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg font-medium hover:from-gray-600 hover:to-gray-700 transition-all duration-300 hover:scale-105"
                   >
                     {t("cancel")}
                   </button>

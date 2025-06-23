@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import jwt from "jsonwebtoken";
-import { AppDispatch } from "../store";
 
 //  Define the shape of decoded JWT payload
 export interface DecodedToken {
+  id?: string;
   firstName: string;
   lastName: string;
   role: string;
@@ -31,13 +31,6 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
 
-    //  Update user profile picture
-    updateProfilePicture: (state, action: PayloadAction<string | null>) => {
-      if (state.user) {
-        state.user.profilePicture = action.payload;
-      }
-    },
-
     //  Clear user info and remove token from sessionStorage (on logout)
     logout: (state) => {
       state.user = null;
@@ -49,13 +42,13 @@ const authSlice = createSlice({
 });
 
 //  Export actions for use in your app
-export const { login, logout, updateProfilePicture } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 /**
  *  Auto-login from token if sessionStorage contains it.
  * Called when app loads to restore user from existing token.
  */
-export const setUserFromToken = () => (dispatch: AppDispatch) => {
+export const setUserFromToken = () => async (dispatch: any) => {
   if (typeof window === "undefined") return; // Skip on server
 
   const token = sessionStorage.getItem("token"); //  Use sessionStorage instead of localStorage
