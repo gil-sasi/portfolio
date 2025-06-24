@@ -174,7 +174,7 @@ export default function Navbar() {
   if (!hasMounted) return null;
 
   return (
-    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white p-4 shadow-xl border-b border-white/10 sticky top-0 z-50">
+    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white p-4 shadow-xl border-b border-white/10 sticky top-0 z-50 h-[80px]">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
@@ -217,7 +217,7 @@ export default function Navbar() {
                 ref={dropdownRef}
                 className={`absolute ${
                   i18n.language === "he" ? "left-0" : "right-0"
-                } mt-3 w-96 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-2xl z-50 transform transition-all duration-300 animate-in slide-in-from-top-2 fade-in`}
+                } mt-3 w-96 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-2xl z-[60] transform transition-all duration-300 animate-in slide-in-from-top-2 fade-in`}
                 style={{
                   boxShadow:
                     "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)",

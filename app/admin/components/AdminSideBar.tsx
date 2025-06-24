@@ -95,11 +95,10 @@ export default function AdminSidebar({
       <aside
         className={`hidden md:block fixed ${
           isRTL ? "right-0" : "left-0"
-        } top-16 h-[calc(100vh-4rem)] modern-card shadow-2xl p-6 space-y-3 z-50 transition-all duration-300 ease-in-out ${
+        } top-[80px] h-[calc(100vh-80px)] modern-card shadow-2xl p-6 space-y-3 z-40 transition-all duration-300 ease-in-out ${
           isCollapsed ? "w-20" : "w-72"
         }`}
         style={{
-          zIndex: 1000,
           pointerEvents: "auto",
         }}
       >
@@ -125,7 +124,7 @@ export default function AdminSidebar({
           )}
           <button
             onClick={handleToggle}
-            className="p-3 hover:bg-gray-700/50 rounded-xl transition-all duration-200 group z-10 relative"
+            className="p-3 hover:bg-gray-700/50 rounded-xl transition-all duration-200 group relative"
             title={
               isCollapsed
                 ? t("expandSidebar", "Expand Sidebar")
@@ -153,7 +152,7 @@ export default function AdminSidebar({
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`group relative flex items-center w-full rounded-xl transition-all duration-300 z-10 ${
+              className={`group relative flex items-center w-full rounded-xl transition-all duration-300 ${
                 isCollapsed
                   ? "justify-center px-3 py-4"
                   : isRTL
@@ -236,10 +235,9 @@ export default function AdminSidebar({
 
       {/* Mobile Horizontal Tab Bar */}
       <div
-        className={`md:hidden modern-card border-b-2 border-gray-700/50 z-40 ${
+        className={`md:hidden modern-card border-b-2 border-gray-700/50 z-30 ${
           isRTL ? "rtl-text" : ""
         }`}
-        style={{ zIndex: 999 }}
       >
         <div className="px-4 py-4">
           <h2 className="text-lg font-bold gradient-text mb-4 text-center">
@@ -259,7 +257,6 @@ export default function AdminSidebar({
                     ? `bg-gradient-to-br ${color} text-white shadow-lg`
                     : "hover:bg-gray-700/50 text-gray-300 hover:text-white"
                 }`}
-                style={{ pointerEvents: "auto" }}
               >
                 <div className="mb-2 text-lg transition-transform group-hover:scale-110">
                   {icon}
