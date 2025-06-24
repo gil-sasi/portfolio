@@ -9,6 +9,7 @@ export interface DecodedToken {
   role: string;
   email: string;
   profilePicture?: string | null;
+  exp?: number; // JWT expiration timestamp
 }
 
 //  Define the shape of your auth state in Redux
@@ -45,6 +46,22 @@ const authSlice = createSlice({
 export const { login, logout } = authSlice.actions;
 
 /**
+ * Check if a JWT token is expired
+ */
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const decoded = jwt.decode(token) as DecodedToken;
+    if (!decoded?.exp) return true;
+
+    // JWT exp is in seconds, Date.now() is in milliseconds
+    const currentTime = Date.now() / 1000;
+    return decoded.exp < currentTime;
+  } catch {
+    return true; // If we can't decode it, consider it expired
+  }
+};
+
+/**
  *  Auto-login from token if localStorage contains it.
  * Called when app loads to restore user from existing token.
  */
@@ -57,6 +74,13 @@ export const setUserFromToken = () => async (dispatch: any) => {
 
   if (token) {
     try {
+      // 🕐 Check if token is expired
+      if (isTokenExpired(token)) {
+        console.log("⏰ Token is expired, removing from storage");
+        localStorage.removeItem("token");
+        return;
+      }
+
       //  This does NOT verify the signature — only decodes the token locally
       const decoded = jwt.decode(token) as DecodedToken;
       console.log("✅ Decoded token:", decoded);

@@ -174,8 +174,8 @@ export default function Navbar() {
   if (!hasMounted) return null;
 
   return (
-    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white p-4 shadow-xl border-b border-white/10 sticky top-0 z-50 h-[80px]">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white shadow-xl border-b border-white/10 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between h-[80px] px-4">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold whitespace-nowrap">
           {t("myname")}
@@ -348,21 +348,32 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none p-2 rounded-lg hover:bg-gray-700/50 transition-colors z-[51]"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <svg
-            className="w-6 h-6"
+            className={`w-6 h-6 transition-transform duration-300 ${
+              menuOpen ? "rotate-90" : ""
+            }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            {menuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
           </svg>
         </button>
 
@@ -425,91 +436,142 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Items */}
+      {/* Mobile Menu Overlay */}
       {menuOpen && (
-        <div className="md:hidden flex flex-col gap-3 px-4 mt-4 text-sm">
-          <Link href="/skills" onClick={() => setMenuOpen(false)}>
-            {t("skills")}
-          </Link>
-          <Link href="/projects" onClick={() => setMenuOpen(false)}>
-            {t("projects")}
-          </Link>
-          <Link href="/contact" onClick={() => setMenuOpen(false)}>
-            {t("contact")}
-          </Link>
-          <Link href="/about" onClick={() => setMenuOpen(false)}>
-            {t("about")}
-          </Link>
-          {user?.role === "admin" && (
-            <Link href="/admin" onClick={() => setMenuOpen(false)}>
-              {t("adminPanel")}
-            </Link>
-          )}
-          <Link href="/" onClick={() => setMenuOpen(false)}>
-            {t("home")}
-          </Link>
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => setMenuOpen(false)}
+          />
 
-          {!user && !onLoginPage && (
-            <Link
-              href="/login"
-              onClick={() => setMenuOpen(false)}
-              className="btn-primary px-4 py-2 text-sm"
-            >
-              {t("login")}
-            </Link>
-          )}
-          {!user && !onSignupPage && (
-            <Link
-              href="/signup"
-              onClick={() => setMenuOpen(false)}
-              className="btn-secondary px-4 py-2 text-sm"
-            >
-              {t("signup")}
-            </Link>
-          )}
-          {user && (
-            <>
+          {/* Mobile Menu Items */}
+          <div className="absolute top-full left-0 right-0 md:hidden glass bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/50 shadow-2xl z-50 animate-in slide-in-from-top-2 duration-300">
+            <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
               <Link
-                href="/profile"
+                href="/skills"
                 onClick={() => setMenuOpen(false)}
-                className="btn-secondary px-4 py-2 text-sm"
+                className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
               >
-                {t("profile")}
+                {t("skills")}
               </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
-                }}
-                className="btn-danger px-4 py-2 text-sm"
+              <Link
+                href="/projects"
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
               >
-                {t("logout")}
-              </button>
-            </>
-          )}
+                {t("projects")}
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
+              >
+                {t("contact")}
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
+              >
+                {t("about")}
+              </Link>
+              {user?.role === "admin" && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
+                >
+                  {t("adminPanel")}
+                </Link>
+              )}
+              <Link
+                href="/"
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 px-4 rounded-lg hover:bg-gray-700/50 transition-colors text-gray-200 hover:text-white"
+              >
+                {t("home")}
+              </Link>
 
-          {/* Language Switcher for Mobile */}
-          <div className="flex gap-2 items-center mt-2">
-            <button onClick={() => handleLanguageChange("en")} title="English">
-              <Image
-                src="/flags/us.png"
-                alt="English"
-                width={28}
-                height={28}
-                className="rounded-sm border border-white"
-              />
-            </button>
-            <button onClick={() => handleLanguageChange("he")} title="עברית">
-              <Image
-                src="/flags/il.png"
-                alt="Hebrew"
-                width={28}
-                height={28}
-                className="rounded-sm border border-white"
-              />
-            </button>
+              {/* Auth Buttons */}
+              <div className="pt-4 border-t border-gray-700/50 space-y-3">
+                {!user && !onLoginPage && (
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-primary px-4 py-3 text-sm w-full text-center block rounded-lg"
+                  >
+                    {t("login")}
+                  </Link>
+                )}
+                {!user && !onSignupPage && (
+                  <Link
+                    href="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-secondary px-4 py-3 text-sm w-full text-center block rounded-lg"
+                  >
+                    {t("signup")}
+                  </Link>
+                )}
+                {user && (
+                  <>
+                    <Link
+                      href="/profile"
+                      onClick={() => setMenuOpen(false)}
+                      className="btn-secondary px-4 py-3 text-sm w-full text-center block rounded-lg"
+                    >
+                      {t("profile")}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setMenuOpen(false);
+                      }}
+                      className="btn-danger px-4 py-3 text-sm w-full rounded-lg"
+                    >
+                      {t("logout")}
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Language Switcher for Mobile */}
+              <div className="pt-4 border-t border-gray-700/50">
+                <p className="text-sm text-gray-400 mb-3">
+                  {t("language", "Language")}
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => handleLanguageChange("en")}
+                    title="English"
+                    className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+                  >
+                    <Image
+                      src="/flags/us.png"
+                      alt="English"
+                      width={32}
+                      height={32}
+                      className="rounded border border-white/20"
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleLanguageChange("he")}
+                    title="עברית"
+                    className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+                  >
+                    <Image
+                      src="/flags/il.png"
+                      alt="Hebrew"
+                      width={32}
+                      height={32}
+                      className="rounded border border-white/20"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </nav>
   );

@@ -6,6 +6,7 @@ import axios from "axios";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getValidToken } from "../../utils/auth";
 import "../../src/i18n/config";
 
 interface User {
@@ -35,7 +36,7 @@ export default function ProfilePage() {
   // Load user data on component mount
   useEffect(() => {
     const loadUserData = async () => {
-      const token = sessionStorage.getItem("token");
+      const token = getValidToken(); // This automatically removes expired tokens
       if (!token) {
         setInitialLoading(false);
         return;
@@ -50,7 +51,7 @@ export default function ProfilePage() {
         setEditedLastName(response.data.lastName);
       } catch (error) {
         console.error("Error loading user data:", error);
-        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
       } finally {
         setInitialLoading(false);
       }
@@ -72,7 +73,7 @@ export default function ProfilePage() {
 
     try {
       setSavingProfile(true);
-      const token = sessionStorage.getItem("token");
+      const token = getValidToken();
       const response = await axios.put(
         "/api/update-profile",
         {
@@ -109,7 +110,7 @@ export default function ProfilePage() {
 
     try {
       setLoading(true);
-      const token = sessionStorage.getItem("token");
+      const token = getValidToken();
       await axios.post(
         "/api/change-password",
         { newPassword },
@@ -151,7 +152,7 @@ export default function ProfilePage() {
       reader.onloadend = async () => {
         const base64String = reader.result as string;
 
-        const token = sessionStorage.getItem("token");
+        const token = getValidToken();
         if (!token) {
           toast.error("No authentication token found. Please login again.");
           return;
@@ -191,7 +192,7 @@ export default function ProfilePage() {
     if (!user) return;
 
     try {
-      const token = sessionStorage.getItem("token");
+      const token = getValidToken();
       await axios.delete("/api/profile-picture", {
         headers: { Authorization: `Bearer ${token}` },
       });
