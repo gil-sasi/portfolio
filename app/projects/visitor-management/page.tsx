@@ -85,7 +85,6 @@ export default function VisitorManagementProject() {
     },
   ];
   const demoVideo = "https://www.youtube.com/embed/ZCo5RW1Rb5E";
-  //const demoVideo = "https://www.youtube.com/embed/pmGokTfo1bM";
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
