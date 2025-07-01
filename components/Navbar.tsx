@@ -36,8 +36,8 @@ export default function Navbar() {
   if (!hasMounted) return null;
 
   return (
-    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white shadow-xl border-b border-white/10 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-[80px] px-4">
+    <nav className="glass backdrop-blur-lg bg-gray-900/50 text-white shadow-xl border-b border-white/10 sticky top-0 z-[100]">
+      <div className="relative max-w-7xl mx-auto flex items-center justify-between h-[80px] px-4">
         {/* Logo */}
         <Logo />
 

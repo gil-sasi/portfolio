@@ -44,16 +44,16 @@ export default function MobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/90 z-[60] md:hidden"
+        className="fixed inset-0 bg-black/90 z-[90] md:hidden"
         onClick={onClose}
       />
 
       {/* Mobile Menu Items */}
       <div
-        className="fixed inset-0 md:hidden bg-gray-900 z-[70] pt-20 overflow-y-auto"
+        className="fixed inset-0 md:hidden bg-gray-900 z-[95] pt-20 overflow-y-auto"
         style={{ backgroundColor: "rgb(17, 24, 39)" }}
       >
-        <div className="px-6 py-8 space-y-4 h-full">
+        <div className="px-6 py-8 space-y-4 h-full min-h-screen">
           {/* Close Button */}
           <div className="flex justify-between items-center mb-8 border-b border-gray-600/30 pb-4">
             <h2 className="text-2xl font-bold text-white">
@@ -67,7 +67,7 @@ export default function MobileMenu({
             </button>
           </div>
           {/* Navigation Links */}
-          <div className="space-y-3">
+          <div className="space-y-3 mb-8">
             <Link
               href="/skills"
               onClick={onClose}
@@ -120,11 +120,8 @@ export default function MobileMenu({
             </Link>
           </div>
 
-          {/* Separator */}
-          <div className="border-t border-gray-600/30 my-6"></div>
-
           {/* Auth Buttons */}
-          <div className="space-y-3">
+          <div className="space-y-3 mb-8">
             <AuthButtons
               user={user}
               onLoginPage={onLoginPage}
@@ -134,14 +131,13 @@ export default function MobileMenu({
             />
           </div>
 
-          {/* Separator */}
-          <div className="border-t border-gray-600/30 my-6"></div>
-
           {/* Language Switcher for Mobile */}
-          <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+          <div className="space-y-3">
+            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+          </div>
 
           {/* Bottom spacing for safe area */}
-          <div className="h-8"></div>
+          <div className="h-12"></div>
         </div>
       </div>
     </>
