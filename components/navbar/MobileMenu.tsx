@@ -39,57 +39,68 @@ export default function MobileMenu({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999]">
-      {/* Dark overlay */}
+    <div className="fixed inset-x-4 inset-y-20 z-[9999]">
+      {/* Dark overlay with blur */}
       <div
-        className="fixed inset-0 bg-black/90 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm -z-10"
         onClick={onClose}
       />
 
       {/* Menu panel */}
-      <div className="fixed inset-y-0 right-0 w-full h-screen bg-gray-900 flex flex-col">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 text-2xl text-white"
-        >
-          ✕
-        </button>
+      <div className="w-full h-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border border-white/10 flex flex-col overflow-hidden">
+        {/* Top section with close button */}
+        <div className="flex justify-between items-center p-6 border-b border-white/10">
+          <h2 className="text-white/90 text-xl font-medium">{t("menu")}</h2>
+          <button
+            onClick={onClose}
+            className="text-white/70 hover:text-white/90 transition-colors text-2xl"
+          >
+            ✕
+          </button>
+        </div>
 
         {/* Navigation Links */}
-        <div className="flex flex-col justify-center items-center h-full space-y-8 -mt-20">
-          <Link href="/" onClick={onClose} className="text-white text-2xl">
+        <div className="flex flex-col justify-center items-center flex-1 py-8 space-y-6">
+          <Link
+            href="/"
+            onClick={onClose}
+            className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
+          >
             {t("home")}
           </Link>
           <Link
             href="/skills"
             onClick={onClose}
-            className="text-white text-2xl"
+            className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
           >
             {t("skills")}
           </Link>
           <Link
             href="/projects"
             onClick={onClose}
-            className="text-white text-2xl"
+            className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
           >
             {t("projects")}
           </Link>
           <Link
             href="/contact"
             onClick={onClose}
-            className="text-white text-2xl"
+            className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
           >
             {t("contact")}
           </Link>
-          <Link href="/about" onClick={onClose} className="text-white text-2xl">
+          <Link
+            href="/about"
+            onClick={onClose}
+            className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
+          >
             {t("about")}
           </Link>
           {user?.role === "admin" && (
             <Link
               href="/admin"
               onClick={onClose}
-              className="text-white text-2xl"
+              className="text-white/80 hover:text-white transition-colors text-2xl font-light tracking-wide"
             >
               {t("adminPanel")}
             </Link>
@@ -97,15 +108,17 @@ export default function MobileMenu({
         </div>
 
         {/* Bottom section */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col items-center space-y-4">
-          <AuthButtons
-            user={user}
-            onLoginPage={onLoginPage}
-            onSignupPage={onSignupPage}
-            isMobile={true}
-            onClose={onClose}
-          />
-          <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+        <div className="border-t border-white/10 p-6 bg-black/20">
+          <div className="flex flex-col items-center space-y-4">
+            <AuthButtons
+              user={user}
+              onLoginPage={onLoginPage}
+              onSignupPage={onSignupPage}
+              isMobile={true}
+              onClose={onClose}
+            />
+            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+          </div>
         </div>
       </div>
     </div>
