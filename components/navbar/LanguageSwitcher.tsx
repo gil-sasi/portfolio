@@ -32,37 +32,35 @@ export default function LanguageSwitcher({
   if (isMobile) {
     return (
       <div>
-        <p className="text-xl font-bold text-white mb-4 text-center">
-          🌍 {t("language", "Language")}
+        <p className="text-sm text-gray-400 mb-2">
+          {t("language", "Language")}
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex gap-2">
           <button
             onClick={() => handleLanguageChange("en")}
             title="English"
-            className="flex items-center justify-center py-5 px-6 rounded-2xl text-lg font-semibold text-white bg-blue-600/30 hover:bg-blue-600/50 active:bg-blue-600/70 transition-all duration-200 border border-blue-500/40 touch-manipulation"
+            className="p-2 hover:bg-gray-800 rounded-lg"
           >
             <Image
               src="/flags/us.png"
               alt="English"
-              width={32}
-              height={32}
-              className="rounded mr-3 border border-white/30"
+              width={24}
+              height={24}
+              className="rounded"
             />
-            English
           </button>
           <button
             onClick={() => handleLanguageChange("he")}
             title="עברית"
-            className="flex items-center justify-center py-5 px-6 rounded-2xl text-lg font-semibold text-white bg-green-600/30 hover:bg-green-600/50 active:bg-green-600/70 transition-all duration-200 border border-green-500/40 touch-manipulation"
+            className="p-2 hover:bg-gray-800 rounded-lg"
           >
             <Image
               src="/flags/il.png"
               alt="Hebrew"
-              width={32}
-              height={32}
-              className="rounded mr-3 border border-white/30"
+              width={24}
+              height={24}
+              className="rounded"
             />
-            עברית
           </button>
         </div>
       </div>
