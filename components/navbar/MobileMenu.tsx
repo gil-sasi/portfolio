@@ -26,80 +26,72 @@ export default function MobileMenu({
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden fixed inset-0 z-[9999]">
-      {/* Overlay */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-200"
-        onClick={onClose}
-      />
+    <div className="md:hidden">
+      {/* Dark overlay */}
+      <div className="fixed inset-0 bg-black/70 z-40" onClick={onClose} />
 
-      {/* Menu drawer */}
-      <div className="absolute right-0 top-0 h-full w-5/6 max-w-xs bg-gradient-to-b from-gray-900 to-purple-950 shadow-xl flex flex-col z-10 animate-slideIn rounded-l-3xl">
-        {/* Close button */}
-        <div className="flex justify-end p-4">
-          <button
-            onClick={onClose}
-            className="rounded-full hover:bg-gray-800 transition p-2 text-white text-2xl"
-            aria-label={t("close")}
-          >
-            ✕
-          </button>
-        </div>
+      {/* Menu content */}
+      <div className="fixed inset-y-0 right-0 w-full bg-gray-900 z-50">
+        <div className="flex flex-col min-h-screen">
+          {/* Close button */}
+          <div className="flex justify-end p-4">
+            <button onClick={onClose} className="p-2 text-white">
+              ✕
+            </button>
+          </div>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col gap-2 px-4">
-          <Link
-            href="/skills"
-            onClick={onClose}
-            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-          >
-            {t("skills")}
-          </Link>
-          <Link
-            href="/projects"
-            onClick={onClose}
-            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-          >
-            {t("projects")}
-          </Link>
-          <Link
-            href="/contact"
-            onClick={onClose}
-            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-          >
-            {t("contact")}
-          </Link>
-          <Link
-            href="/about"
-            onClick={onClose}
-            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-          >
-            {t("about")}
-          </Link>
-          {user?.role === "admin" && (
-            <Link
-              href="/admin"
-              onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-            >
-              {t("adminPanel")}
-            </Link>
-          )}
-          <Link
-            href="/"
-            onClick={onClose}
-            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
-          >
-            {t("home")}
-          </Link>
-        </nav>
+          {/* Navigation Links */}
+          <div className="flex-1 flex flex-col justify-center px-4">
+            <div className="space-y-6">
+              <Link
+                href="/skills"
+                onClick={onClose}
+                className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+              >
+                {t("skills")}
+              </Link>
+              <Link
+                href="/projects"
+                onClick={onClose}
+                className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+              >
+                {t("projects")}
+              </Link>
+              <Link
+                href="/contact"
+                onClick={onClose}
+                className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+              >
+                {t("contact")}
+              </Link>
+              <Link
+                href="/about"
+                onClick={onClose}
+                className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+              >
+                {t("about")}
+              </Link>
+              {user?.role === "admin" && (
+                <Link
+                  href="/admin"
+                  onClick={onClose}
+                  className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+                >
+                  {t("adminPanel")}
+                </Link>
+              )}
+              <Link
+                href="/"
+                onClick={onClose}
+                className="block text-white hover:bg-gray-800 rounded-lg text-2xl py-3 px-4"
+              >
+                {t("home")}
+              </Link>
+            </div>
+          </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-700 my-4 mx-4" />
-
-        {/* Bottom Auth and Language */}
-        <div className="px-4 pb-6 mt-auto">
-          <div className="mb-4">
+          {/* Bottom section */}
+          <div className="p-4 space-y-4">
             <AuthButtons
               user={user}
               onLoginPage={onLoginPage}
@@ -107,25 +99,10 @@ export default function MobileMenu({
               isMobile={true}
               onClose={onClose}
             />
+            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
           </div>
-          <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
         </div>
       </div>
-
-      {/* Optional: CSS for slide in */}
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-          }
-          to {
-            transform: translateX(0%);
-          }
-        }
-        .animate-slideIn {
-          animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-      `}</style>
     </div>
   );
 }
