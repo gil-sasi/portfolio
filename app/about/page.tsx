@@ -93,24 +93,6 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           {/* Profile Card */}
           <div className="glass rounded-2xl p-8 mb-8">
-            {/* Profile Image */}
-            <div className="mb-6">
-              {adminProfile?.profilePicture ? (
-                <Image
-                  src={adminProfile.profilePicture}
-                  alt="Profile"
-                  width={120}
-                  height={120}
-                  className="w-28 h-28 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
-                />
-              ) : (
-                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
-                  {adminProfile?.firstName?.[0]}
-                  {adminProfile?.lastName?.[0]}
-                </div>
-              )}
-            </div>
-
             {/* Name and Description */}
             <h1 className="text-3xl font-bold text-center mb-4">
               <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">

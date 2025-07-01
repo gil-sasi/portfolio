@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,7 +8,6 @@ import axios from "axios";
 interface AdminProfile {
   firstName: string;
   lastName: string;
-  profilePicture?: string | null;
 }
 
 export default function HomePage() {
@@ -43,7 +41,6 @@ export default function HomePage() {
         setAdminProfile({
           firstName: "Gil",
           lastName: "Shalev",
-          profilePicture: null,
         });
       }
     };
@@ -73,21 +70,11 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-6 sm:mb-8 max-w-4xl mx-auto w-full">
           <div className="mb-6 sm:mb-8">
-            {adminProfile?.profilePicture ? (
-              <Image
-                src={adminProfile.profilePicture}
-                alt="Gil Shalev Profile"
-                width={120}
-                height={120}
-                className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
-              />
-            ) : (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
-                {adminProfile
-                  ? `${adminProfile.firstName[0]}${adminProfile.lastName[0]}`
-                  : "GS"}
-              </div>
-            )}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
+              {adminProfile
+                ? `${adminProfile.firstName[0]}${adminProfile.lastName[0]}`
+                : "GS"}
+            </div>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 sm:mb-6 leading-tight px-2">
