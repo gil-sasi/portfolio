@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { DecodedToken } from "../../redux/slices/authSlice";
 import AuthButtons from "./AuthButtons";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { DecodedToken } from "../../redux/slices/authSlice";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -26,70 +26,80 @@ export default function MobileMenu({
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden">
-      {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70 z-40" onClick={onClose} />
+    <div className="md:hidden fixed inset-0 z-[9999]">
+      {/* Overlay */}
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-200"
+        onClick={onClose}
+      />
 
-      {/* Menu content */}
-      <div className="fixed inset-y-0 right-0 w-full bg-gray-900 z-50 overflow-y-auto max-h-screen">
-        <div className="p-4 pb-20">
-          {/* Close button */}
-          <div className="flex justify-end">
-            <button onClick={onClose} className="p-2 text-white">
-              ✕
-            </button>
-          </div>
+      {/* Menu drawer */}
+      <div className="absolute right-0 top-0 h-full w-5/6 max-w-xs bg-gradient-to-b from-gray-900 to-purple-950 shadow-xl flex flex-col z-10 animate-slideIn rounded-l-3xl">
+        {/* Close button */}
+        <div className="flex justify-end p-4">
+          <button
+            onClick={onClose}
+            className="rounded-full hover:bg-gray-800 transition p-2 text-white text-2xl"
+            aria-label={t("close")}
+          >
+            ✕
+          </button>
+        </div>
 
-          {/* Navigation Links */}
-          <div className="mt-4 space-y-3">
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-2 px-4">
+          <Link
+            href="/skills"
+            onClick={onClose}
+            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
+          >
+            {t("skills")}
+          </Link>
+          <Link
+            href="/projects"
+            onClick={onClose}
+            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
+          >
+            {t("projects")}
+          </Link>
+          <Link
+            href="/contact"
+            onClick={onClose}
+            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
+          >
+            {t("contact")}
+          </Link>
+          <Link
+            href="/about"
+            onClick={onClose}
+            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
+          >
+            {t("about")}
+          </Link>
+          {user?.role === "admin" && (
             <Link
-              href="/skills"
+              href="/admin"
               onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
+              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
             >
-              {t("skills")}
+              {t("adminPanel")}
             </Link>
-            <Link
-              href="/projects"
-              onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
-            >
-              {t("projects")}
-            </Link>
-            <Link
-              href="/contact"
-              onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
-            >
-              {t("contact")}
-            </Link>
-            <Link
-              href="/about"
-              onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
-            >
-              {t("about")}
-            </Link>
-            {user?.role === "admin" && (
-              <Link
-                href="/admin"
-                onClick={onClose}
-                className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
-              >
-                {t("adminPanel")}
-              </Link>
-            )}
-            <Link
-              href="/"
-              onClick={onClose}
-              className="block px-4 py-3 text-white hover:bg-gray-800 rounded-lg text-lg"
-            >
-              {t("home")}
-            </Link>
-          </div>
+          )}
+          <Link
+            href="/"
+            onClick={onClose}
+            className="block px-4 py-3 text-white hover:bg-gray-800 rounded-xl text-lg font-semibold transition"
+          >
+            {t("home")}
+          </Link>
+        </nav>
 
-          {/* Auth Buttons */}
-          <div className="mt-6">
+        {/* Divider */}
+        <div className="border-t border-gray-700 my-4 mx-4" />
+
+        {/* Bottom Auth and Language */}
+        <div className="px-4 pb-6 mt-auto">
+          <div className="mb-4">
             <AuthButtons
               user={user}
               onLoginPage={onLoginPage}
@@ -98,13 +108,24 @@ export default function MobileMenu({
               onClose={onClose}
             />
           </div>
-
-          {/* Language Switcher */}
-          <div className="mt-6">
-            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
-          </div>
+          <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
         </div>
       </div>
+
+      {/* Optional: CSS for slide in */}
+      <style jsx>{`
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(0%);
+          }
+        }
+        .animate-slideIn {
+          animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      `}</style>
     </div>
   );
 }
