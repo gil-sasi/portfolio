@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/authSlice";
-import "../../src/i18n/config";
 import { useRouter } from "next/navigation";
 
 interface DecodedToken {
@@ -31,9 +30,8 @@ export default function SignupPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const lang = localStorage.getItem("i18nextLng") || "en";
-    i18n.changeLanguage(lang).finally(() => setMounted(true));
-  }, [i18n]);
+    setMounted(true);
+  }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -17,9 +17,8 @@ export default function ResetPasswordPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const lang = localStorage.getItem("i18nextLng") || "en";
-    i18n.changeLanguage(lang).finally(() => setMounted(true));
-  }, [i18n]);
+    setMounted(true);
+  }, []);
 
   if (!mounted) return null;
 

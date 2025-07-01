@@ -17,15 +17,8 @@ export default function SkillsPage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const lang = localStorage.getItem("i18nextLng");
-    if (lang && lang !== i18n.language) {
-      i18n.changeLanguage(lang).finally(() => {
-        setMounted(true);
-      });
-    } else {
-      setMounted(true);
-    }
-  }, [i18n]);
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!mounted) return;

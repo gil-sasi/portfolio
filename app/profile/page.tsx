@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getValidToken } from "../../utils/auth";
-import "../../src/i18n/config";
 
 interface User {
   id: string;
