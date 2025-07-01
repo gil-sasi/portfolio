@@ -31,36 +31,38 @@ export default function LanguageSwitcher({
 
   if (isMobile) {
     return (
-      <div className="pt-4 border-t border-gray-700/50">
-        <p className="text-sm text-gray-400 mb-3">
-          {t("language", "Language")}
+      <div>
+        <p className="text-xl font-bold text-white mb-4 text-center">
+          🌍 {t("language", "Language")}
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => handleLanguageChange("en")}
             title="English"
-            className="p-3 rounded-lg hover:bg-gray-700/50 transition-colors touch-manipulation min-h-[48px] flex items-center justify-center"
+            className="flex items-center justify-center py-5 px-6 rounded-2xl text-lg font-semibold text-white bg-blue-600/30 hover:bg-blue-600/50 active:bg-blue-600/70 transition-all duration-200 border border-blue-500/40 touch-manipulation"
           >
             <Image
               src="/flags/us.png"
               alt="English"
               width={32}
               height={32}
-              className="rounded border border-white/20"
+              className="rounded mr-3 border border-white/30"
             />
+            English
           </button>
           <button
             onClick={() => handleLanguageChange("he")}
             title="עברית"
-            className="p-3 rounded-lg hover:bg-gray-700/50 transition-colors touch-manipulation min-h-[48px] flex items-center justify-center"
+            className="flex items-center justify-center py-5 px-6 rounded-2xl text-lg font-semibold text-white bg-green-600/30 hover:bg-green-600/50 active:bg-green-600/70 transition-all duration-200 border border-green-500/40 touch-manipulation"
           >
             <Image
               src="/flags/il.png"
               alt="Hebrew"
               width={32}
               height={32}
-              className="rounded border border-white/20"
+              className="rounded mr-3 border border-white/30"
             />
+            עברית
           </button>
         </div>
       </div>

@@ -40,18 +40,20 @@ export default function AuthButtons({
           <Link
             href="/login"
             onClick={handleClick}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-center text-white bg-blue-600/30 hover:bg-blue-600/40 active:bg-blue-600/50 transition-all duration-200 border border-blue-500/40 hover:border-blue-400/60 touch-manipulation w-full"
+            className="flex items-center justify-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-blue-600/30 hover:bg-blue-600/50 active:bg-blue-600/70 transition-all duration-200 border border-blue-500/40 touch-manipulation w-full"
           >
-            🔐 {t("login")}
+            <span className="text-2xl mr-4">🔐</span>
+            {t("login")}
           </Link>
         )}
         {!user && !onSignupPage && (
           <Link
             href="/signup"
             onClick={handleClick}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-center text-white bg-purple-600/30 hover:bg-purple-600/40 active:bg-purple-600/50 transition-all duration-200 border border-purple-500/40 hover:border-purple-400/60 touch-manipulation w-full"
+            className="flex items-center justify-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-purple-600/30 hover:bg-purple-600/50 active:bg-purple-600/70 transition-all duration-200 border border-purple-500/40 touch-manipulation w-full"
           >
-            👤 {t("signup")}
+            <span className="text-2xl mr-4">👤</span>
+            {t("signup")}
           </Link>
         )}
         {user && (
@@ -59,18 +61,20 @@ export default function AuthButtons({
             <Link
               href="/profile"
               onClick={handleClick}
-              className="block py-4 px-6 rounded-xl text-lg font-medium text-center text-white bg-green-600/30 hover:bg-green-600/40 active:bg-green-600/50 transition-all duration-200 border border-green-500/40 hover:border-green-400/60 touch-manipulation w-full"
+              className="flex items-center justify-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-green-600/30 hover:bg-green-600/50 active:bg-green-600/70 transition-all duration-200 border border-green-500/40 touch-manipulation w-full"
             >
-              👨‍💼 {t("profile")}
+              <span className="text-2xl mr-4">👨‍💼</span>
+              {t("profile")}
             </Link>
             <button
               onClick={() => {
                 handleLogout();
                 handleClick();
               }}
-              className="block py-4 px-6 rounded-xl text-lg font-medium text-center text-white bg-red-600/30 hover:bg-red-600/40 active:bg-red-600/50 transition-all duration-200 border border-red-500/40 hover:border-red-400/60 touch-manipulation w-full"
+              className="flex items-center justify-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-red-600/30 hover:bg-red-600/50 active:bg-red-600/70 transition-all duration-200 border border-red-500/40 touch-manipulation w-full"
             >
-              🚪 {t("logout")}
+              <span className="text-2xl mr-4">🚪</span>
+              {t("logout")}
             </button>
           </>
         )}

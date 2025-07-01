@@ -44,69 +44,81 @@ export default function MobileMenu({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 mobile-menu-backdrop z-40 md:hidden"
+        className="fixed inset-0 bg-black/90 z-[60] md:hidden"
         onClick={onClose}
       />
 
       {/* Mobile Menu Items */}
-      <div className="fixed top-20 left-0 right-0 bottom-0 md:hidden bg-gray-900/98 backdrop-blur-xl border-t border-gray-600/50 shadow-2xl z-50 animate-in slide-in-from-top-2 duration-300 overflow-y-auto mobile-menu-safe">
-        <div className="px-4 py-6 space-y-3 max-h-full">
+      <div
+        className="fixed inset-0 md:hidden bg-gray-900 z-[70] pt-20 overflow-y-auto"
+        style={{ backgroundColor: "rgb(17, 24, 39)" }}
+      >
+        <div className="px-6 py-8 space-y-4 h-full">
           {/* Close Button */}
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-white">
+          <div className="flex justify-between items-center mb-8 border-b border-gray-600/30 pb-4">
+            <h2 className="text-2xl font-bold text-white">
               📱 {t("navigation", "Navigation")}
             </h2>
             <button
               onClick={onClose}
-              className="p-3 rounded-xl text-white hover:bg-red-600/20 active:bg-red-600/30 transition-all duration-200 touch-manipulation"
+              className="p-4 rounded-full text-white bg-red-600/20 hover:bg-red-600/40 active:bg-red-600/60 transition-all duration-200 touch-manipulation text-xl"
             >
-              ❌
+              ✕
             </button>
           </div>
-          <Link
-            href="/skills"
-            onClick={onClose}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-blue-600/20 active:bg-blue-600/30 transition-all duration-200 border border-transparent hover:border-blue-500/30 touch-manipulation"
-          >
-            🚀 {t("skills")}
-          </Link>
-          <Link
-            href="/projects"
-            onClick={onClose}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-purple-600/20 active:bg-purple-600/30 transition-all duration-200 border border-transparent hover:border-purple-500/30 touch-manipulation"
-          >
-            💼 {t("projects")}
-          </Link>
-          <Link
-            href="/contact"
-            onClick={onClose}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-green-600/20 active:bg-green-600/30 transition-all duration-200 border border-transparent hover:border-green-500/30 touch-manipulation"
-          >
-            📬 {t("contact")}
-          </Link>
-          <Link
-            href="/about"
-            onClick={onClose}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-pink-600/20 active:bg-pink-600/30 transition-all duration-200 border border-transparent hover:border-pink-500/30 touch-manipulation"
-          >
-            👨‍💻 {t("about")}
-          </Link>
-          {user?.role === "admin" && (
+          {/* Navigation Links */}
+          <div className="space-y-3">
             <Link
-              href="/admin"
+              href="/skills"
               onClick={onClose}
-              className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-red-600/20 active:bg-red-600/30 transition-all duration-200 border border-transparent hover:border-red-500/30 touch-manipulation"
+              className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-blue-600/30 hover:bg-blue-600/50 active:bg-blue-600/70 transition-all duration-200 border border-blue-500/40 touch-manipulation"
             >
-              ⚙️ {t("adminPanel")}
+              <span className="text-2xl mr-4">🚀</span>
+              {t("skills")}
             </Link>
-          )}
-          <Link
-            href="/"
-            onClick={onClose}
-            className="block py-4 px-6 rounded-xl text-lg font-medium text-white hover:bg-cyan-600/20 active:bg-cyan-600/30 transition-all duration-200 border border-transparent hover:border-cyan-500/30 touch-manipulation"
-          >
-            🏠 {t("home")}
-          </Link>
+            <Link
+              href="/projects"
+              onClick={onClose}
+              className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-purple-600/30 hover:bg-purple-600/50 active:bg-purple-600/70 transition-all duration-200 border border-purple-500/40 touch-manipulation"
+            >
+              <span className="text-2xl mr-4">💼</span>
+              {t("projects")}
+            </Link>
+            <Link
+              href="/contact"
+              onClick={onClose}
+              className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-green-600/30 hover:bg-green-600/50 active:bg-green-600/70 transition-all duration-200 border border-green-500/40 touch-manipulation"
+            >
+              <span className="text-2xl mr-4">📬</span>
+              {t("contact")}
+            </Link>
+            <Link
+              href="/about"
+              onClick={onClose}
+              className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-pink-600/30 hover:bg-pink-600/50 active:bg-pink-600/70 transition-all duration-200 border border-pink-500/40 touch-manipulation"
+            >
+              <span className="text-2xl mr-4">👨‍💻</span>
+              {t("about")}
+            </Link>
+            {user?.role === "admin" && (
+              <Link
+                href="/admin"
+                onClick={onClose}
+                className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-red-600/30 hover:bg-red-600/50 active:bg-red-600/70 transition-all duration-200 border border-red-500/40 touch-manipulation"
+              >
+                <span className="text-2xl mr-4">⚙️</span>
+                {t("adminPanel")}
+              </Link>
+            )}
+            <Link
+              href="/"
+              onClick={onClose}
+              className="flex items-center py-5 px-6 rounded-2xl text-xl font-semibold text-white bg-cyan-600/30 hover:bg-cyan-600/50 active:bg-cyan-600/70 transition-all duration-200 border border-cyan-500/40 touch-manipulation"
+            >
+              <span className="text-2xl mr-4">🏠</span>
+              {t("home")}
+            </Link>
+          </div>
 
           {/* Separator */}
           <div className="border-t border-gray-600/30 my-6"></div>
