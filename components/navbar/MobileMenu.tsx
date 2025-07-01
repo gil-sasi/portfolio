@@ -27,97 +27,85 @@ export default function MobileMenu({
   // Handle body scroll lock
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add("mobile-menu-open");
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.classList.remove("mobile-menu-open");
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.classList.remove("mobile-menu-open");
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden fixed inset-0 z-[100]">
+    <div className="fixed inset-0 z-[9999]">
       {/* Dark overlay */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+        className="fixed inset-0 bg-black/90 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Menu content */}
-      <div className="fixed inset-y-0 right-0 w-[80vw] bg-gray-900 shadow-2xl z-[101] overflow-y-auto mobile-menu-safe">
-        <div className="flex flex-col h-full">
-          {/* Close button */}
-          <div className="flex justify-end p-4 sticky top-0 bg-gray-900 z-[102]">
-            <button
-              onClick={onClose}
-              className="p-2 text-white hover:bg-gray-800 rounded-lg transition-colors"
-            >
-              ✕
-            </button>
-          </div>
+      {/* Menu panel */}
+      <div className="fixed inset-y-0 right-0 w-full h-screen bg-gray-900 flex flex-col">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 text-2xl text-white"
+        >
+          ✕
+        </button>
 
-          {/* Navigation Links */}
-          <div className="flex-1 flex flex-col justify-center px-4 py-6 space-y-4">
+        {/* Navigation Links */}
+        <div className="flex flex-col justify-center items-center h-full space-y-8 -mt-20">
+          <Link href="/" onClick={onClose} className="text-white text-2xl">
+            {t("home")}
+          </Link>
+          <Link
+            href="/skills"
+            onClick={onClose}
+            className="text-white text-2xl"
+          >
+            {t("skills")}
+          </Link>
+          <Link
+            href="/projects"
+            onClick={onClose}
+            className="text-white text-2xl"
+          >
+            {t("projects")}
+          </Link>
+          <Link
+            href="/contact"
+            onClick={onClose}
+            className="text-white text-2xl"
+          >
+            {t("contact")}
+          </Link>
+          <Link href="/about" onClick={onClose} className="text-white text-2xl">
+            {t("about")}
+          </Link>
+          {user?.role === "admin" && (
             <Link
-              href="/skills"
+              href="/admin"
               onClick={onClose}
-              className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
+              className="text-white text-2xl"
             >
-              {t("skills")}
+              {t("adminPanel")}
             </Link>
-            <Link
-              href="/projects"
-              onClick={onClose}
-              className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
-            >
-              {t("projects")}
-            </Link>
-            <Link
-              href="/contact"
-              onClick={onClose}
-              className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
-            >
-              {t("contact")}
-            </Link>
-            <Link
-              href="/about"
-              onClick={onClose}
-              className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
-            >
-              {t("about")}
-            </Link>
-            {user?.role === "admin" && (
-              <Link
-                href="/admin"
-                onClick={onClose}
-                className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
-              >
-                {t("adminPanel")}
-              </Link>
-            )}
-            <Link
-              href="/"
-              onClick={onClose}
-              className="block text-white hover:bg-gray-800 rounded-lg text-xl py-3 px-4 mobile-nav-item"
-            >
-              {t("home")}
-            </Link>
-          </div>
+          )}
+        </div>
 
-          {/* Bottom section */}
-          <div className="p-4 space-y-4 bg-gray-900/50 border-t border-gray-800">
-            <AuthButtons
-              user={user}
-              onLoginPage={onLoginPage}
-              onSignupPage={onSignupPage}
-              isMobile={true}
-              onClose={onClose}
-            />
-            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
-          </div>
+        {/* Bottom section */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col items-center space-y-4">
+          <AuthButtons
+            user={user}
+            onLoginPage={onLoginPage}
+            onSignupPage={onSignupPage}
+            isMobile={true}
+            onClose={onClose}
+          />
+          <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
         </div>
       </div>
     </div>

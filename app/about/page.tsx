@@ -1,16 +1,25 @@
 "use client";
+import Image from "next/image";
 import Spinner from "../../components/Spinner";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
+
+interface AdminProfile {
+  firstName: string;
+  lastName: string;
+  profilePicture?: string | null;
+}
 
 export default function AboutPage() {
   const [aboutText, setAboutText] = useState("");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
+  const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -27,6 +36,21 @@ export default function AboutPage() {
 
   useEffect(() => {
     fetchAbout();
+    // Load admin profile data
+    const loadAdminProfile = async () => {
+      try {
+        const response = await axios.get("/api/admin-profile");
+        setAdminProfile(response.data);
+      } catch (error) {
+        console.error("Error loading admin profile:", error);
+        setAdminProfile({
+          firstName: "Gil",
+          lastName: "Shalev",
+          profilePicture: null,
+        });
+      }
+    };
+    loadAdminProfile();
   }, []);
 
   const handleSave = async () => {
@@ -67,26 +91,75 @@ export default function AboutPage() {
 
       <div className="relative z-10 px-4 py-8 text-white">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="glass rounded-2xl p-8">
-              <h1 className="text-4xl font-bold mb-4">
-                <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                  {t("about")}
-                </span>
-              </h1>
-              <p className="text-gray-300">{t("getToKnowMe")}</p>
+          {/* Profile Card */}
+          <div className="glass rounded-2xl p-8 mb-8">
+            {/* Profile Image */}
+            <div className="mb-6">
+              {adminProfile?.profilePicture ? (
+                <Image
+                  src={adminProfile.profilePicture}
+                  alt="Profile"
+                  width={120}
+                  height={120}
+                  className="w-28 h-28 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
+                />
+              ) : (
+                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
+                  {adminProfile?.firstName?.[0]}
+                  {adminProfile?.lastName?.[0]}
+                </div>
+              )}
+            </div>
+
+            {/* Name and Description */}
+            <h1 className="text-3xl font-bold text-center mb-4">
+              <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                {t("hi")}, {t("aniGil")} 👋
+              </span>
+            </h1>
+            <p className="text-gray-300 text-center text-lg mb-8">
+              {t("fullstackDev")}
+            </p>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+              <div className="glass p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-blue-400">6+</div>
+                <div className="text-sm text-gray-400">{t("projects")}</div>
+              </div>
+              <div className="glass p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-purple-400">2+</div>
+                <div className="text-sm text-gray-400">{t("years")}</div>
+              </div>
+              <div className="glass p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-pink-400">15+</div>
+                <div className="text-sm text-gray-400">{t("technologies")}</div>
+              </div>
+              <div className="glass p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-cyan-400">∞</div>
+                <div className="text-sm text-gray-400">{t("passion")}</div>
+              </div>
+            </div>
+
+            {/* View Projects Button */}
+            <div className="text-center">
+              <Link
+                href="/projects"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                🚀 {t("viewprojects")}
+              </Link>
             </div>
           </div>
 
-          {/* Content Section */}
+          {/* About Content Section */}
           {editing ? (
             <div className="modern-card p-8">
               <textarea
                 value={aboutText}
                 onChange={(e) => setAboutText(e.target.value)}
                 className="w-full h-48 p-4 rounded-xl bg-gray-800/50 border border-gray-600 resize-none focus:border-blue-400 focus:outline-none text-white"
-                placeholder="Write something about yourself..."
+                placeholder={t("writeAboutYourself")}
               />
               <div className="flex justify-center gap-4 mt-6">
                 <button
@@ -106,7 +179,7 @@ export default function AboutPage() {
           ) : (
             <div className="modern-card p-8">
               <p className="whitespace-pre-line text-lg leading-relaxed text-center min-h-[100px] text-gray-200">
-                {aboutText.trim() || "No about content found."}
+                {aboutText.trim() || t("noAboutContent")}
               </p>
 
               {user?.role === "admin" && (
