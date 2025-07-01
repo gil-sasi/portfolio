@@ -30,10 +30,6 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    const lng = localStorage.getItem("i18nextLng");
-    if (lng && lng !== i18n.language) {
-      i18n.changeLanguage(lng);
-    }
     setMounted(true);
 
     // Load admin profile data for everyone to see
@@ -53,7 +49,7 @@ export default function HomePage() {
     };
 
     loadAdminProfile();
-  }, [i18n]);
+  }, []);
 
   if (!mounted) return null;
 

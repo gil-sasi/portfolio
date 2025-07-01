@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { setUserFromToken } from "../redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
+import "../src/i18n/config";
 import Navbar from "./Navbar";
 import ErrorBoundary from "./ErrorBoundary";
 
