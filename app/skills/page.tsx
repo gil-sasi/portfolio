@@ -11,7 +11,7 @@ type Skill = {
 };
 
 export default function SkillsPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);

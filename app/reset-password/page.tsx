@@ -13,7 +13,7 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
 
   useEffect(() => {

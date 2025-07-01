@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { DecodedToken } from "../../redux/slices/authSlice";
 
 interface DesktopNavProps {
-  user: any;
+  user: DecodedToken | null;
 }
 
 export default function DesktopNav({ user }: DesktopNavProps) {

@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { DecodedToken } from "../../redux/slices/authSlice";
 import AuthButtons from "./AuthButtons";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  user: any;
+  user: DecodedToken | null;
   onLoginPage: boolean;
   onSignupPage: boolean;
 }

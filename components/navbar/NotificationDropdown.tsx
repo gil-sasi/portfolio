@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { DecodedToken } from "../../redux/slices/authSlice";
 import {
   FaBell,
   FaEnvelope,
@@ -24,7 +25,7 @@ type Message = {
 };
 
 interface NotificationDropdownProps {
-  user: any;
+  user: DecodedToken | null;
 }
 
 export default function NotificationDropdown({

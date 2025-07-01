@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { logout } from "../../redux/slices/authSlice";
+import { logout, DecodedToken } from "../../redux/slices/authSlice";
 
 interface AuthButtonsProps {
-  user: any;
+  user: DecodedToken | null;
   onLoginPage: boolean;
   onSignupPage: boolean;
   isMobile?: boolean;

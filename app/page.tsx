@@ -13,7 +13,7 @@ interface AdminProfile {
 }
 
 export default function HomePage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
 
