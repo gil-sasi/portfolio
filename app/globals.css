@@ -437,8 +437,70 @@ button,
   .mobile-container {
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mobile text improvements */
+  h1,
+  h2,
+  h3 {
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Mobile spacing improvements */
+  .glass {
+    margin: 0.5rem;
+  }
+
+  /* Better mobile button sizing */
+  .btn-primary,
+  .btn-secondary {
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  /* Mobile RTL text improvements */
+  [dir="rtl"] p,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3 {
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* Mobile card improvements */
+  .modern-card {
+    margin: 0.25rem;
+    padding: 0.75rem !important;
+    border-radius: 12px;
+  }
+
+  /* Mobile font scaling */
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
+
+/* Additional mobile improvements for very small screens */
+@media (max-width: 480px) {
+  .glass {
+    padding: 1rem !important;
+    margin: 0.25rem !important;
+  }
+
+  /* Extra small screen text scaling */
+  h1 {
+    font-size: 1.875rem !important; /* 30px */
+    line-height: 1.1;
+  }
+
+  /* Stats grid improvements for small screens */
+  .modern-card {
+    padding: 0.5rem !important;
   }
 }
 

@@ -35,11 +35,11 @@ export default function LanguageSwitcher({
         <p className="text-sm text-gray-400 mb-3">
           {t("language", "Language")}
         </p>
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-4 justify-center">
           <button
             onClick={() => handleLanguageChange("en")}
             title="English"
-            className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+            className="p-3 rounded-lg hover:bg-gray-700/50 transition-colors touch-manipulation min-h-[48px] flex items-center justify-center"
           >
             <Image
               src="/flags/us.png"
@@ -52,7 +52,7 @@ export default function LanguageSwitcher({
           <button
             onClick={() => handleLanguageChange("he")}
             title="עברית"
-            className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+            className="p-3 rounded-lg hover:bg-gray-700/50 transition-colors touch-manipulation min-h-[48px] flex items-center justify-center"
           >
             <Image
               src="/flags/il.png"
@@ -68,8 +68,12 @@ export default function LanguageSwitcher({
   }
 
   return (
-    <div className="flex gap-0 items-center">
-      <button onClick={() => handleLanguageChange("en")} title="English">
+    <div className="flex gap-1 items-center">
+      <button
+        onClick={() => handleLanguageChange("en")}
+        title="English"
+        className="p-1 rounded touch-manipulation transition-transform hover:scale-105"
+      >
         <Image
           src="/flags/us.png"
           alt="English"
@@ -78,7 +82,11 @@ export default function LanguageSwitcher({
           className="rounded-sm border border-white"
         />
       </button>
-      <button onClick={() => handleLanguageChange("he")} title="עברית">
+      <button
+        onClick={() => handleLanguageChange("he")}
+        title="עברית"
+        className="p-1 rounded touch-manipulation transition-transform hover:scale-105"
+      >
         <Image
           src="/flags/il.png"
           alt="Hebrew"

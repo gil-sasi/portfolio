@@ -58,31 +58,31 @@ export default function HomePage() {
       {/* Animated Background */}
       <div className="fixed inset-0 animated-bg opacity-10 -z-10"></div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-blue-500 rounded-full opacity-20 float-animation"></div>
+      {/* Floating Elements - Hidden on mobile to reduce clutter */}
+      <div className="hidden sm:block absolute top-20 left-10 w-20 h-20 bg-blue-500 rounded-full opacity-20 float-animation"></div>
       <div
-        className="absolute top-40 right-20 w-16 h-16 bg-purple-500 rounded-full opacity-20 float-animation"
+        className="hidden sm:block absolute top-40 right-20 w-16 h-16 bg-purple-500 rounded-full opacity-20 float-animation"
         style={{ animationDelay: "2s" }}
       ></div>
       <div
-        className="absolute bottom-32 left-20 w-12 h-12 bg-pink-500 rounded-full opacity-20 float-animation"
+        className="hidden sm:block absolute bottom-32 left-20 w-12 h-12 bg-pink-500 rounded-full opacity-20 float-animation"
         style={{ animationDelay: "4s" }}
       ></div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-3 sm:px-4 lg:px-6 text-center py-4 sm:py-0">
         {/* Hero Section */}
-        <div className="glass rounded-3xl p-8 sm:p-12 mb-8 max-w-4xl mx-auto">
-          <div className="mb-8">
+        <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-6 sm:mb-8 max-w-4xl mx-auto w-full">
+          <div className="mb-6 sm:mb-8">
             {adminProfile?.profilePicture ? (
               <Image
                 src={adminProfile.profilePicture}
                 alt="Gil Shalev Profile"
                 width={120}
                 height={120}
-                className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
+                className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-white/20 mx-auto shadow-2xl"
               />
             ) : (
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl sm:text-4xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold text-white border-4 border-white/20 mx-auto shadow-2xl">
                 {adminProfile
                   ? `${adminProfile.firstName[0]}${adminProfile.lastName[0]}`
                   : "GS"}
@@ -90,7 +90,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 sm:mb-6 leading-tight px-2">
             <Trans
               i18nKey="heroTitle"
               values={{ name: adminProfile?.firstName || "Gil" }}
@@ -103,43 +103,57 @@ export default function HomePage() {
             />
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
             {t("heroSubtitle")}
           </p>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <div className="modern-card p-4">
-              <div className="text-2xl font-bold text-blue-400">6+</div>
-              <div className="text-sm text-gray-400">{t("projects")}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 px-2">
+            <div className="modern-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl font-bold text-blue-400">
+                6+
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 leading-tight">
+                {t("projects")}
+              </div>
             </div>
-            <div className="modern-card p-4">
-              <div className="text-2xl font-bold text-purple-400">
+            <div className="modern-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl font-bold text-purple-400">
                 {getYearsOfExperience()}+
               </div>
-              <div className="text-sm text-gray-400">{t("years")}</div>
+              <div className="text-xs sm:text-sm text-gray-400 leading-tight">
+                {t("years")}
+              </div>
             </div>
-            <div className="modern-card p-4">
-              <div className="text-2xl font-bold text-pink-400">15+</div>
-              <div className="text-sm text-gray-400">{t("technologies")}</div>
+            <div className="modern-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl font-bold text-pink-400">
+                15+
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 leading-tight">
+                {t("technologies")}
+              </div>
             </div>
-            <div className="modern-card p-4">
-              <div className="text-2xl font-bold text-cyan-400">∞</div>
-              <div className="text-sm text-gray-400">{t("passion")}</div>
+            <div className="modern-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl font-bold text-cyan-400">
+                ∞
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 leading-tight">
+                {t("passion")}
+              </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 w-full max-w-lg mx-auto px-2">
             <Link
               href="/projects"
-              className="btn-primary px-8 py-4 rounded-xl font-semibold text-lg glow-hover transition-all duration-300 hover:scale-105 text-center"
+              className="btn-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg glow-hover transition-all duration-300 hover:scale-105 text-center w-full sm:w-auto"
             >
               🚀 {t("viewprojects")}
             </Link>
             <Link
               href="/contact"
-              className="btn-secondary px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 text-center"
+              className="btn-secondary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 text-center w-full sm:w-auto"
             >
               📬 {t("contactMe")}
             </Link>
@@ -147,11 +161,11 @@ export default function HomePage() {
         </div>
 
         {/* Tech Stack Preview */}
-        <div className="modern-card p-6 w-full max-w-4xl mx-auto">
-          <h2 className="text-xl font-semibold mb-4 text-center">
+        <div className="modern-card p-4 sm:p-6 w-full max-w-4xl mx-auto">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-center px-2">
             <span className="gradient-text">{t("techStackLabel")}</span>
           </h2>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-2">
             {[
               "React",
               "Next.js",
@@ -162,7 +176,7 @@ export default function HomePage() {
             ].map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-sm font-medium border border-white/10 hover:border-blue-400/50 transition-all duration-300 glow-hover"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-xs sm:text-sm font-medium border border-white/10 hover:border-blue-400/50 transition-all duration-300 glow-hover"
               >
                 {tech}
               </span>
