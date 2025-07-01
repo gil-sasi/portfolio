@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import jwt from "jsonwebtoken";
 import { login } from "../../redux/slices/authSlice";
-import "../../src/i18n/config";
 
 interface DecodedToken {
   firstName: string;
@@ -31,9 +30,8 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    const lang = localStorage.getItem("i18nextLng") || "en";
-    i18n.changeLanguage(lang).finally(() => setMounted(true));
-  }, [i18n]);
+    setMounted(true);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
