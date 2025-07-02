@@ -410,6 +410,7 @@ const resources = {
 
       // Profile page translations
       welcome: "Welcome",
+      menu: "Menu",
       accountInfo: "Account Information",
       security: "Security",
       manageAccountSettings: "Manage your account settings",
@@ -1063,6 +1064,7 @@ const resources = {
 
       // Dave Game specific
       gameFeatures: "תכונות המשחק",
+      menu: "תפריט",
       actionAdventure: "הרפתקאות פעולה",
       fastPacedPlatformer: "משחק פלטפורמה דו-מימדי מהיר",
       levelEditor: "עורך שלבים",
