@@ -1,25 +1,16 @@
 "use client";
-import Image from "next/image";
 import Spinner from "../../components/Spinner";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
-
-interface AdminProfile {
-  firstName: string;
-  lastName: string;
-  profilePicture?: string | null;
-}
 
 export default function AboutPage() {
   const [aboutText, setAboutText] = useState("");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
-  const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -36,21 +27,6 @@ export default function AboutPage() {
 
   useEffect(() => {
     fetchAbout();
-    // Load admin profile data
-    const loadAdminProfile = async () => {
-      try {
-        const response = await axios.get("/api/admin-profile");
-        setAdminProfile(response.data);
-      } catch (error) {
-        console.error("Error loading admin profile:", error);
-        setAdminProfile({
-          firstName: "Gil",
-          lastName: "Shalev",
-          profilePicture: null,
-        });
-      }
-    };
-    loadAdminProfile();
   }, []);
 
   const handleSave = async () => {
