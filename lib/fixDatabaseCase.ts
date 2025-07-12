@@ -30,21 +30,26 @@ async function fixDatabaseCase() {
     const admin = db.admin();
     const databasesList = await admin.listDatabases();
 
+    interface DatabaseInfo {
+      name: string;
+      sizeOnDisk?: number;
+    }
+
     console.log("\n📊 Available databases:");
-    databasesList.databases.forEach((db: any) => {
-      console.log(`  - ${db.name} (${db.sizeOnDisk} bytes)`);
+    databasesList.databases.forEach((db: DatabaseInfo) => {
+      console.log(`  - ${db.name} (${db.sizeOnDisk || 0} bytes)`);
     });
 
     // Check for case variations
-    const portfolioVariations = databasesList.databases.filter((db: any) =>
-      db.name.toLowerCase().includes("portfolio")
+    const portfolioVariations = databasesList.databases.filter(
+      (db: DatabaseInfo) => db.name.toLowerCase().includes("portfolio")
     );
 
     if (portfolioVariations.length > 1) {
       console.log(
         "\n⚠️  Found multiple portfolio databases with different cases:"
       );
-      portfolioVariations.forEach((db: any) => {
+      portfolioVariations.forEach((db: DatabaseInfo) => {
         console.log(`  - ${db.name}`);
       });
       console.log(

@@ -50,11 +50,7 @@ const challengePrompts = {
   },
 };
 
-const generateChallenge = async (
-  difficulty: string,
-  category: string,
-  userPreferences?: any
-) => {
+const generateChallenge = async (difficulty: string, category: string) => {
   // If no OpenAI API key is provided, use fallback challenges
   if (!OPENAI_API_KEY) {
     console.log("No OpenAI API key found, using fallback challenge");

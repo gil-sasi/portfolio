@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import CodeReview from "../../../models/CodeReview";
 import CodeSubmission from "../../../models/CodeSubmission";
 import Challenge from "../../../models/Challenge";
@@ -8,14 +7,21 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "my_very_secret_key_12345";
 
+interface JWTPayload {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 const getUserFromToken = (req: NextApiRequest) => {
   const token = req.headers.authorization?.replace("Bearer ", "");
   if (!token) return null;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
     return decoded;
-  } catch (error) {
+  } catch {
     return null;
   }
 };

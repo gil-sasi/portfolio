@@ -1,11 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import CodeSubmission from "../../../models/CodeSubmission";
 import Challenge from "../../../models/Challenge";
 import { connectToDatabase } from "../../../lib/mongodb";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "my_very_secret_key_12345";
+
+interface JWTPayload {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -50,13 +56,13 @@ export default async function handler(
     const token = req.headers.authorization?.replace("Bearer ", "");
     if (token) {
       try {
-        const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
         if (decoded) {
           userId = decoded.id;
           userEmail = decoded.email || "";
           userName = `${decoded.firstName} ${decoded.lastName}`;
         }
-      } catch (error) {
+      } catch {
         // Continue as anonymous user if token is invalid
         console.log("Invalid token, continuing as anonymous user");
       }

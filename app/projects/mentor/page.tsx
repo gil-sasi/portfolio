@@ -23,15 +23,6 @@ interface Challenge {
   createdAt: string;
 }
 
-interface CodeSubmission {
-  id: string;
-  challengeId: string;
-  submittedAt: string;
-  isReviewed: boolean;
-  language: string;
-  submissionMethod: string;
-}
-
 interface CodeReview {
   id: string;
   overallScore: number;
@@ -78,6 +69,14 @@ interface Progress {
     icon: string;
     unlockedAt: string;
   }[];
+}
+
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  unlockedAt: string;
 }
 
 // API functions
@@ -189,7 +188,6 @@ const reviewCodeAPI = async (submissionId: string) => {
 
 export default function MentorPage() {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.auth.user);
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -334,7 +332,12 @@ export default function MentorPage() {
       category: selectedCategory,
       userId: user?.id,
     });
-  }, [selectedDifficulty, selectedCategory, user?.id]);
+  }, [
+    selectedDifficulty,
+    selectedCategory,
+    user?.id,
+    generateChallengeMutation,
+  ]);
 
   const submitCode = useCallback(() => {
     if (!currentChallenge || !code.trim()) {
@@ -361,6 +364,7 @@ export default function MentorPage() {
     pastebinUrl,
     notes,
     t,
+    submitCodeMutation,
   ]);
 
   const pollForReview = useCallback(
@@ -382,7 +386,7 @@ export default function MentorPage() {
 
       setTimeout(poll, 3000); // Start polling after 3 seconds
     },
-    [t]
+    [reviewCodeMutation]
   );
 
   const getDifficultyColor = (difficulty: string) => {
@@ -488,7 +492,9 @@ export default function MentorPage() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() =>
+                  setActiveTab(tab.id as "challenge" | "submit" | "progress")
+                }
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
@@ -521,7 +527,12 @@ export default function MentorPage() {
                     <select
                       value={selectedDifficulty}
                       onChange={(e) =>
-                        setSelectedDifficulty(e.target.value as any)
+                        setSelectedDifficulty(
+                          e.target.value as
+                            | "beginner"
+                            | "intermediate"
+                            | "advanced"
+                        )
                       }
                       className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
@@ -1077,7 +1088,7 @@ export default function MentorPage() {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {progress.achievements.map(
-                          (achievement: any, index: number) => (
+                          (achievement: Achievement, index: number) => (
                             <div
                               key={index}
                               className="p-4 bg-gray-800/50 rounded-lg border border-yellow-500/30"

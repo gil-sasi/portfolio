@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import MentorProgress from "../../../models/MentorProgress";
 import CodeSubmission from "../../../models/CodeSubmission";
 import CodeReview from "../../../models/CodeReview";
@@ -73,26 +72,48 @@ const achievements = [
   },
 ];
 
+interface JWTPayload {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 const getUserFromToken = (req: NextApiRequest) => {
   const token = req.headers.authorization?.replace("Bearer ", "");
   if (!token) return null;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
     return decoded;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
 
+interface ProgressData {
+  completedChallenges: number;
+  currentStreak: number;
+  difficultyProgress?: {
+    beginner?: { completed: number };
+    intermediate?: { completed: number };
+    advanced?: { completed: number };
+  };
+  achievements?: { id: string }[];
+}
+
+interface ReviewData {
+  overallScore: number;
+}
+
 const calculateAchievements = (
-  progress: any,
-  submissions: any[],
-  reviews: any[]
+  progress: ProgressData,
+  submissions: unknown[],
+  reviews: ReviewData[]
 ) => {
   const newAchievements = [];
   const currentAchievements = progress.achievements || [];
-  const currentIds = currentAchievements.map((a: any) => a.id);
+  const currentIds = currentAchievements.map((a) => a.id);
 
   // First challenge
   if (
@@ -132,7 +153,8 @@ const calculateAchievements = (
   // Difficulty masters
   const difficultyProgress = progress.difficultyProgress || {};
   if (
-    difficultyProgress.beginner?.completed >= 10 &&
+    difficultyProgress.beginner?.completed &&
+    difficultyProgress.beginner.completed >= 10 &&
     !currentIds.includes("beginner_master")
   ) {
     newAchievements.push({
@@ -142,7 +164,8 @@ const calculateAchievements = (
   }
 
   if (
-    difficultyProgress.intermediate?.completed >= 10 &&
+    difficultyProgress.intermediate?.completed &&
+    difficultyProgress.intermediate.completed >= 10 &&
     !currentIds.includes("intermediate_master")
   ) {
     newAchievements.push({
@@ -152,7 +175,8 @@ const calculateAchievements = (
   }
 
   if (
-    difficultyProgress.advanced?.completed >= 10 &&
+    difficultyProgress.advanced?.completed &&
+    difficultyProgress.advanced.completed >= 10 &&
     !currentIds.includes("advanced_master")
   ) {
     newAchievements.push({

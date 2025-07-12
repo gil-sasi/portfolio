@@ -1,160 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import CodeSubmission from "../../../models/CodeSubmission";
 import CodeReview from "../../../models/CodeReview";
 import Challenge from "../../../models/Challenge";
 import { connectToDatabase } from "../../../lib/mongodb";
 
-const HUGGING_FACE_API_KEY = process.env.HUGGING_FACE_API_KEY;
+interface ChallengeData {
+  title: string;
+  description: string;
+  requirements: string[];
+  difficulty: string;
+}
 
 const generateCodeReview = async (
   code: string,
-  challenge: any,
+  challenge: ChallengeData,
   language: string
 ) => {
-  // Try Hugging Face API first
-  if (HUGGING_FACE_API_KEY) {
-    try {
-      console.log("Using Hugging Face API for code review");
-      return await getHuggingFaceReview(code, challenge, language);
-    } catch (error) {
-      console.error("Hugging Face API error:", error);
-      console.log("Falling back to local review system");
-    }
-  } else {
-    console.log("No Hugging Face API key found, using fallback review");
-  }
-
-  // Fallback to local review
-  return getFallbackReview(challenge.difficulty, code, challenge);
+  // Use fallback review system
+  console.log("Using fallback review system");
+  return getFallbackReview(challenge.difficulty, code);
 };
 
-const getHuggingFaceReview = async (
-  code: string,
-  challenge: any,
-  language: string
-) => {
-  const prompt = `You are a senior developer conducting a code review. Analyze this code and provide feedback in JSON format.
-
-CHALLENGE:
-Title: ${challenge.title}
-Description: ${challenge.description}
-Requirements: ${challenge.requirements.join(", ")}
-Difficulty: ${challenge.difficulty}
-
-CODE (${language}):
-${code}
-
-Please respond with ONLY a JSON object in this exact format:
-{
-  "overallScore": number (0-10),
-  "feedback": {
-    "strengths": ["specific strength 1", "specific strength 2"],
-    "improvements": ["improvement 1", "improvement 2"],
-    "bugs": ["bug 1", "bug 2"],
-    "suggestions": ["suggestion 1", "suggestion 2"]
-  },
-  "codeQuality": {
-    "readability": number (0-10),
-    "structure": number (0-10),
-    "efficiency": number (0-10),
-    "bestPractices": number (0-10)
-  },
-  "careerTips": ["tip 1", "tip 2"],
-  "nextSteps": ["step 1", "step 2"],
-  "resources": [
-    {
-      "title": "Resource Title",
-      "url": "https://example.com",
-      "type": "article"
-    }
-  ]
-}
-
-Be honest about code quality. If code is gibberish, non-functional, or doesn't attempt to solve the challenge, give it 0-2 points.`;
-
-  // Using Mistral-7B-Instruct model which is good for code analysis
-  const response = await fetch(
-    "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
-    {
-      headers: {
-        Authorization: `Bearer ${HUGGING_FACE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 1000,
-          temperature: 0.3,
-          top_p: 0.9,
-          do_sample: true,
-          return_full_text: false,
-        },
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `Hugging Face API error: ${response.status} - ${errorText}`
-    );
-  }
-
-  const result = await response.json();
-  let generatedText = "";
-
-  // Handle different response formats
-  if (Array.isArray(result) && result.length > 0) {
-    generatedText = result[0].generated_text || result[0].text || "";
-  } else if (result.generated_text) {
-    generatedText = result.generated_text;
-  } else if (result.text) {
-    generatedText = result.text;
-  } else {
-    throw new Error("Unexpected response format from Hugging Face");
-  }
-
-  // Extract JSON from the response
-  let jsonMatch = generatedText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    // Sometimes the model outputs JSON without proper formatting
-    jsonMatch = generatedText.match(/\{[^}]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Could not extract JSON from AI response");
-    }
-  }
-
-  try {
-    const parsedReview = JSON.parse(jsonMatch[0]);
-
-    // Validate the response structure
-    if (
-      !parsedReview.overallScore ||
-      !parsedReview.feedback ||
-      !parsedReview.codeQuality
-    ) {
-      throw new Error("Invalid response structure from AI");
-    }
-
-    return {
-      ...parsedReview,
-      aiModel: "mistral-7b-instruct",
-      reviewVersion: 1,
-    };
-  } catch (parseError) {
-    console.error("Error parsing AI response:", parseError);
-    console.log("Raw AI response:", generatedText);
-    throw new Error("Failed to parse AI response");
-  }
-};
-
-const getFallbackReview = (
-  difficulty: string,
-  code: string = "",
-  challenge: any = null
-) => {
+const getFallbackReview = (difficulty: string, code: string = "") => {
   // Basic code quality analysis
   const codeLength = code.trim().length;
   const hasBasicStructure =
@@ -178,7 +45,6 @@ const getFallbackReview = (
   const hasBrackets = /[(){}\[\]]/.test(code);
   const hasSemicolons = /[;]/.test(code);
   const hasAssignments = /[=]/.test(code);
-  const hasOperators = /[+\-*/%<>!&|]/.test(code);
 
   // Check if it's mostly non-Latin characters (like Hebrew, Arabic, etc.)
   const nonLatinChars = code.match(/[^\x00-\x7F]/g) || [];
