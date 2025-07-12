@@ -10,6 +10,18 @@ import { useTranslation } from "react-i18next";
 import "../src/i18n/config";
 import Navbar from "./Navbar";
 import ErrorBoundary from "./ErrorBoundary";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 function AuthGate() {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,10 +84,12 @@ function LanguageDirectionHandler({ children }: { children: ReactNode }) {
 export default function ClientWrapper({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary>
-      <Provider store={store}>
-        <AuthGate />
-        <LanguageDirectionHandler>{children}</LanguageDirectionHandler>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <AuthGate />
+          <LanguageDirectionHandler>{children}</LanguageDirectionHandler>
+        </Provider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

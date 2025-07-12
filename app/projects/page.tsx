@@ -5,6 +5,12 @@ import { useTranslation } from "react-i18next";
 
 const projects = [
   {
+    id: "mentor",
+    icon: "🤖",
+    color: "from-purple-500 to-pink-500",
+    bgColor: "from-purple-500/20 to-pink-500/20",
+  },
+  {
     id: "link-shortener",
     icon: "🔗",
     color: "from-blue-500 to-cyan-500",
@@ -93,7 +99,9 @@ export default function ProjectsPage() {
                   {/* Title */}
                   <h2 className="text-xl sm:text-2xl font-bold mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-500 group-hover:bg-clip-text transition-all duration-300">
                     {t(
-                      project.id === "link-shortener"
+                      project.id === "mentor"
+                        ? "mentortitle"
+                        : project.id === "link-shortener"
                         ? "linkshortener"
                         : project.id === "image-to-text"
                         ? "ocrtitle"
@@ -110,7 +118,9 @@ export default function ProjectsPage() {
                   {/* Description */}
                   <p className="text-gray-300 text-sm sm:text-base leading-relaxed line-clamp-3">
                     {t(
-                      project.id === "link-shortener"
+                      project.id === "mentor"
+                        ? "mentordesc"
+                        : project.id === "link-shortener"
                         ? "linkshortenerdesc"
                         : project.id === "image-to-text"
                         ? "ocrdesc"
@@ -126,8 +136,14 @@ export default function ProjectsPage() {
 
                   {/* Status Badge */}
                   <div className="absolute top-4 right-4">
-                    <span className="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-full border border-green-500/30">
-                      {t("live")}
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                        project.id === "mentor"
+                          ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
+                          : "bg-green-500/20 text-green-400 border-green-500/30"
+                      }`}
+                    >
+                      {project.id === "mentor" ? "AI Powered" : t("live")}
                     </span>
                   </div>
 

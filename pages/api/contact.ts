@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import Message from "../../models/Message";
-
-const MONGODB_URI = process.env.MONGODB_URI!;
+import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,9 +17,7 @@ export default async function handler(
   }
 
   try {
-    if (!mongoose.connections[0].readyState) {
-      await mongoose.connect(MONGODB_URI);
-    }
+    await connectToDatabase();
 
     await Message.create({ name, email, message });
     return res.status(200).json({ message: "Message received" });

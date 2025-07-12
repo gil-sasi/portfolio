@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
+import { connectToDatabase } from "../../lib/mongodb";
 import User from "../../models/User";
-
-const MONGODB_URI = process.env.MONGODB_URI!;
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,14 +11,30 @@ export default async function handler(
   }
 
   try {
-    if (!mongoose.connections[0].readyState) {
-      await mongoose.connect(MONGODB_URI);
-    }
+    await connectToDatabase();
 
     // Find the admin user
     const adminUser = await User.findOne({ role: "admin" }).select("-password");
+
     if (!adminUser) {
-      return res.status(404).json({ message: "Admin user not found" });
+      // Create a default admin user if none exists
+      const defaultAdmin = new User({
+        firstName: "Gil",
+        lastName: "Shalev",
+        email: "admin@portfolio.com",
+        password: "temp123", // You should change this
+        role: "admin",
+        isBanned: false,
+        loginHistory: [],
+      });
+
+      await defaultAdmin.save();
+
+      return res.status(200).json({
+        firstName: defaultAdmin.firstName,
+        lastName: defaultAdmin.lastName,
+        profilePicture: defaultAdmin.profilePicture,
+      });
     }
 
     res.status(200).json({
@@ -30,6 +44,12 @@ export default async function handler(
     });
   } catch (error) {
     console.error("Error fetching admin profile:", error);
-    res.status(500).json({ message: "Failed to fetch admin profile" });
+    res.status(500).json({
+      message: "Failed to fetch admin profile",
+      error:
+        process.env.NODE_ENV === "development" && error instanceof Error
+          ? error.message
+          : undefined,
+    });
   }
 }

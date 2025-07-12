@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import moment from "moment-timezone";
 import User from "../../models/User";
+import { connectToDatabase } from "../../lib/mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export default async function handler(
@@ -30,9 +29,7 @@ export default async function handler(
   }
 
   try {
-    if (!mongoose.connections[0].readyState) {
-      await mongoose.connect(MONGODB_URI);
-    }
+    await connectToDatabase();
 
     const user = await User.findOne({ email });
     if (!user) {
