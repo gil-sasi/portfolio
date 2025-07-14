@@ -3,30 +3,30 @@ import { BackgammonGameState } from "../types";
 export const INITIAL_BOARD_STATE: BackgammonGameState = {
   board: [
     0, // index 0 - unused
-    2, // point 1 - player 0 (white) has 2 pieces
+    -2, // point 1 - player 1 (black) has 2 pieces
     0,
     0,
     0,
     0,
-    -5, // point 6 - player 1 (black) has 5 pieces
+    5, // point 6 - player 0 (white) has 5 pieces
     0,
-    -3, // point 8 - player 1 (black) has 3 pieces
-    0,
-    0,
-    0,
-    5, // point 12 - player 0 (white) has 5 pieces
-    -5, // point 13 - player 1 (black) has 5 pieces
+    3, // point 8 - player 0 (white) has 3 pieces
     0,
     0,
     0,
-    3, // point 17 - player 0 (white) has 3 pieces
-    0,
-    5, // point 19 - player 0 (white) has 5 pieces
-    0,
+    -5, // point 12 - player 1 (black) has 5 pieces
+    5, // point 13 - player 0 (white) has 5 pieces
     0,
     0,
     0,
-    -2, // point 24 - player 1 (black) has 2 pieces
+    -3, // point 17 - player 1 (black) has 3 pieces
+    0,
+    -5, // point 19 - player 1 (black) has 5 pieces
+    0,
+    0,
+    0,
+    0,
+    2, // point 24 - player 0 (white) has 2 pieces
   ],
   currentPlayer: 1,
   dice: [], // Changed from [0, 0] to [] for the new dice system

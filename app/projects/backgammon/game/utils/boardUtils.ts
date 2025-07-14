@@ -76,30 +76,38 @@ export const isRedTriangle = (pointIndex: number): boolean => {
   );
 };
 
-// Enhanced triangle colors with smoother gradients
+// Enhanced triangle colors with realistic wood tones
 export const getTriangleColors = (pointIndex: number) => {
   const isRed = isRedTriangle(pointIndex);
 
   if (isRed) {
+    // Dark wood (mahogany/walnut tones)
     return {
-      primary: "#8B2323",
-      secondary: "#A52A2A",
-      accent: "#CD5C5C",
-      shadow: "rgba(139, 35, 35, 0.6)",
-      glow: "rgba(139, 35, 35, 0.3)",
+      primary: "#4A2C2A",
+      secondary: "#6B3E3E",
+      accent: "#8B4513",
+      darkAccent: "#3E2723",
+      lightAccent: "#A0522D",
+      shadow: "rgba(74, 44, 42, 0.8)",
+      glow: "rgba(139, 69, 19, 0.4)",
+      grain: "rgba(62, 39, 35, 0.6)",
     };
   } else {
+    // Light wood (birch/maple tones)
     return {
-      primary: "#F5E6C4",
-      secondary: "#F0D498",
-      accent: "#E8C570",
-      shadow: "rgba(245, 230, 196, 0.8)",
-      glow: "rgba(232, 197, 112, 0.3)",
+      primary: "#DEB887",
+      secondary: "#F5DEB3",
+      accent: "#D2B48C",
+      darkAccent: "#CD853F",
+      lightAccent: "#F0E68C",
+      shadow: "rgba(210, 180, 140, 0.8)",
+      glow: "rgba(222, 184, 135, 0.4)",
+      grain: "rgba(205, 133, 63, 0.4)",
     };
   }
 };
 
-// Improved triangle styles with better gradients
+// Enhanced triangle styles with realistic wood grain texture
 export const getTriangleStyles = (pointIndex: number, isTop: boolean) => {
   const colors = getTriangleColors(pointIndex);
 
@@ -107,14 +115,49 @@ export const getTriangleStyles = (pointIndex: number, isTop: boolean) => {
     clipPath: isTop
       ? "polygon(50% 100%, 0% 0%, 100% 0%)"
       : "polygon(50% 0%, 0% 100%, 100% 100%)",
-    background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
-    boxShadow: `inset 0 2px 4px ${colors.shadow}, 0 2px 8px ${colors.glow}`,
-    border: `1px solid ${colors.shadow}`,
+    background: `
+      linear-gradient(
+        ${isTop ? "180deg" : "0deg"}, 
+        ${colors.primary} 0%, 
+        ${colors.secondary} 30%, 
+        ${colors.accent} 60%, 
+        ${colors.lightAccent} 80%, 
+        ${colors.darkAccent} 100%
+      ),
+      repeating-linear-gradient(
+        ${isTop ? "45deg" : "135deg"},
+        transparent 0px,
+        transparent 1px,
+        ${colors.grain} 1px,
+        ${colors.grain} 2px,
+        transparent 2px,
+        transparent 4px
+      ),
+      repeating-linear-gradient(
+        ${isTop ? "135deg" : "45deg"},
+        transparent 0px,
+        transparent 8px,
+        ${colors.grain} 8px,
+        ${colors.grain} 10px,
+        transparent 10px,
+        transparent 20px
+      )
+    `,
+    backgroundBlendMode: "multiply, overlay, normal",
+    boxShadow: `
+      inset 0 2px 8px ${colors.shadow},
+      inset 0 -2px 4px ${colors.darkAccent},
+      0 2px 12px ${colors.glow},
+      0 1px 3px rgba(0, 0, 0, 0.3)
+    `,
+    border: `1px solid ${colors.darkAccent}`,
     borderRadius: "2px",
+    position: "relative" as const,
+    overflow: "hidden",
   };
 };
 
-// SVG Triangle component properties
+// SVG Triangle component properties with enhanced wood effects
 export const getSVGTriangleProps = (
   pointIndex: number,
   isTop: boolean,
@@ -131,13 +174,16 @@ export const getSVGTriangleProps = (
   return {
     points,
     fill: `url(#gradient-${pointIndex})`,
-    stroke: colors.shadow,
-    strokeWidth: 0.5,
-    filter: `drop-shadow(0 2px 4px ${colors.glow})`,
+    stroke: colors.darkAccent,
+    strokeWidth: 1,
+    filter: `drop-shadow(0 2px 6px ${colors.shadow}) drop-shadow(0 1px 2px rgba(0,0,0,0.3))`,
+    style: {
+      mixBlendMode: "multiply",
+    },
   };
 };
 
-// Generate SVG gradient definition
+// Generate SVG gradient definition with wood grain effect
 export const createSVGGradient = (pointIndex: number) => {
   const colors = getTriangleColors(pointIndex);
   const gradientId = `gradient-${pointIndex}`;
@@ -150,14 +196,17 @@ export const createSVGGradient = (pointIndex: number) => {
     y2: "100%",
     stops: [
       { offset: "0%", stopColor: colors.primary },
-      { offset: "50%", stopColor: colors.secondary },
-      { offset: "100%", stopColor: colors.accent },
+      { offset: "25%", stopColor: colors.secondary },
+      { offset: "50%", stopColor: colors.accent },
+      { offset: "75%", stopColor: colors.lightAccent },
+      { offset: "100%", stopColor: colors.darkAccent },
     ],
   };
 };
 
 export const getNumberStyles = (pointIndex: number, isTop: boolean) => {
   const isRed = isRedTriangle(pointIndex);
+  const colors = getTriangleColors(pointIndex);
 
   return {
     left: "50%",
@@ -167,18 +216,22 @@ export const getNumberStyles = (pointIndex: number, isTop: boolean) => {
     zIndex: 1000,
     pointerEvents: "none" as const,
     textShadow: isRed
-      ? "0 2px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 1px 2px rgba(255,255,255,0.2)"
-      : "0 2px 4px rgba(255,255,255,0.9), 0 0 8px rgba(255,255,255,0.7), 0 1px 2px rgba(0,0,0,0.3)",
+      ? "0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.2)"
+      : "0 1px 2px rgba(0,0,0,0.7), 0 0 4px rgba(0,0,0,0.4), 0 1px 1px rgba(255,255,255,0.8)",
     fontSize: "14px",
     fontWeight: "800",
     background: isRed
-      ? "radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)"
-      : "radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 70%, transparent 100%)",
+      ? `linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%)`
+      : `linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.8) 100%)`,
+    border: isRed
+      ? `1px solid ${colors.darkAccent}`
+      : `1px solid ${colors.darkAccent}`,
     borderRadius: "50%",
     padding: "2px 4px",
     minWidth: "20px",
     textAlign: "center" as const,
-    color: isRed ? "white" : "black",
+    color: isRed ? "#F0E68C" : "#2C1810",
+    backdropFilter: "blur(1px)",
   };
 };
 
@@ -197,18 +250,35 @@ export const getBoardStyles = () => ({
 });
 
 export const getWoodGrainStyles = () => ({
-  backgroundImage: `repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 1px,
-    rgba(139, 69, 19, 0.1) 1px,
-    rgba(139, 69, 19, 0.1) 2px
-  ), repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 20px,
-    rgba(139, 69, 19, 0.05) 20px,
-    rgba(139, 69, 19, 0.05) 40px
-  )`,
+  backgroundImage: `
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 69, 19, 0.15) 2px,
+      rgba(139, 69, 19, 0.15) 4px,
+      transparent 4px,
+      transparent 6px
+    ), 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 15px,
+      rgba(139, 69, 19, 0.08) 15px,
+      rgba(139, 69, 19, 0.08) 35px,
+      transparent 35px,
+      transparent 50px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 25px,
+      rgba(160, 82, 45, 0.06) 25px,
+      rgba(160, 82, 45, 0.06) 30px,
+      transparent 30px,
+      transparent 60px
+    )
+  `,
+  backgroundBlendMode: "multiply, overlay, normal",
   borderRadius: "inherit",
 });
