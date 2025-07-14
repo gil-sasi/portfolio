@@ -660,3 +660,39 @@ button,
   animation: slideInUp 0.5s ease-out;
   animation-fill-mode: both;
 }
+
+/* Backgammon bearing off animations */
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.2) rotate(120deg);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(240deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(360deg);
+  }
+}
+
+@keyframes bearOffGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.8), 0 0 30px rgba(34, 197, 94, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+  }
+}
+
+.bear-off-ready {
+  animation: bearOffGlow 2s ease-in-out infinite;
+}

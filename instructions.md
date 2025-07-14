@@ -32,5 +32,8 @@ Always check if a reusable component already exists before creating a new one.
 
 Translate pages hebrew/english do not use HARDCODED text
 
-
 do not use 'any' variable in my code, i want to upload it to vercel!
+
+I am using redux toolkit, and user is storage in state.auth.user - make sure you know that
+
+Do not use hardcoded text in pages/new pages. always translate hebrew/english in the src/i18n/config.ts

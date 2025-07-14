@@ -23,6 +23,12 @@ const projects = [
     bgColor: "from-red-500/20 to-pink-500/20",
   },
   {
+    id: "backgammon",
+    icon: "🎲",
+    color: "from-amber-500 to-orange-500",
+    bgColor: "from-amber-500/20 to-orange-500/20",
+  },
+  {
     id: "barbershop",
     icon: "💈",
     color: "from-purple-500 to-violet-500",
@@ -99,6 +105,8 @@ export default function ProjectsPage() {
                         ? "ocrtitle"
                         : project.id === "dave-game"
                         ? "gamename"
+                        : project.id === "backgammon"
+                        ? "backgammon"
                         : project.id === "barbershop"
                         ? "mobilbarbereapp"
                         : project.id === "quiz-app"
@@ -116,6 +124,8 @@ export default function ProjectsPage() {
                         ? "ocrdesc"
                         : project.id === "dave-game"
                         ? "gamedescription"
+                        : project.id === "backgammon"
+                        ? "backgammonDescription"
                         : project.id === "barbershop"
                         ? "barbershop"
                         : project.id === "quiz-app"
