@@ -690,7 +690,7 @@ export default function BackgammonGame() {
                     <h3 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">
                       {t("backgammon.finalScore", "Final Score")}
                     </h3>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm text-amber-800 dark:text-amber-200">
                       <span>
                         {t(
                           "backgammon.whitePiecesBornOff",
