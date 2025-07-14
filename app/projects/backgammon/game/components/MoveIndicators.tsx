@@ -150,7 +150,6 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
           const fromPosition = getPointPosition(selectedPoint);
 
           let toPosition: PointPosition;
-          let isBarDestination = false;
           let isBearOffDestination = false;
 
           if (move.to === 25) {

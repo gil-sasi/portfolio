@@ -2,7 +2,7 @@ import React from "react";
 import GamePiece from "./GamePiece";
 import SVGTriangle from "./SVGTriangle";
 import { getPieceOwner } from "../utils/gameLogic";
-import { getTriangleStyles, isRedTriangle } from "../utils/boardUtils";
+import { isRedTriangle } from "../utils/boardUtils";
 
 interface GamePointProps {
   pointIndex: number;
@@ -32,7 +32,6 @@ const GamePoint: React.FC<GamePointProps> = ({
   isValidDestination,
   isOwnPiece,
   disabled,
-  playerIndex,
   onPointerDown,
   onClick,
   isInPlayerHomeBoard = false,

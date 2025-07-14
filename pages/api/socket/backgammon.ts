@@ -143,7 +143,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     socket.on(
       "challenge-response",
       ({
-        challengeId,
         accepted,
         challengerId,
       }: {
@@ -243,7 +242,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     socket.on(
       "make-move",
-      ({ roomId, move }: { roomId: string; move: any }) => {
+      ({
+        roomId,
+        move,
+      }: {
+        roomId: string;
+        move: { from: number; to: number; player: 0 | 1 };
+      }) => {
         const room = gameRooms.get(roomId);
         if (!room) return;
 

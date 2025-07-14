@@ -37,7 +37,6 @@ export default function BackgammonGame() {
   const [playerIndex, setPlayerIndex] = useState<number | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(true);
   const [gameMode, setGameMode] = useState<"online" | "offline">("online");
   const [showTutorial, setShowTutorial] = useState(true);
   const [noMovesMessage, setNoMovesMessage] = useState<string | null>(null);
@@ -105,7 +104,6 @@ export default function BackgammonGame() {
 
       if (mode === "offline") {
         setGameMode("offline");
-        setIsConnecting(false);
 
         // Always make human player White (Player 0) for consistency
         const humanPlayerIndex = 0;
@@ -170,7 +168,6 @@ export default function BackgammonGame() {
       newSocket.on("connect", () => {
         console.log("Connected to game server");
         setConnected(true);
-        setIsConnecting(false);
         newSocket.emit("join-game", { roomId: room });
       });
 
@@ -182,16 +179,13 @@ export default function BackgammonGame() {
         );
       });
 
-      newSocket.on("dice-rolled", ({ dice, player, gameState: newState }) => {
+      newSocket.on("dice-rolled", ({ gameState: newState }) => {
         setGameState(newState);
       });
 
-      newSocket.on(
-        "move-made",
-        ({ move, playerIndex: movePlayer, gameState: newState }) => {
-          setGameState(newState);
-        }
-      );
+      newSocket.on("move-made", ({ gameState: newState }) => {
+        setGameState(newState);
+      });
 
       newSocket.on("game-ended", ({ winner, reason }) => {
         alert(`Game ended! Winner: Player ${winner + 1} (${reason})`);
@@ -208,7 +202,6 @@ export default function BackgammonGame() {
       setSocket(newSocket);
     } catch (error) {
       console.error("Failed to initialize socket:", error);
-      setIsConnecting(false);
     }
   }, [searchParams, router]);
 

@@ -157,7 +157,6 @@ export const createSVGGradient = (pointIndex: number) => {
 };
 
 export const getNumberStyles = (pointIndex: number, isTop: boolean) => {
-  const colors = getTriangleColors(pointIndex);
   const isRed = isRedTriangle(pointIndex);
 
   return {

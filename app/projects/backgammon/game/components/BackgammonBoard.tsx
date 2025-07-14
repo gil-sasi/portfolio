@@ -29,7 +29,6 @@ interface BackgammonBoardProps {
 
 export default function BackgammonBoard({
   gameState,
-  players,
   playerIndex,
   onMove,
   onRollDice,

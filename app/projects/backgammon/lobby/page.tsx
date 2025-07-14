@@ -29,7 +29,6 @@ export default function BackgammonLobby() {
   const [connected, setConnected] = useState(false);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [isConnecting, setIsConnecting] = useState(true);
-  const initializedRef = useRef(false);
 
   const initializeSocket = useCallback(async () => {
     try {
@@ -69,12 +68,9 @@ export default function BackgammonLobby() {
         alert(`${by.name} declined your challenge`);
       });
 
-      newSocket.on(
-        "game-started",
-        ({ roomId, players: gamePlayers, gameState }) => {
-          router.push(`/projects/backgammon/game?roomId=${roomId}`);
-        }
-      );
+      newSocket.on("game-started", ({ roomId }) => {
+        router.push(`/projects/backgammon/game?roomId=${roomId}`);
+      });
 
       newSocket.on("disconnect", () => {
         console.log("Disconnected from server");
@@ -102,7 +98,7 @@ export default function BackgammonLobby() {
         socket.disconnect();
       }
     };
-  }, [searchParams, router, initializeSocket]);
+  }, [searchParams, router, initializeSocket, socket]);
 
   const handleChallenge = useCallback(
     (targetPlayerId: string) => {

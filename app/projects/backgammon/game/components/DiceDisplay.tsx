@@ -12,7 +12,6 @@ const DiceDisplay: React.FC<DiceDisplayProps> = ({
   dice,
   onRollDice,
   canRoll = false,
-  playerIndex,
 }) => {
   const { t } = useTranslation();
 

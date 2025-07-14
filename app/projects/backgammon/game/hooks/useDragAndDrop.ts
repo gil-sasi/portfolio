@@ -59,8 +59,14 @@ export const useDragAndDrop = ({
       const rect = boardRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      const clientX = e.clientX || (e as any).touches?.[0]?.clientX || 0;
-      const clientY = e.clientY || (e as any).touches?.[0]?.clientY || 0;
+      const clientX =
+        e.clientX ||
+        (e as unknown as React.TouchEvent).touches?.[0]?.clientX ||
+        0;
+      const clientY =
+        e.clientY ||
+        (e as unknown as React.TouchEvent).touches?.[0]?.clientY ||
+        0;
 
       setDragState({
         isDragging: true,
@@ -81,8 +87,14 @@ export const useDragAndDrop = ({
       const rect = boardRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      const clientX = e.clientX || (e as any).touches?.[0]?.clientX || 0;
-      const clientY = e.clientY || (e as any).touches?.[0]?.clientY || 0;
+      const clientX =
+        e.clientX ||
+        (e as unknown as React.TouchEvent).touches?.[0]?.clientX ||
+        0;
+      const clientY =
+        e.clientY ||
+        (e as unknown as React.TouchEvent).touches?.[0]?.clientY ||
+        0;
 
       setDragState((prev) => ({
         ...prev,
@@ -101,8 +113,14 @@ export const useDragAndDrop = ({
       const rect = boardRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      const clientX = e.clientX || (e as any).changedTouches?.[0]?.clientX || 0;
-      const clientY = e.clientY || (e as any).changedTouches?.[0]?.clientY || 0;
+      const clientX =
+        e.clientX ||
+        (e as unknown as React.TouchEvent).changedTouches?.[0]?.clientX ||
+        0;
+      const clientY =
+        e.clientY ||
+        (e as unknown as React.TouchEvent).changedTouches?.[0]?.clientY ||
+        0;
 
       const relativeX = clientX - rect.left;
       const relativeY = clientY - rect.top;
