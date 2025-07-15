@@ -24,7 +24,7 @@ export const hasBarPieces = (
 
 export const getPieceOwner = (pieces: number): 0 | 1 | null => {
   if (pieces === 0) return null;
-  // Player 0 (AI) has positive pieces, Player 1 (human) has negative pieces
+  // Player 0 (human) has positive pieces, Player 1 (AI) has negative pieces
   return pieces > 0 ? 0 : 1;
 };
 

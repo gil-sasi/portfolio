@@ -43,8 +43,17 @@ export default function BackgammonGame() {
   const [gameStartTime, setGameStartTime] = useState<Date | null>(null);
   const initializedRef = useRef(false);
 
-  // AI player hook - determine AI player index
-  const aiPlayerIndex = playerIndex === 0 ? 1 : 0;
+  // AI player hook - determine AI player index (only when playerIndex is set)
+  const aiPlayerIndex = playerIndex !== null ? (playerIndex === 0 ? 1 : 0) : 1;
+
+  // Validate AI player index to prevent bugs
+  if (playerIndex !== null && aiPlayerIndex !== 0 && aiPlayerIndex !== 1) {
+    console.error("Invalid AI player index calculation:", {
+      playerIndex,
+      aiPlayerIndex,
+    });
+  }
+
   const { makeAIMove } = useAIPlayer(aiPlayerIndex as 0 | 1);
 
   // Function to save score to database
@@ -223,6 +232,7 @@ export default function BackgammonGame() {
     if (
       gameMode === "offline" &&
       gameState &&
+      playerIndex !== null &&
       gameState.currentPlayer === aiPlayerIndex &&
       !gameState.rolled &&
       gameState.phase === "playing"
@@ -258,6 +268,7 @@ export default function BackgammonGame() {
     gameState?.currentPlayer,
     gameState?.rolled,
     gameState?.phase,
+    playerIndex,
     aiPlayerIndex,
   ]);
 
@@ -266,6 +277,7 @@ export default function BackgammonGame() {
     if (
       gameMode === "offline" &&
       gameState &&
+      playerIndex !== null &&
       gameState.currentPlayer === aiPlayerIndex &&
       gameState.rolled &&
       gameState.dice.some((d) => d > 0)
@@ -317,6 +329,7 @@ export default function BackgammonGame() {
     gameState?.currentPlayer,
     gameState?.rolled,
     gameState?.dice,
+    playerIndex,
     makeAIMove,
     aiPlayerIndex,
   ]);

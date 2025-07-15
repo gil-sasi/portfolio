@@ -6,9 +6,15 @@ import {
 } from "../utils/gameLogic";
 import { checkForVictory, createVictoryState } from "../utils/gameStateManager";
 
-export const useAIPlayer = (aiPlayerIndex: 0 | 1 = 0) => {
+export const useAIPlayer = (aiPlayerIndex: 0 | 1) => {
   const makeAIMove = useCallback(
     (gameState: BackgammonGameState): BackgammonGameState => {
+      // Add validation to ensure aiPlayerIndex is correct
+      if (aiPlayerIndex !== 0 && aiPlayerIndex !== 1) {
+        console.error("Invalid AI player index:", aiPlayerIndex);
+        return gameState;
+      }
+
       const validDiceValues = gameState.dice.filter((die) => die > 0);
       const humanPlayerIndex = aiPlayerIndex === 0 ? 1 : 0;
 
