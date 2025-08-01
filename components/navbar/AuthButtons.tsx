@@ -35,12 +35,12 @@ export default function AuthButtons({
 
   if (isMobile) {
     return (
-      <div className="space-y-2">
+      <div className="space-y-4 w-full">
         {!user && !onLoginPage && (
           <Link
             href="/login"
             onClick={handleClick}
-            className="block px-4 py-2 text-white hover:bg-gray-800 rounded-lg"
+            className="block w-full px-6 py-5 text-center text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg text-lg"
           >
             {t("login")}
           </Link>
@@ -49,7 +49,7 @@ export default function AuthButtons({
           <Link
             href="/signup"
             onClick={handleClick}
-            className="block px-4 py-2 text-white hover:bg-gray-800 rounded-lg"
+            className="block w-full px-6 py-5 text-center text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 rounded-xl font-semibold transition-all duration-300 hover:scale-105 text-lg"
           >
             {t("signup")}
           </Link>
@@ -59,7 +59,7 @@ export default function AuthButtons({
             <Link
               href="/profile"
               onClick={handleClick}
-              className="block px-4 py-2 text-white hover:bg-gray-800 rounded-lg"
+              className="block w-full px-6 py-5 text-center text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 rounded-xl font-semibold transition-all duration-300 text-lg"
             >
               {t("profile")}
             </Link>
@@ -68,7 +68,7 @@ export default function AuthButtons({
                 handleLogout();
                 handleClick();
               }}
-              className="block w-full text-left px-4 py-2 text-white hover:bg-gray-800 rounded-lg"
+              className="block w-full px-6 py-5 text-center text-white bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg text-lg"
             >
               {t("logout")}
             </button>

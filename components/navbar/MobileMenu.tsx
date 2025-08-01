@@ -86,8 +86,18 @@ export default function MobileMenu({
           </button>
         </div>
 
-        {/* Navigation Links */}
-        <div className="relative z-10 flex flex-col justify-center items-center flex-1 py-8 space-y-4">
+        {/* Language Switcher - Moved to prominent position */}
+        <div className="relative z-10 px-6 py-4 border-b border-white/10">
+          <div className="flex items-center justify-between">
+            <span className="text-white/70 text-sm font-medium">
+              {t("language")}
+            </span>
+            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+          </div>
+        </div>
+
+        {/* Navigation Links - Reduced height to give more space to auth buttons */}
+        <div className="relative z-10 flex flex-col justify-start items-center py-6 space-y-3 flex-1 overflow-y-auto">
           {navItems.map((item, index) => (
             <Link
               key={item.href}
@@ -96,16 +106,16 @@ export default function MobileMenu({
               className="group w-full max-w-xs"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-lg animate-slideInUp">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center text-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-lg animate-slideInUp">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center text-base group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
-                <span className="text-white/80 group-hover:text-white transition-colors text-lg font-medium">
+                <span className="text-white/80 group-hover:text-white transition-colors text-base font-medium">
                   {item.label}
                 </span>
                 <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <svg
-                    className="w-5 h-5 text-white/60"
+                    className="w-4 h-4 text-white/60"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -123,17 +133,18 @@ export default function MobileMenu({
           ))}
         </div>
 
-        {/* Bottom section */}
-        <div className="relative z-10 border-t border-white/10 p-6 bg-black/20 backdrop-blur-sm">
+        {/* Bottom section - Auth buttons with more space */}
+        <div className="relative z-10 border-t border-white/10 p-6 bg-black/30 backdrop-blur-md">
           <div className="flex flex-col items-center space-y-4">
-            <AuthButtons
-              user={user}
-              onLoginPage={onLoginPage}
-              onSignupPage={onSignupPage}
-              isMobile={true}
-              onClose={onClose}
-            />
-            <LanguageSwitcher isMobile={true} onLanguageChange={onClose} />
+            <div className="w-full max-w-xs">
+              <AuthButtons
+                user={user}
+                onLoginPage={onLoginPage}
+                onSignupPage={onSignupPage}
+                isMobile={true}
+                onClose={onClose}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -31,38 +31,41 @@ export default function LanguageSwitcher({
 
   if (isMobile) {
     return (
-      <div>
-        <p className="text-sm text-gray-400 mb-2">
-          {t("language", "Language")}
-        </p>
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleLanguageChange("en")}
-            title="English"
-            className="p-2 hover:bg-gray-800 rounded-lg"
-          >
-            <Image
-              src="/flags/us.png"
-              alt="English"
-              width={24}
-              height={24}
-              className="rounded"
-            />
-          </button>
-          <button
-            onClick={() => handleLanguageChange("he")}
-            title="עברית"
-            className="p-2 hover:bg-gray-800 rounded-lg"
-          >
-            <Image
-              src="/flags/il.png"
-              alt="Hebrew"
-              width={24}
-              height={24}
-              className="rounded"
-            />
-          </button>
-        </div>
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleLanguageChange("en")}
+          title="English"
+          className={`p-2 rounded-lg transition-all duration-300 hover:scale-105 ${
+            i18n.language === "en"
+              ? "bg-white/20 border border-white/30"
+              : "bg-white/5 hover:bg-white/10 border border-white/10"
+          }`}
+        >
+          <Image
+            src="/flags/us.png"
+            alt="English"
+            width={28}
+            height={28}
+            className="rounded"
+          />
+        </button>
+        <button
+          onClick={() => handleLanguageChange("he")}
+          title="עברית"
+          className={`p-2 rounded-lg transition-all duration-300 hover:scale-105 ${
+            i18n.language === "he"
+              ? "bg-white/20 border border-white/30"
+              : "bg-white/5 hover:bg-white/10 border border-white/10"
+          }`}
+        >
+          <Image
+            src="/flags/il.png"
+            alt="Hebrew"
+            width={28}
+            height={28}
+            className="rounded"
+          />
+        </button>
       </div>
     );
   }
