@@ -225,7 +225,7 @@ export default function BackgammonGame() {
         socket.disconnect();
       }
     };
-  }, [initializeSocket]);
+  }, [initializeSocket, socket]);
 
   // Auto-trigger AI turn when it's AI's turn and not rolled
   useEffect(() => {
@@ -265,6 +265,7 @@ export default function BackgammonGame() {
     }
   }, [
     gameMode,
+    gameState,
     gameState?.currentPlayer,
     gameState?.rolled,
     gameState?.phase,
@@ -326,6 +327,7 @@ export default function BackgammonGame() {
     }
   }, [
     gameMode,
+    gameState,
     gameState?.currentPlayer,
     gameState?.rolled,
     gameState?.dice,
@@ -346,6 +348,7 @@ export default function BackgammonGame() {
     }
   }, [
     gameMode,
+    gameState,
     gameState?.phase,
     gameState?.winner,
     saveScoreToDatabase,

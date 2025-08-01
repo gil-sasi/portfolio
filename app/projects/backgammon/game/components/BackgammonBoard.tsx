@@ -455,6 +455,17 @@ export default function BackgammonBoard({
               onComplete={() => setBearOffAnimation(null)}
             />
           )}
+
+          {/* Piece movement animation */}
+          {pieceMovementAnimation && (
+            <PieceMovementAnimation
+              isActive={pieceMovementAnimation.isActive}
+              player={pieceMovementAnimation.player}
+              fromPosition={pieceMovementAnimation.fromPosition}
+              toPosition={pieceMovementAnimation.toPosition}
+              onComplete={() => setPieceMovementAnimation(null)}
+            />
+          )}
         </div>
       </div>
 
