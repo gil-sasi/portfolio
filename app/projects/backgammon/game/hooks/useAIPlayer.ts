@@ -7,90 +7,95 @@ import {
 import { checkForVictory, createVictoryState } from "../utils/gameStateManager";
 
 export const useAIPlayer = (aiPlayerIndex: 0 | 1) => {
-  const handleNormalMoves = useCallback((
-    gameState: BackgammonGameState,
-    validDiceValues: number[],
-    aiPlayerIndex: 0 | 1
-  ): BackgammonGameState => {
-    // Find AI pieces based on player index
-    const aiPieces: number[] = [];
-    for (let i = 1; i <= 24; i++) {
-      const pieces = gameState.board[i];
-      if (
-        (aiPlayerIndex === 0 && pieces > 0) ||
-        (aiPlayerIndex === 1 && pieces < 0)
-      ) {
-        aiPieces.push(i);
+  const handleNormalMoves = useCallback(
+    (
+      gameState: BackgammonGameState,
+      validDiceValues: number[],
+      aiPlayerIndex: 0 | 1
+    ): BackgammonGameState => {
+      // Find AI pieces based on player index
+      const aiPieces: number[] = [];
+      for (let i = 1; i <= 24; i++) {
+        const pieces = gameState.board[i];
+        if (
+          (aiPlayerIndex === 0 && pieces > 0) ||
+          (aiPlayerIndex === 1 && pieces < 0)
+        ) {
+          aiPieces.push(i);
+        }
       }
-    }
 
-    if (aiPieces.length === 0) {
-      console.log("AI: No AI pieces found on board");
+      if (aiPieces.length === 0) {
+        console.log("AI: No AI pieces found on board");
+        const humanPlayerIndex = aiPlayerIndex === 0 ? 1 : 0;
+        return {
+          ...gameState,
+          currentPlayer: humanPlayerIndex as 0 | 1,
+          rolled: false,
+          dice: [0, 0] as [number, number],
+          lastMove: "AI has no pieces - your turn!",
+        };
+      }
+
+      // Sort AI pieces by priority (prefer pieces closer to home for better strategy)
+      aiPieces.sort((a, b) => b - a);
+      console.log("AI: Available pieces at points:", aiPieces);
+      console.log("AI: Available dice:", validDiceValues);
+
+      // Try to make a move with available dice
+      for (const die of validDiceValues) {
+        for (const fromPoint of aiPieces) {
+          // Movement direction depends on player index
+          // Player 0 (White) moves from higher to lower numbers (towards home 1-6)
+          // Player 1 (Black) moves from lower to higher numbers (towards home 19-24)
+          const toPoint =
+            aiPlayerIndex === 0 ? fromPoint - die : fromPoint + die;
+
+          console.log(
+            `AI: Trying to move from ${fromPoint} to ${toPoint} with die ${die}`
+          );
+
+          // Check for bearing off move first
+          const canBearOff =
+            aiPlayerIndex === 0
+              ? toPoint <= 0 &&
+                canBearOffFromPoint(gameState, fromPoint, die, aiPlayerIndex)
+              : toPoint >= 25 &&
+                canBearOffFromPoint(gameState, fromPoint, die, aiPlayerIndex);
+
+          if (canBearOff) {
+            return handleBearOffMove(gameState, fromPoint, die, aiPlayerIndex);
+          }
+
+          // Regular move
+          const validToPoint =
+            aiPlayerIndex === 0 ? toPoint >= 1 : toPoint <= 24;
+          if (validToPoint) {
+            const moveResult = handleRegularMove(
+              gameState,
+              fromPoint,
+              toPoint,
+              die,
+              aiPlayerIndex
+            );
+            if (moveResult) return moveResult;
+          }
+        }
+      }
+
+      // If no valid moves, switch turn
+      console.log("AI: No valid moves available - switching turn");
       const humanPlayerIndex = aiPlayerIndex === 0 ? 1 : 0;
       return {
         ...gameState,
         currentPlayer: humanPlayerIndex as 0 | 1,
         rolled: false,
         dice: [0, 0] as [number, number],
-        lastMove: "AI has no pieces - your turn!",
+        lastMove: "AI had no valid moves - your turn!",
       };
-    }
-
-    // Sort AI pieces by priority (prefer pieces closer to home for better strategy)
-    aiPieces.sort((a, b) => b - a);
-    console.log("AI: Available pieces at points:", aiPieces);
-    console.log("AI: Available dice:", validDiceValues);
-
-    // Try to make a move with available dice
-    for (const die of validDiceValues) {
-      for (const fromPoint of aiPieces) {
-        // Movement direction depends on player index
-        // Player 0 (White) moves from higher to lower numbers (towards home 1-6)
-        // Player 1 (Black) moves from lower to higher numbers (towards home 19-24)
-        const toPoint = aiPlayerIndex === 0 ? fromPoint - die : fromPoint + die;
-
-        console.log(
-          `AI: Trying to move from ${fromPoint} to ${toPoint} with die ${die}`
-        );
-
-        // Check for bearing off move first
-        const canBearOff =
-          aiPlayerIndex === 0
-            ? toPoint <= 0 &&
-              canBearOffFromPoint(gameState, fromPoint, die, aiPlayerIndex)
-            : toPoint >= 25 &&
-              canBearOffFromPoint(gameState, fromPoint, die, aiPlayerIndex);
-
-        if (canBearOff) {
-          return handleBearOffMove(gameState, fromPoint, die, aiPlayerIndex);
-        }
-
-        // Regular move
-        const validToPoint = aiPlayerIndex === 0 ? toPoint >= 1 : toPoint <= 24;
-        if (validToPoint) {
-          const moveResult = handleRegularMove(
-            gameState,
-            fromPoint,
-            toPoint,
-            die,
-            aiPlayerIndex
-          );
-          if (moveResult) return moveResult;
-        }
-      }
-    }
-
-    // If no valid moves, switch turn
-    console.log("AI: No valid moves available - switching turn");
-    const humanPlayerIndex = aiPlayerIndex === 0 ? 1 : 0;
-    return {
-      ...gameState,
-      currentPlayer: humanPlayerIndex as 0 | 1,
-      rolled: false,
-      dice: [0, 0] as [number, number],
-      lastMove: "AI had no valid moves - your turn!",
-    };
-  }, []);
+    },
+    []
+  );
 
   const makeAIMove = useCallback(
     (gameState: BackgammonGameState): BackgammonGameState => {
@@ -125,7 +130,7 @@ export const useAIPlayer = (aiPlayerIndex: 0 | 1) => {
       // If no bar pieces, proceed with normal moves
       return handleNormalMoves(gameState, validDiceValues, aiPlayerIndex);
     },
-    [aiPlayerIndex, handleNormalMoves]
+    [handleNormalMoves, aiPlayerIndex]
   );
 
   const handleBarMoves = (
