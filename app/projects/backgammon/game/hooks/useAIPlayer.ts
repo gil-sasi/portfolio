@@ -90,7 +90,7 @@ export const useAIPlayer = (aiPlayerIndex: 0 | 1) => {
       dice: [0, 0] as [number, number],
       lastMove: "AI had no valid moves - your turn!",
     };
-  }, [aiPlayerIndex]);
+  }, []);
 
   const makeAIMove = useCallback(
     (gameState: BackgammonGameState): BackgammonGameState => {

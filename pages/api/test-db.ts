@@ -15,6 +15,11 @@ export default async function handler(
     // Test the connection
     const mongoose = await connectToDatabase();
     
+    // Check if database is available
+    if (!mongoose.connection.db) {
+      throw new Error("Database connection not established");
+    }
+    
     // Test a simple query
     const db = mongoose.connection.db;
     const collections = await db.listCollections().toArray();
