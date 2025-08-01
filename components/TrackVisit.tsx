@@ -9,11 +9,11 @@ export default function TrackVisit() {
     // Only track once per session
     if (hasTracked.current) return;
 
-    // Skip tracking in development mode
-    if (process.env.NODE_ENV === "development") {
-      console.log("Skipping visitor tracking in development mode");
-      return;
-    }
+    // Skip tracking in development mode (TEMPORARILY DISABLED FOR DEBUGGING)
+    // if (process.env.NODE_ENV === "development") {
+    //   console.log("Skipping visitor tracking in development mode");
+    //   return;
+    // }
 
     // Skip if running in iframe (embedded content)
     if (window !== window.top) {

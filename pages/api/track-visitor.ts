@@ -80,11 +80,11 @@ function isValidVisitor(ua: string, ip: string, referrer: string): boolean {
   // Check if it's a bot
   if (isBot(ua)) return false;
 
-  // Check if it's a development IP
-  if (isDevelopmentIP(ip)) return false;
+  // Temporarily allow development IPs for debugging
+  // if (isDevelopmentIP(ip)) return false;
 
-  // Check for suspicious referrers
-  if (isSuspiciousReferrer(referrer)) return false;
+  // Temporarily allow suspicious referrers for debugging
+  // if (isSuspiciousReferrer(referrer)) return false;
 
   // Check for very short user agents (likely automated)
   if (ua.length < 20) return false;
@@ -123,9 +123,24 @@ export default async function handler(
   // Enhanced filtering
   const isValid = isValidVisitor(userAgent, ip, referrer);
 
+  // Temporary debugging
+  console.log("Visitor tracking attempt:", {
+    ip,
+    userAgent: userAgent.substring(0, 100),
+    referrer: referrer.substring(0, 100),
+    isValid,
+    isDevelopment: isDevelopmentIP(ip),
+    isBot: isBot(userAgent),
+    isSuspiciousReferrer: isSuspiciousReferrer(referrer),
+  });
+
   if (!isValid) {
     // Optionally log suspicious visits for debugging
-    // console.log("Filtered out visit:", { ip, userAgent: userAgent.substring(0, 100), referrer });
+    console.log("Filtered out visit:", {
+      ip,
+      userAgent: userAgent.substring(0, 100),
+      referrer,
+    });
     return res.status(204).end();
   }
 
