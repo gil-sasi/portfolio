@@ -76,7 +76,7 @@ function isSuspiciousReferrer(referrer: string): boolean {
   return SUSPICIOUS_REFERRERS.some((pattern) => pattern.test(referrer));
 }
 
-function isValidVisitor(ua: string, ip: string, referrer: string): boolean {
+function isValidVisitor(ua: string): boolean {
   // Check if it's a bot
   if (isBot(ua)) return false;
 
@@ -121,7 +121,7 @@ export default async function handler(
   ).toString();
 
   // Enhanced filtering
-  const isValid = isValidVisitor(userAgent, ip, referrer);
+  const isValid = isValidVisitor(userAgent);
 
   // Temporary debugging
   console.log("Visitor tracking attempt:", {

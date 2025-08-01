@@ -13,7 +13,7 @@ export default function LanguageSwitcher({
   isMobile = false,
   onLanguageChange,
 }: LanguageSwitcherProps) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   // Initialize language from localStorage on mount
   useEffect(() => {
