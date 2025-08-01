@@ -9,6 +9,7 @@ interface BearOffAreaProps {
   onClick?: () => void;
   disabled?: boolean;
   playerIndex?: number | null;
+  isMobile?: boolean;
 }
 
 const BearOffArea: React.FC<BearOffAreaProps> = ({
@@ -19,6 +20,7 @@ const BearOffArea: React.FC<BearOffAreaProps> = ({
   onClick,
   disabled = false,
   playerIndex,
+  isMobile = false,
 }) => {
   const sideStyle = side === "left" ? { left: 0 } : { right: 0 };
 
@@ -36,14 +38,20 @@ const BearOffArea: React.FC<BearOffAreaProps> = ({
     <div
       className={`absolute top-0 bottom-0 bg-gradient-to-b from-amber-900 via-amber-800 to-amber-900 rounded-lg border-2 border-amber-700 shadow-2xl flex flex-col justify-between p-3 transition-all duration-300 ${
         isValidDestination
-          ? "ring-4 ring-green-400 ring-opacity-80 bg-green-900/20 animate-pulse scale-105"
+          ? `ring-4 ring-green-400 ring-opacity-80 bg-green-900/20 animate-pulse scale-105 ${
+              isMobile ? "ring-6 shadow-lg shadow-green-500/50" : ""
+            }`
           : ""
       } ${
-        !disabled && isValidDestination ? "cursor-pointer hover:scale-105" : ""
+        !disabled && isValidDestination
+          ? `cursor-pointer hover:scale-105 ${
+              isMobile ? "touch-manipulation active:scale-95" : ""
+            }`
+          : ""
       }`}
       style={{
         ...sideStyle,
-        width: "7%",
+        width: isMobile ? "8%" : "7%", // Slightly wider on mobile for easier tapping
         background: isValidDestination
           ? "linear-gradient(180deg, #065f46 0%, #047857 50%, #065f46 100%)"
           : "linear-gradient(180deg, #78350f 0%, #92400e 50%, #78350f 100%)",

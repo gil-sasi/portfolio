@@ -13,6 +13,7 @@ interface MoveIndicatorsProps {
   disabled: boolean;
   helperMode: boolean;
   onNoValidMoves?: () => void; // Callback when no valid moves are available
+  isMobile?: boolean;
 }
 
 const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
@@ -23,6 +24,7 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
   disabled,
   helperMode,
   onNoValidMoves,
+  isMobile = false,
 }) => {
   const { t } = useTranslation();
 
@@ -115,8 +117,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
                   height: "200px",
                 }}
               >
-                <div className="w-full h-full border-4 border-yellow-400 rounded-lg animate-pulse bg-yellow-400/20">
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap">
+                <div
+                  className={`w-full h-full border-4 border-yellow-400 rounded-lg animate-pulse bg-yellow-400/20 ${
+                    isMobile ? "border-6 shadow-lg shadow-yellow-500/50" : ""
+                  }`}
+                >
+                  <div
+                    className={`absolute ${
+                      isMobile ? "-top-10" : "-top-8"
+                    } left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white ${
+                      isMobile ? "text-sm px-3 py-2" : "text-xs px-2 py-1"
+                    } rounded-full font-medium whitespace-nowrap shadow-lg`}
+                  >
                     {t("backgammon.clickToMove", "Click to move")}
                   </div>
                 </div>
@@ -135,8 +147,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
                 height: position.height,
               }}
             >
-              <div className="w-full h-full border-4 border-yellow-400 rounded-lg animate-pulse bg-yellow-400/20">
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap">
+              <div
+                className={`w-full h-full border-4 border-yellow-400 rounded-lg animate-pulse bg-yellow-400/20 ${
+                  isMobile ? "border-6 shadow-lg shadow-yellow-500/50" : ""
+                }`}
+              >
+                <div
+                  className={`absolute ${
+                    isMobile ? "-top-10" : "-top-8"
+                  } left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white ${
+                    isMobile ? "text-sm px-3 py-2" : "text-xs px-2 py-1"
+                  } rounded-full font-medium whitespace-nowrap shadow-lg`}
+                >
                   {t("backgammon.clickToMove", "Click to move")}
                 </div>
               </div>
@@ -213,9 +235,19 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
                     height: toPosition.height,
                   }}
                 >
-                  <div className="w-full h-full border-4 border-green-400 rounded-lg animate-pulse bg-green-400/30">
+                  <div
+                    className={`w-full h-full border-4 border-green-400 rounded-lg animate-pulse bg-green-400/30 ${
+                      isMobile ? "border-6 shadow-lg shadow-green-500/50" : ""
+                    }`}
+                  >
                     {/* Dice value indicator */}
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-sm px-3 py-1 rounded-full font-bold shadow-lg">
+                    <div
+                      className={`absolute ${
+                        isMobile ? "-top-12" : "-top-8"
+                      } left-1/2 transform -translate-x-1/2 bg-green-500 text-white ${
+                        isMobile ? "text-base px-4 py-2" : "text-sm px-3 py-1"
+                      } rounded-full font-bold shadow-lg`}
+                    >
                       🎲 {move.distance}
                     </div>
                   </div>
@@ -233,8 +265,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
                     height: toPosition.height,
                   }}
                 >
-                  <div className="w-full h-full border-4 border-purple-400 rounded-lg animate-pulse bg-purple-400/30">
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-sm px-3 py-1 rounded-full font-bold shadow-lg">
+                  <div
+                    className={`w-full h-full border-4 border-purple-400 rounded-lg animate-pulse bg-purple-400/30 ${
+                      isMobile ? "border-6 shadow-lg shadow-purple-500/50" : ""
+                    }`}
+                  >
+                    <div
+                      className={`absolute ${
+                        isMobile ? "-top-12" : "-top-8"
+                      } left-1/2 transform -translate-x-1/2 bg-purple-500 text-white ${
+                        isMobile ? "text-base px-4 py-2" : "text-sm px-3 py-1"
+                      } rounded-full font-bold shadow-lg`}
+                    >
                       🎯 {move.distance}
                     </div>
                   </div>
@@ -283,8 +325,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
 
       {/* Instructions overlay - only in helper mode */}
       {helperMode && selectedPoint === null && moveablePieces.length > 0 && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce">
-          <div className="text-sm font-medium text-center">
+        <div
+          className={`absolute ${
+            isMobile ? "top-6" : "top-4"
+          } left-1/2 transform -translate-x-1/2 bg-blue-600 text-white ${
+            isMobile ? "px-6 py-3" : "px-4 py-2"
+          } rounded-lg shadow-lg z-50 animate-bounce max-w-xs`}
+        >
+          <div
+            className={`${
+              isMobile ? "text-base" : "text-sm"
+            } font-medium text-center`}
+          >
             💡{" "}
             {t(
               "backgammon.selectPieceToMove",
@@ -296,8 +348,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
 
       {/* Move instructions when piece is selected - show for bear-off moves always, others only in helper mode */}
       {selectedPoint !== null && validMoves.length > 0 && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50">
-          <div className="text-sm font-medium text-center">
+        <div
+          className={`absolute ${
+            isMobile ? "top-6" : "top-4"
+          } left-1/2 transform -translate-x-1/2 bg-green-600 text-white ${
+            isMobile ? "px-6 py-3" : "px-4 py-2"
+          } rounded-lg shadow-lg z-50 max-w-xs`}
+        >
+          <div
+            className={`${
+              isMobile ? "text-base" : "text-sm"
+            } font-medium text-center`}
+          >
             🎯{" "}
             {validMoves.some((move) => move.to === 25)
               ? t(
@@ -314,8 +376,18 @@ const MoveIndicators: React.FC<MoveIndicatorsProps> = ({
 
       {/* No moves available message - only in helper mode */}
       {helperMode && selectedPoint !== null && allValidMoves.length === 0 && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50">
-          <div className="text-sm font-medium text-center">
+        <div
+          className={`absolute ${
+            isMobile ? "top-6" : "top-4"
+          } left-1/2 transform -translate-x-1/2 bg-red-600 text-white ${
+            isMobile ? "px-6 py-3" : "px-4 py-2"
+          } rounded-lg shadow-lg z-50 max-w-xs`}
+        >
+          <div
+            className={`${
+              isMobile ? "text-base" : "text-sm"
+            } font-medium text-center`}
+          >
             ❌ {t("backgammon.noValidMoves", "No valid moves for this piece")}
           </div>
         </div>

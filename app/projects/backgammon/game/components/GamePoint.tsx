@@ -22,6 +22,7 @@ interface GamePointProps {
   onClick: (pointIndex: number) => void;
   isInPlayerHomeBoard?: boolean;
   helperMode?: boolean;
+  isMobile?: boolean;
 }
 
 const GamePoint: React.FC<GamePointProps> = ({
@@ -36,6 +37,7 @@ const GamePoint: React.FC<GamePointProps> = ({
   onClick,
   isInPlayerHomeBoard = false,
   helperMode = false,
+  isMobile = false,
 }) => {
   const player = getPieceOwner(pieces);
   const pieceCount = Math.abs(pieces);
@@ -48,9 +50,15 @@ const GamePoint: React.FC<GamePointProps> = ({
           isSelected
             ? "ring-4 ring-blue-500 ring-opacity-75 z-50 scale-105"
             : isValidDestination
-            ? "ring-4 ring-green-500 ring-opacity-75 animate-pulse"
+            ? `ring-4 ring-green-500 ring-opacity-75 animate-pulse ${
+                isMobile ? "ring-6 shadow-lg shadow-green-500/50" : ""
+              }`
             : isInPlayerHomeBoard && helperMode
             ? "ring-2 ring-yellow-400 ring-opacity-60 shadow-lg shadow-yellow-400/30"
+            : ""
+        } ${
+          isMobile && isOwnPiece
+            ? "hover:scale-110 active:scale-95 touch-manipulation"
             : ""
         }`}
         style={{
@@ -58,6 +66,9 @@ const GamePoint: React.FC<GamePointProps> = ({
           top: position.y,
           width: position.width,
           height: position.height,
+          // Increase touch target size on mobile
+          padding: isMobile ? "8px" : "0px",
+          margin: isMobile ? "-8px" : "0px",
         }}
         onPointerDown={(e) => onPointerDown(e, pointIndex)}
         onClick={() => onClick(pointIndex)}

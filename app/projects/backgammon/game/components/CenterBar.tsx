@@ -9,6 +9,7 @@ interface CenterBarProps {
   disabled: boolean;
   onPointerDown: (e: React.PointerEvent, pointIndex: number) => void;
   onClick: (pointIndex: number) => void;
+  isMobile?: boolean;
 }
 
 const CenterBar: React.FC<CenterBarProps> = ({
@@ -18,6 +19,7 @@ const CenterBar: React.FC<CenterBarProps> = ({
   disabled,
   onPointerDown,
   onClick,
+  isMobile = false,
 }) => {
   const { t } = useTranslation();
   const hasBarPieces = (player: number) => bar[player] > 0;
@@ -57,9 +59,16 @@ const CenterBar: React.FC<CenterBarProps> = ({
                   : ""
               } ${
                 hasBarPieces(1) && playerIndex === 1
-                  ? "hover:bg-blue-400 hover:bg-opacity-20 hover:scale-105"
+                  ? `hover:bg-blue-400 hover:bg-opacity-20 hover:scale-105 ${
+                      isMobile ? "touch-manipulation active:scale-95" : ""
+                    }`
                   : ""
               }`}
+              style={{
+                minHeight: isMobile ? "48px" : "auto",
+                minWidth: isMobile ? "48px" : "auto",
+                padding: isMobile ? "12px" : "8px",
+              }}
               onClick={() => playerIndex === 1 && onClick(0)}
               onPointerDown={(e) => playerIndex === 1 && onPointerDown(e, 0)}
             >
@@ -112,9 +121,16 @@ const CenterBar: React.FC<CenterBarProps> = ({
                   : ""
               } ${
                 hasBarPieces(0) && playerIndex === 0
-                  ? "hover:bg-blue-400 hover:bg-opacity-20 hover:scale-105"
+                  ? `hover:bg-blue-400 hover:bg-opacity-20 hover:scale-105 ${
+                      isMobile ? "touch-manipulation active:scale-95" : ""
+                    }`
                   : ""
               }`}
+              style={{
+                minHeight: isMobile ? "48px" : "auto",
+                minWidth: isMobile ? "48px" : "auto",
+                padding: isMobile ? "12px" : "8px",
+              }}
               onClick={() => playerIndex === 0 && onClick(0)}
               onPointerDown={(e) => playerIndex === 0 && onPointerDown(e, 0)}
             >

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { BackgammonGameState, Player, Move } from "../types";
 import { useBoardCalculations } from "../hooks/useBoardCalculations";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { getBoardStyles, getWoodGrainStyles } from "../utils/boardUtils";
 import { areAllPiecesInHomeBoard } from "../utils/gameLogic";
 import DiceDisplay from "./DiceDisplay";
@@ -12,6 +13,7 @@ import GamePoint from "./GamePoint";
 import CenterBar from "./CenterBar";
 import BearOffArea from "./BearOffArea";
 import BearOffAnimation from "./BearOffAnimation";
+import PieceMovementAnimation from "./PieceMovementAnimation";
 import GamePiece from "./GamePiece";
 import CheckerCounts from "./CheckerCounts";
 import MoveIndicators from "./MoveIndicators";
@@ -37,20 +39,36 @@ export default function BackgammonBoard({
 }: BackgammonBoardProps) {
   const { t } = useTranslation();
   const boardRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const [bearOffAnimation, setBearOffAnimation] = useState<{
     isActive: boolean;
     player: 0 | 1;
     fromPosition: { x: number; y: number };
   } | null>(null);
 
+  const [pieceMovementAnimation, setPieceMovementAnimation] = useState<{
+    isActive: boolean;
+    player: 0 | 1;
+    fromPosition: { x: number; y: number };
+    toPosition: { x: number; y: number };
+  } | null>(null);
+
   // Helper toggle state with localStorage persistence
+  // Always enable helper mode on mobile for better usability
   const [helperMode, setHelperMode] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("backgammon-helper-mode");
-      return saved !== null ? JSON.parse(saved) : true; // Default to enabled
+      return isMobile ? true : saved !== null ? JSON.parse(saved) : true; // Always enabled on mobile
     }
     return true;
   });
+
+  // Force helper mode to be enabled on mobile
+  useEffect(() => {
+    if (isMobile && !helperMode) {
+      setHelperMode(true);
+    }
+  }, [isMobile, helperMode]);
 
   // Save helper mode preference to localStorage
   useEffect(() => {
@@ -101,6 +119,35 @@ export default function BackgammonBoard({
         setTimeout(() => {
           onMove(move);
         }, 200);
+      } else if (isMobile && boardRef.current) {
+        // Regular move animation on mobile
+        const fromPos = getPointPosition(move.from);
+        const toPos = getPointPosition(move.to);
+        const boardRect = boardRef.current.getBoundingClientRect();
+
+        setPieceMovementAnimation({
+          isActive: true,
+          player: move.player,
+          fromPosition: {
+            x: boardRect.left + fromPos.x + fromPos.width / 2,
+            y:
+              boardRect.top +
+              fromPos.y +
+              (move.from >= 13 ? 0 : fromPos.height),
+          },
+          toPosition: {
+            x: boardRect.left + toPos.x + toPos.width / 2,
+            y: boardRect.top + toPos.y + (move.to >= 13 ? 0 : toPos.height),
+          },
+        });
+
+        // Delay the actual move to show animation
+        setTimeout(
+          () => {
+            onMove(move);
+          },
+          isMobile ? 400 : 300
+        );
       } else {
         onMove(move);
       }
@@ -108,7 +155,7 @@ export default function BackgammonBoard({
     boardRef,
   });
 
-  // Use drag and drop hook
+  // Use drag and drop hook - disabled on mobile for better touch experience
   const { dragState, handlePointerDown, handlePointerMove, handlePointerUp } =
     useDragAndDrop({
       gameState,
@@ -140,7 +187,7 @@ export default function BackgammonBoard({
       },
       boardRef,
       getPointPosition,
-      disabled,
+      disabled: disabled || isMobile, // Disable drag on mobile
     });
 
   // Check if player can bear off
@@ -158,26 +205,38 @@ export default function BackgammonBoard({
 
   return (
     <div className="flex flex-col items-center py-8 space-y-6">
-      {/* Helper toggle button */}
-      <div className="flex items-center space-x-4">
-        <button
-          onClick={toggleHelperMode}
-          className={`
-            flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200
-            ${
-              helperMode
-                ? "bg-green-600 hover:bg-green-700 text-white"
-                : "bg-gray-600 hover:bg-gray-700 text-gray-200"
-            }
-          `}
-        >
-          <span className="text-sm">
-            {helperMode
-              ? t("backgammon.helperModeOn")
-              : t("backgammon.helperModeOff")}
+      {/* Helper toggle button - hidden on mobile since it's always enabled */}
+      {!isMobile && (
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={toggleHelperMode}
+            className={`
+              flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200
+              ${
+                helperMode
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "bg-gray-600 hover:bg-gray-700 text-gray-200"
+              }
+            `}
+          >
+            <span className="text-sm">
+              {helperMode
+                ? t("backgammon.helperModeOn")
+                : t("backgammon.helperModeOff")}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* Mobile-specific helper text */}
+      {isMobile && (
+        <div className="text-center text-sm text-green-400 mb-4">
+          <span className="bg-green-600/20 px-3 py-1 rounded-full">
+            📱{" "}
+            {t("backgammon.mobileHelperMode", "Mobile Helper Mode: Always On")}
           </span>
-        </button>
-      </div>
+        </div>
+      )}
 
       {/* Game layout with relative positioning */}
       <div className="relative">
@@ -268,14 +327,19 @@ export default function BackgammonBoard({
 
         <div
           ref={boardRef}
-          className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-800 mx-auto"
+          className={`relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-800 mx-auto ${
+            isMobile ? "touch-none" : ""
+          }`}
           style={{
             ...getBoardStyles(),
             filter: "drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))",
+            // Slightly smaller on mobile for better viewport fit
+            width: isMobile ? "min(95vw, 700px)" : "min(90vw, 800px)",
+            minWidth: isMobile ? 350 : 400,
           }}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
+          onPointerMove={isMobile ? undefined : handlePointerMove}
+          onPointerUp={isMobile ? undefined : handlePointerUp}
+          onPointerCancel={isMobile ? undefined : handlePointerUp}
         >
           {/* Enhanced wood grain texture overlay */}
           <div
@@ -291,19 +355,21 @@ export default function BackgammonBoard({
             bearOff={gameState.bearOff}
             side="left"
             isValidDestination={isValidDestination(25) && playerIndex === 1}
-            onPointerDown={(e) => handlePointerDown(e, 25)}
+            onPointerDown={(e) => (isMobile ? {} : handlePointerDown(e, 25))}
             onClick={() => handlePointClick(25)}
             disabled={disabled}
             playerIndex={playerIndex}
+            isMobile={isMobile}
           />
           <BearOffArea
             bearOff={gameState.bearOff}
             side="right"
             isValidDestination={isValidDestination(25) && playerIndex === 0}
-            onPointerDown={(e) => handlePointerDown(e, 25)}
+            onPointerDown={(e) => (isMobile ? {} : handlePointerDown(e, 25))}
             onClick={() => handlePointClick(25)}
             disabled={disabled}
             playerIndex={playerIndex}
+            isMobile={isMobile}
           />
 
           {/* Enhanced Center bar */}
@@ -312,8 +378,9 @@ export default function BackgammonBoard({
             selectedPoint={selectedPoint}
             playerIndex={playerIndex}
             disabled={disabled}
-            onPointerDown={handlePointerDown}
+            onPointerDown={isMobile ? () => {} : handlePointerDown}
             onClick={handlePointClick}
+            isMobile={isMobile}
           />
 
           {/* Render all points with enhanced styling */}
@@ -333,7 +400,7 @@ export default function BackgammonBoard({
                 isOwnPiece={hasOwnPieces(pointIndex)}
                 disabled={disabled}
                 playerIndex={playerIndex}
-                onPointerDown={handlePointerDown}
+                onPointerDown={isMobile ? () => {} : handlePointerDown}
                 onClick={handlePointClick}
                 isInPlayerHomeBoard={
                   playerIndex !== null &&
@@ -341,6 +408,7 @@ export default function BackgammonBoard({
                     (playerIndex === 1 && pointIndex >= 19 && pointIndex <= 24))
                 }
                 helperMode={helperMode}
+                isMobile={isMobile}
               />
             );
           })}
@@ -354,6 +422,7 @@ export default function BackgammonBoard({
             disabled={disabled}
             helperMode={helperMode}
             onNoValidMoves={onNoValidMoves}
+            isMobile={isMobile}
           />
 
           {/* Dragging piece with enhanced styling */}
