@@ -35,6 +35,12 @@ const projects = [
     bgColor: "from-purple-500/20 to-violet-500/20",
   },
   {
+    id: "barbershop-webapp",
+    icon: "✂️",
+    color: "from-emerald-500 to-teal-500",
+    bgColor: "from-emerald-500/20 to-teal-500/20",
+  },
+  {
     id: "quiz-app",
     icon: "🧠",
     color: "from-orange-500 to-yellow-500",
@@ -109,6 +115,8 @@ export default function ProjectsPage() {
                         ? "backgammon"
                         : project.id === "barbershop"
                         ? "mobilbarbereapp"
+                        : project.id === "barbershop-webapp"
+                        ? "barbershopWebappTitle"
                         : project.id === "quiz-app"
                         ? "quizapptitle"
                         : "VisitorManagementTitle"
@@ -128,6 +136,8 @@ export default function ProjectsPage() {
                         ? "backgammonDescription"
                         : project.id === "barbershop"
                         ? "barbershop"
+                        : project.id === "barbershop-webapp"
+                        ? "barbershopWebappDescription"
                         : project.id === "quiz-app"
                         ? "quizappdesc"
                         : "VisitorManagementDescription"

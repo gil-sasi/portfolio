@@ -163,6 +163,14 @@ const resources = {
       barbershopFeature3: "Appointment booking system",
       barbershopFeature4: "Real-time notifications via Expo",
       barbershopFeature5: "Online product shop",
+      barbershopWebappTitle: "Barbershop Web App",
+      barbershopWebappDescription:
+        "A modern web application for barbershop management, allowing clients to book appointments online and barbers to manage their schedules efficiently.",
+      barbershopWebappFeature1: "Online appointment booking system",
+      barbershopWebappFeature2: "Barber schedule management",
+      barbershopWebappFeature3: "Client profile management",
+      barbershopWebappFeature4: "Real-time availability updates",
+      barbershopWebappFeature5: "Responsive web design",
       screenshots: "Screenshots",
       quizapptitle: "Quiz App",
       quizappdesc:
@@ -601,6 +609,7 @@ const resources = {
       aboutProject: "About This Project",
       projectDemo: "Project Demo",
       tryItOut: "Try It Out",
+      visitLiveWebsite: "Visit Live Website",
       getStarted: "Get Started",
 
       // Link shortener specific
@@ -906,8 +915,7 @@ const resources = {
       "backgammon.gameError": "שגיאה בטעינת משחק",
       "backgammon.gameNotFound": "משחק לא נמצא",
       "backgammon.loadingScores": "טוען תוצאות...",
-      "backgammon.leaderboardDescription":
-        "השחקנים הטובים ביותר ומשחקים אחרונים",
+      "backgammon.leaderboardDescription": "Top players and recent games",
       "backgammon.topPlayers": "השחקנים הטובים ביותר",
       "backgammon.recentGames": "משחקים אחרונים",
       "backgammon.noGamesYet": "עדיין לא שוחקו משחקים",
@@ -1178,6 +1186,14 @@ const resources = {
       barbershopFeature3: "מערכת לקביעת תורים",
       barbershopFeature4: "התראות בזמן אמת דרך Expo",
       barbershopFeature5: "חנות מוצרים אונליין",
+      barbershopWebappTitle: "אפליקציית ווב לספרים",
+      barbershopWebappDescription:
+        "אפליקציית ווב מודרנית לניהול ספרים, המאפשרת ללקוחות לקבוע תורים אונליין ולספרים לנהל את לוחות הזמנים שלהם ביעילות.",
+      barbershopWebappFeature1: "מערכת קביעת תורים אונליין",
+      barbershopWebappFeature2: "ניהול לוח זמנים של ספרים",
+      barbershopWebappFeature3: "ניהול פרופיל לקוחות",
+      barbershopWebappFeature4: "עדכוני זמינות בזמן אמת",
+      barbershopWebappFeature5: "עיצוב רספונסיבי",
       screenshots: "תמונות מסך",
       barbershopApp: "אפליקציה ספרים",
       quizapptitle: "אפליקציית טריוויה",
@@ -1361,6 +1377,7 @@ const resources = {
       aboutProject: "אודות הפרויקט",
       projectDemo: "הדגמת הפרויקט",
       tryItOut: "נסה את זה",
+      visitLiveWebsite: "בקר באתר החי",
       getStarted: "התחל",
 
       // Link shortener specific
