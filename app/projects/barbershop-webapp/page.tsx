@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { useCallback, useEffect } from "react";
 import TrackProjectVisit from "../../../components/TrackProjectVisit";
 
 export default function BarbershopWebappProject() {

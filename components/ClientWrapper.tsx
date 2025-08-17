@@ -69,7 +69,7 @@ function LanguageDirectionHandler({ children }: { children: ReactNode }) {
     const isRTL = currentLang === "he";
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
     document.documentElement.lang = currentLang;
-  }, [i18n.language, mounted]);
+  }, [i18n, i18n.language, mounted]);
 
   if (!mounted) return null;
 
