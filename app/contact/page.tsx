@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/Footer";
 
 // Spinner component while loading contact info
 const Spinner = () => (
@@ -32,6 +33,7 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [status, setStatus] = useState("");
   const [mounted, setMounted] = useState(false);
 
@@ -67,10 +69,16 @@ export default function ContactPage() {
       return;
     }
 
+    if (!privacyConsent) {
+      setStatus(t("privacyConsentRequired", "You must agree to the privacy policy to continue"));
+      return;
+    }
+
     try {
       await axios.post("/api/contact", { name, email, message });
       setStatus(t("messageSent", "✅ Message sent successfully!"));
       setMessage("");
+      setPrivacyConsent(false);
     } catch (err) {
       console.error("Send error", err);
       setStatus(t("sendFailed", "Failed to send message. Try again."));
@@ -221,6 +229,40 @@ export default function ContactPage() {
                 />
               </div>
 
+              {/* Privacy Policy Consent */}
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="privacy-consent"
+                    checked={privacyConsent}
+                    onChange={(e) => setPrivacyConsent(e.target.checked)}
+                    className="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800/50 text-cyan-400 focus:ring-cyan-400 focus:ring-2 focus:ring-offset-0 focus:ring-offset-gray-900 transition-all duration-300"
+                  />
+                  <label htmlFor="privacy-consent" className="text-sm text-gray-300 leading-relaxed">
+                    <span className="text-gray-400">
+                      {t("privacyConsentText", "I have read and agree to the")}
+                    </span>{" "}
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:text-cyan-300 underline transition-colors duration-300"
+                    >
+                      {t("privacyPolicy", "Privacy Policy")}
+                    </a>
+                    <span className="text-gray-400">
+                      {t("privacyConsentSuffix", " and consent to the collection and processing of my personal data for the purpose of responding to my inquiry.")}
+                    </span>
+                  </label>
+                </div>
+                {!privacyConsent && status && status.includes("privacy") && (
+                  <div className="text-red-400 text-sm ml-8">
+                    {t("privacyConsentRequired", "You must agree to the privacy policy to continue")}
+                  </div>
+                )}
+              </div>
+
               <button
                 type="submit"
                 className="w-full btn-primary py-4 text-lg font-semibold rounded-xl"
@@ -243,6 +285,9 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

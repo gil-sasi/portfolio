@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../components/Spinner";
+import Footer from "../../components/Footer";
 
 type Skill = {
   _id: string;
@@ -211,6 +212,9 @@ export default function SkillsPage() {
           )}
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       <style jsx>{`
         @keyframes fadeInUp {

@@ -12,6 +12,7 @@ import {
   FaReply,
   FaSync,
 } from "react-icons/fa";
+import Footer from "../../../components/Footer";
 
 type Message = {
   _id: string;
@@ -506,6 +507,9 @@ export default function AdminMessagesPage() {
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

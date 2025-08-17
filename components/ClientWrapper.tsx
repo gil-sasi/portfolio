@@ -60,9 +60,15 @@ function LanguageDirectionHandler({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
 
-    const isRTL = i18n.language === "he";
+    // Ensure English is default if no language is set
+    const currentLang = i18n.language || "en";
+    if (currentLang !== "en" && currentLang !== "he") {
+      i18n.changeLanguage("en");
+    }
+
+    const isRTL = currentLang === "he";
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
-    document.documentElement.lang = i18n.language;
+    document.documentElement.lang = currentLang;
   }, [i18n.language, mounted]);
 
   if (!mounted) return null;

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getValidToken } from "../../utils/auth";
+import Footer from "../../components/Footer";
 
 interface User {
   id: string;
@@ -487,6 +488,9 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

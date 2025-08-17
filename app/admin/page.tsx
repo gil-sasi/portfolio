@@ -11,6 +11,7 @@ import ProjectAnalytics from "./components/ProjectAnalytics";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/Footer";
 
 interface User {
   _id: string;
@@ -356,6 +357,9 @@ export default function AdminPage() {
           )}
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }

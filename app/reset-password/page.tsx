@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import Footer from "../../components/Footer";
 
 export default function ResetPasswordPage() {
   const [resetCode, setResetCode] = useState("");
@@ -117,6 +118,9 @@ export default function ResetPasswordPage() {
           </button>
         </form>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

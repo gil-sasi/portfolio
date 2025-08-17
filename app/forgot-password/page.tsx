@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/Footer";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -74,6 +75,9 @@ export default function ForgotPasswordPage() {
           </button>
         </form>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import Footer from "../../../components/Footer";
 
 export default function LinkShortenerPage() {
   const [url, setUrl] = useState("");
@@ -283,6 +284,9 @@ export default function LinkShortenerPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

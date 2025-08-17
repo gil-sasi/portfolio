@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/Footer";
 
 export default function AboutPage() {
   const [aboutText, setAboutText] = useState("");
@@ -134,6 +135,9 @@ export default function AboutPage() {
           )}
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

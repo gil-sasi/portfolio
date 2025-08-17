@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 interface AdminProfile {
   firstName: string;
@@ -178,6 +179,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }

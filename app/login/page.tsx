@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import jwt from "jsonwebtoken";
 import { login } from "../../redux/slices/authSlice";
+import Footer from "../../components/Footer";
 
 interface DecodedToken {
   firstName: string;
@@ -190,6 +191,9 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

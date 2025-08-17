@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/authSlice";
 import { useRouter } from "next/navigation";
+import Footer from "../../components/Footer";
 
 interface DecodedToken {
   firstName: string;
@@ -227,6 +228,9 @@ export default function SignupPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

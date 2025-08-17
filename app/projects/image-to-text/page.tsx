@@ -5,6 +5,7 @@ import { createWorker } from "tesseract.js";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
+import Footer from "../../../components/Footer";
 
 export default function OCRPage() {
   const [image, setImage] = useState<File | null>(null);
@@ -303,6 +304,9 @@ export default function OCRPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

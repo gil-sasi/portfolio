@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "../../../components/Footer";
 
 export default function QuizAppProjectPage() {
   const { t } = useTranslation();
@@ -291,6 +292,9 @@ export default function QuizAppProjectPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       <style jsx global>{`
         .swiper-button-next,

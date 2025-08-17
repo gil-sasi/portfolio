@@ -475,6 +475,13 @@ const resources = {
       // Contact form error message
       sendFailed: "Failed to send message. Try again.",
 
+      // Privacy consent translations
+      privacyConsentText: "I have read and agree to the",
+      privacyConsentSuffix:
+        " and consent to the collection and processing of my personal data for the purpose of responding to my inquiry.",
+      privacyConsentRequired:
+        "You must agree to the privacy policy to continue",
+
       // Admin panel specific translations
       manageContactDetails: "Manage your public contact information",
       previewMode: "Preview",
@@ -644,7 +651,6 @@ const resources = {
       pressSpacebar: "Press spacebar or up arrow to jump",
       shoot: "Shoot",
       pressCtrlToShoot: "Press Ctrl to shoot (pick up guns first!)",
-      builtWith: "Built With",
       gameEngine: "Game Engine",
       customJavaScript: "Custom JavaScript",
       html5Canvas: "HTML5 Canvas",
@@ -712,6 +718,134 @@ const resources = {
       "backgammon.helper": "Helper",
       "backgammon.helperMode": "Helper Mode",
       "backgammon.toggleHelper": "Toggle helper mode",
+
+      // Footer and Legal
+      legal: "Legal & Contact",
+      allRightsReserved: "All rights reserved.",
+      builtWith: "Built with",
+      using: "using",
+      quickLinks: "Quick Links",
+      portfolioTitle: "My Portfolio",
+      portfolioDescription:
+        "Full-stack developer passionate about creating innovative digital solutions and building amazing web experiences.",
+
+      // Privacy Policy & Terms of Service
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      privacyPolicySubtitle: "Last updated: January 2025",
+      termsLastUpdated: "Last updated: January 2025",
+      privacyIntroduction: "Introduction",
+      termsIntroduction: "Introduction",
+      privacyIntroductionText:
+        "This Privacy Policy describes how we collect, use, and protect your personal information when you visit our website and use our services. We are committed to protecting your privacy and ensuring the security of your personal data in accordance with Israeli Privacy Protection Law and other applicable regulations.",
+      termsIntroductionText:
+        "These Terms of Service govern your use of this portfolio website. By accessing and using this site, you accept and agree to be bound by these terms and conditions.",
+      dataController: "Data Controller",
+      portfolioOwner: "Portfolio Owner",
+      ownerName: "Owner",
+      contactEmail: "Contact Email",
+      location: "Location",
+      informationCollected: "Information We Collect",
+      personalInformation: "Personal Information",
+      technicalInformation: "Technical Information",
+      nameEmail: "Name and email address (when you contact us)",
+      contactDetails: "Contact details provided through forms",
+      communicationHistory: "Communication history and messages",
+
+      browserData: "Browser type and version",
+      usageData: "Website usage data and analytics",
+      cookies: "Cookies and similar technologies",
+      howWeUse: "How We Use Your Information",
+      respondInquiries:
+        "To respond to your inquiries and provide customer support",
+      improveServices: "To improve our website and services",
+      analytics: "To analyze website usage and performance",
+      legalCompliance: "To comply with legal obligations",
+
+      legalBasis: "Legal Basis for Processing",
+      legalBasisText:
+        "We process your personal information based on your consent, legitimate interests, and legal obligations. You have the right to withdraw your consent at any time.",
+      dataSharing: "Data Sharing and Third Parties",
+      dataSharingText:
+        "We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:",
+      serviceProviders:
+        "With trusted service providers who assist in operating our website",
+      legalRequirements: "When required by law or to protect our rights",
+      withConsent: "With your explicit consent",
+      dataRetention: "Data Retention",
+      dataRetentionText:
+        "We retain your personal information only for as long as necessary to fulfill the purposes outlined in this policy, unless a longer retention period is required by law.",
+      yourRights: "Your Rights",
+      accessRights: "Access Rights",
+      controlRights: "Control Rights",
+      rightToAccess: "Right to access your personal data",
+      rightToRectify: "Right to rectify inaccurate data",
+      rightToDelete: "Right to delete your data",
+      rightToWithdraw: "Right to withdraw consent",
+      rightToPortability: "Right to data portability",
+      rightToObject: "Right to object to processing",
+      cookiesText:
+        "We use cookies and similar technologies to enhance your browsing experience, analyze website traffic, and understand where our visitors are coming from.",
+      cookieTypes: "Types of Cookies We Use",
+      essentialCookies: "Essential cookies for website functionality",
+      analyticsCookies: "Analytics cookies to understand usage",
+      preferenceCookies: "Preference cookies to remember your settings",
+      dataSecurity: "Data Security",
+      securityText:
+        "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
+      sslEncryption: "SSL encryption for data transmission",
+      accessControls: "Strict access controls and authentication",
+      regularUpdates: "Regular security updates and monitoring",
+      employeeTraining: "Employee training on data protection",
+      contactUs: "Contact Us",
+      privacyQuestions:
+        "If you have any questions about this Privacy Policy or wish to exercise your rights, please contact us:",
+      termsQuestions:
+        "If you have any questions about these Terms of Service, please contact us:",
+      policyUpdates: "Updates to This Policy",
+      updatesText:
+        "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the 'Last updated' date.",
+      // Terms of Service specific
+      useOfWebsite: "Use of Website",
+      useOfWebsiteText:
+        "This portfolio website is provided for informational and portfolio showcase purposes. You may view, download, and interact with the content for personal, non-commercial use.",
+      permittedUses: "Permitted Uses",
+      viewContent: "Viewing portfolio content and projects",
+      contactOwner: "Contacting the portfolio owner",
+      personalReference: "Personal reference and inspiration",
+      portfolioReview: "Reviewing skills and experience",
+      intellectualProperty: "Intellectual Property",
+      intellectualPropertyText:
+        "All content on this website, including but not limited to text, graphics, images, code, and design, is the property of the portfolio owner and is protected by copyright laws.",
+      copyrightNotice: "All content is copyright protected",
+      noReproduction: "No reproduction without permission",
+      portfolioProjects: "Portfolio projects remain owner's property",
+      codeSamples: "Code samples are for demonstration only",
+      prohibitedUses: "Prohibited Uses",
+      commercialUse: "Commercial use without permission",
+      redistribution: "Redistribution or resale of content",
+      modification: "Modification of portfolio content",
+      misrepresentation: "Misrepresentation of ownership",
+      harmfulUse: "Use for harmful or illegal purposes",
+      contactAndCommunication: "Contact and Communication",
+      contactAndCommunicationText:
+        "When contacting the portfolio owner through this website, you agree to provide accurate information and use the contact form for appropriate purposes only.",
+      accurateInformation: "Provide accurate contact information",
+      appropriateUse: "Use contact form for appropriate purposes",
+      professionalCommunication: "Maintain professional communication",
+      noSpam: "No spam or unsolicited messages",
+      privacyAndData: "Privacy and Data",
+      privacyAndDataText:
+        "Your privacy is important. Please review our Privacy Policy to understand how we collect, use, and protect your information when you use this website.",
+      limitationOfLiability: "Limitation of Liability",
+      limitationOfLiabilityText:
+        "The portfolio owner shall not be liable for any damages arising from the use or inability to use this website, including but not limited to direct, indirect, incidental, or consequential damages.",
+      changesToTerms: "Changes to Terms",
+      changesToTermsText:
+        "The portfolio owner reserves the right to modify these terms at any time. Changes will be effective immediately upon posting. Continued use of the website constitutes acceptance of modified terms.",
+      governingLaw: "Governing Law",
+      governingLawText:
+        "These terms shall be governed by and construed in accordance with the laws of Israel. Any disputes shall be subject to the exclusive jurisdiction of the courts in Israel.",
     },
   },
   he: {
@@ -952,7 +1086,7 @@ const resources = {
       "backgammon.tutorialRule3": "לחץ על יעד תקף (מסומן בירוק)",
       "backgammon.tutorialRule4": "השתמש בשתי הקוביות לפני שהתור שלך נגמר",
       "backgammon.tutorialRule5": "תפוס כלים של היריב על ידי נחיתה על כלי יחיד",
-      "backgammon.tutorialRule6": "הוצא את כל הכלים כדי לנצח!",
+      "backgammon.tutorialRule6": "הוצא את כל הכלים מהלוח כדי לנצח!",
       "backgammon.tutorialGotIt": "הבנתי!",
 
       // Game UI Elements - Hebrew
@@ -1349,6 +1483,12 @@ const resources = {
       // Contact form error message
       sendFailed: "שליחת ההודעה נכשלה. נסה שוב.",
 
+      // Privacy consent translations
+      privacyConsentText: "קראתי ואני מסכים ל",
+      privacyConsentSuffix:
+        " ומסכים לאיסוף ועיבוד המידע האישי שלי למטרת מענה לפנייה שלי.",
+      privacyConsentRequired: "עליך להסכים למדיניות הפרטיות כדי להמשיך",
+
       // Visitor Management specific
       appScreenshots: "צילומי מסך של האפליקציה",
       loadingPage: "עמוד טעינה",
@@ -1440,6 +1580,128 @@ const resources = {
       "backgammon.helperMode": "מצב עוזר",
       "backgammon.toggleHelper": "החלף מצב עוזר",
       language: "שפה",
+
+      // Privacy Policy & Terms of Service - Hebrew
+      privacyPolicy: "מדיניות פרטיות",
+      termsOfService: "תנאי שירות",
+      privacyPolicySubtitle: "עודכן לאחרונה: ינואר 2025",
+      termsLastUpdated: "עודכן לאחרונה: ינואר 2025",
+      privacyIntroduction: "מבוא",
+      termsIntroduction: "מבוא",
+      privacyIntroductionText:
+        "מדיניות פרטיות זו מתארת כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך כאשר אתה מבקר באתר שלנו ומשתמש בשירותים שלנו. אנו מחויבים להגן על הפרטיות שלך ולהבטיח את האבטחה של המידע האישי שלך בהתאם לחוק הגנת הפרטיות בישראל ותקנות אחרות החלות.",
+      termsIntroductionText:
+        "תנאי שירות אלה מגדירים את השימוש שלך באתר התיק הזה. על ידי גישה ושימוש באתר זה, אתה מקבל ומסכים להיות מחויב לתנאים וסייגים אלה.",
+      dataController: "מבקר הנתונים",
+      portfolioOwner: "בעל התיק",
+      ownerName: "בעלים",
+      contactEmail: "אימייל ליצירת קשר",
+      location: "מיקום",
+      informationCollected: "מידע שאנו אוספים",
+      personalInformation: "מידע אישי",
+      technicalInformation: "מידע טכני",
+      nameEmail: "שם וכתובת אימייל (כאשר אתה יוצר קשר)",
+      contactDetails: "פרטי קשר שסופקו דרך טפסים",
+      communicationHistory: "היסטוריית תקשורת והודעות",
+
+      browserData: "סוג הדפדפן וגרסה",
+      usageData: "נתוני שימוש באתר ואנליטיקה",
+      cookies: "עוגיות וטכנולוגיות דומות",
+      howWeUse: "כיצד אנו משתמשים במידע שלך",
+      respondInquiries: "לענות על פניות שלך ולספק תמיכת לקוחות",
+      improveServices: "לשפר את האתר והשירותים שלנו",
+      analytics: "לנתח שימוש באתר וביצועים",
+      legalCompliance: "לעמוד בחובות משפטיות",
+      legalBasis: "בסיס משפטי לעיבוד",
+      legalBasisText:
+        "אנו מעבדים את המידע האישי שלך על בסיס הסכמתך, אינטרסים לגיטימיים וחובות משפטיות. יש לך את הזכות לחזורכמתך בכל עת.",
+      dataSharing: "שיתוף נתונים וצדדים שלישיים",
+      dataSharingText:
+        "אנו לא מוכרים, סוחרים או משכירים את המידע האישי שלך לצדדים שלישיים. אנו עשויים לשתף את המידע שלך רק במקרים הבאים:",
+      serviceProviders: "עם ספקי שירות מהימנים המסייעים בהפעלת האתר שלנו",
+      legalRequirements: "כאשר נדרש על פי חוק או להגנה על הזכויות שלנו",
+      withConsent: "עם הסכמתך המפורשת",
+      dataRetention: "שמירת נתונים",
+      dataRetentionText:
+        "אנו שומרים את המידע האישי שלך רק כל עוד נדרש כדי למלא את המטרות המתוארות במדיניות זו, אלא אם כן נדרשת תקופת שמירה ארוכה יותר על פי חוק.",
+      yourRights: "הזכויות שלך",
+      accessRights: "זכויות גישה",
+      controlRights: "זכויות שליטה",
+      rightToAccess: "זכות לגשת לנתונים האישיים שלך",
+      rightToRectify: "זכות לתקן נתונים לא מדויקים",
+      rightToDelete: "זכות למחוק את הנתונים שלך",
+      rightToWithdraw: "זכות לחזור בהסכמה",
+      rightToPortability: "זכות לניידות נתונים",
+      rightToObject: "זכות להתנגד לעיבוד",
+      cookiesText:
+        "אנו משתמשים בעוגיות וטכנולוגיות דומות כדי לשפר את חוויית הגלישה שלך, לנתח תעבורת אתר ולהבין מאיפה מגיעים המבקרים שלנו.",
+      cookieTypes: "סוגי העוגיות שאנו משתמשים",
+      essentialCookies: "עוגיות חיוניות לתפקוד האתר",
+      analyticsCookies: "עוגיות אנליטיקה להבנת שימוש",
+      preferenceCookies: "עוגיות העדפה לזכירת הגדרות שלך",
+      dataSecurity: "אבטחת נתונים",
+      securityText:
+        "אנו מיישמים אמצעים טכניים וארגוניים מתאימים כדי להגן על המידע האישי שלך מפני גישה לא מורשית, שינוי, חשיפה או הרס.",
+      sslEncryption: "הצפנת SSL להעברת נתונים",
+      accessControls: "בקרות גישה קפדניות ואימות",
+      regularUpdates: "עדכוני אבטחה וניטור קבועים",
+      employeeTraining: "הדרכת עובדים על הגנת נתונים",
+      contactUs: "צור קשר",
+      privacyQuestions:
+        "אם יש לך שאלות על מדיניות פרטיות זו או ברצונך לממש את הזכויות שלך, אנא צור קשר:",
+      termsQuestions: "אם יש לך שאלות על תנאי שירות אלה, אנא צור קשר:",
+      policyUpdates: "עדכונים למדיניות זו",
+      updatesText:
+        "אנו עשויים לעדכן את מדיניות פרטיות זו מעת לעת. אנו נודיע לך על כל שינוי על ידי פרסום מדיניות הפרטיות החדשה בעמוד זה ועדכון התאריך 'עודכן לאחרונה'.",
+      // Terms of Service specific - Hebrew
+      useOfWebsite: "שימוש באתר",
+      useOfWebsiteText:
+        "אתר התיק הזה מסופק למטרות מידע והצגת תיק. אתה רשאי לצפות, להוריד ולפעול עם התוכן לשימוש אישי ולא מסחרי.",
+      permittedUses: "שימושים מותרים",
+      viewContent: "צפייה בתוכן התיק ובפרויקטים",
+      contactOwner: "יצירת קשר עם בעל התיק",
+      personalReference: "התייחסות אישית והשראה",
+      portfolioReview: "סקירת כישורים וניסיון",
+      intellectualProperty: "קניין רוחני",
+      intellectualPropertyText:
+        "כל התוכן באתר זה, כולל אך לא מוגבל לטקסט, גרפיקה, תמונות, קוד ועיצוב, הוא רכושו של בעל התיק ומוגן על ידי חוקי זכויות יוצרים.",
+      copyrightNotice: "כל התוכן מוגן בזכויות יוצרים",
+      noReproduction: "אין שכפול ללא אישור",
+      portfolioProjects: "פרויקטי התיק נשארים רכושו של הבעלים",
+      codeSamples: "דוגמאות קוד הן להדגמה בלבד",
+      prohibitedUses: "שימושים אסורים",
+      commercialUse: "שימוש מסחרי ללא אישור",
+      redistribution: "הפצה מחדש או מכירה של תוכן",
+      modification: "שינוי תוכן התיק",
+      misrepresentation: "ייצוג כוזב של בעלות",
+      harmfulUse: "שימוש למטרות מזיקות או בלתי חוקיות",
+      contactAndCommunication: "קשר ותקשורת",
+      contactAndCommunicationText:
+        "כאשר אתה יוצר קשר עם בעל התיק דרך אתר זה, אתה מסכים לספק מידע מדויק ולהשתמש בטופס יצירת הקשר למטרות מתאימות בלבד.",
+      accurateInformation: "ספק מידע מדויק",
+      appropriateUse: "השתמש בטופס יצירת קשר למטרות מתאימות",
+      professionalCommunication: "שמור על תקשורת מקצועית",
+      noSpam: "אין הודעות ספאם או לא מבוקשות",
+      privacyAndData: "פרטיות ונתונים",
+      privacyAndDataText:
+        "הפרטיות שלך חשובה. אנא סקור את מדיניות הפרטיות שלנו כדי להבין כיצד אנו אוספים, משתמשים ומגנים על המידע שלך כאשר אתה משתמש באתר זה.",
+      limitationOfLiability: "הגבלת אחריות",
+      limitationOfLiabilityText:
+        "בעל התיק לא יהיה אחראי לכל נזקים הנובעים מהשימוש או חוסר היכולת להשתמש באתר זה, כולל אך לא מוגבל לנזקים ישירים, עקיפים, מקריים או תוצאתיים.",
+      changesToTerms: "שינויים בתנאים",
+      changesToTermsText:
+        "בעל התיק שומר לעצמו את הזכות לשנות תנאים אלה בכל עת. שינויים יהיו יעילים מיד עם פרסום. המשך השימוש באתר מהווה קבלה של תנאים מעודכנים.",
+      governingLaw: "דין שולט",
+      governingLawText:
+        "תנאים אלה יוסדרו ויפורשו בהתאם לחוקי ישראל. כל מחלוקות יהיו כפופות לסמכות השיפוט הבלעדית של בתי המשפט בישראל.",
+      // Footer and Legal - Hebrew
+      legal: "משפטי וקשר",
+      allRightsReserved: "כל הזכויות שמורות.",
+      using: "בשימוש",
+      quickLinks: "קישורים מהירים",
+      portfolioTitle: "התיק שלי",
+      portfolioDescription:
+        "מפתח Full-stack נלהב ליצירת פתרונות דיגיטליים חדשניים ובניית חוויות אינטרנט מדהימות.",
     },
   },
 };
@@ -1447,10 +1709,7 @@ const resources = {
 i18n.use(initReactI18next).init({
   resources,
   fallbackLng: "en",
-  lng:
-    typeof window !== "undefined"
-      ? localStorage.getItem("i18nextLng") || "en"
-      : "en",
+  lng: "en", // Force English as default
   interpolation: {
     escapeValue: false,
   },

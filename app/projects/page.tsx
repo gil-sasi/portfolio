@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/Footer";
 
 const projects = [
   {
@@ -191,6 +192,9 @@ export default function ProjectsPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

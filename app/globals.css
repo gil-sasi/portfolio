@@ -69,6 +69,78 @@ body {
   text-align: left;
 }
 
+/* Enhanced RTL Support for Footer and Legal Pages */
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+/* RTL specific adjustments */
+.rtl .text-right {
+  text-align: right;
+}
+
+.rtl .text-left {
+  text-align: left;
+}
+
+.rtl .md\:text-right {
+  text-align: right;
+}
+
+.rtl .md\:text-left {
+  text-align: left;
+}
+
+/* LTR specific adjustments */
+.ltr .text-right {
+  text-align: right;
+}
+
+.ltr .text-left {
+  text-align: left;
+}
+
+.ltr .md\:text-right {
+  text-align: right;
+}
+
+.ltr .md\:text-left {
+  text-align: left;
+}
+
+/* RTL list adjustments */
+.rtl ul.list-disc {
+  padding-right: 1rem;
+  padding-left: 0;
+}
+
+.rtl ul.list-disc li {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* RTL grid column adjustments */
+.rtl .md\:col-start-1 {
+  grid-column-start: 1;
+}
+
+.rtl .md\:col-start-2 {
+  grid-column-start: 2;
+}
+
+.rtl .md\:col-start-3 {
+  grid-column-start: 3;
+}
+
+/* RTL flex adjustments */
+.rtl .md\:flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
 /* Modern Glass Effect */
 .glass {
   background: rgba(255, 255, 255, 0.05);
