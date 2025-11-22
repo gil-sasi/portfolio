@@ -302,7 +302,12 @@ export default function VisitorManagementProject() {
               </span>
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="group px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25">
+              <a
+                href="https://coca-cola-visitor-site.vercel.app/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25"
+              >
                 <span className="flex items-center justify-center gap-2">
                   🚀 {t("tryItOut")}
                   <svg
@@ -319,7 +324,7 @@ export default function VisitorManagementProject() {
                     />
                   </svg>
                 </span>
-              </button>
+              </a>
               <button className="px-8 py-4 border-2 border-indigo-500/50 hover:border-indigo-400 rounded-lg font-semibold text-indigo-400 hover:text-indigo-300 transition-all duration-300 hover:scale-105 hover:bg-indigo-500/10">
                 🎥 {t("projectDemo")}
               </button>

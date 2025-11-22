@@ -53,6 +53,12 @@ const projects = [
     color: "from-indigo-500 to-blue-500",
     bgColor: "from-indigo-500/20 to-blue-500/20",
   },
+  {
+    id: "online-shop",
+    icon: "🛍️",
+    color: "from-pink-500 to-rose-500",
+    bgColor: "from-pink-500/20 to-rose-500/20",
+  },
 ];
 
 export default function ProjectsPage() {
@@ -120,6 +126,8 @@ export default function ProjectsPage() {
                         ? "barbershopWebappTitle"
                         : project.id === "quiz-app"
                         ? "quizapptitle"
+                        : project.id === "online-shop"
+                        ? "onlineshopTitle"
                         : "VisitorManagementTitle"
                     )}
                   </h2>
@@ -141,6 +149,8 @@ export default function ProjectsPage() {
                         ? "barbershopWebappDescription"
                         : project.id === "quiz-app"
                         ? "quizappdesc"
+                        : project.id === "online-shop"
+                        ? "onlineshopDescription"
                         : "VisitorManagementDescription"
                     )}
                   </p>
